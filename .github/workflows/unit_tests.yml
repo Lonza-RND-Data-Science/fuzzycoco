@@ -2,9 +2,9 @@ name: unit tests
 
 on:
   push:
-    branches: [ "main" ]
+    # branches: [ "main" ]
   pull_request:
-    branches: [ "main" ]
+    # branches: [ "main" ]
 
 jobs:
   build:
@@ -16,5 +16,13 @@ jobs:
     - name: make build
       run: make build
     - name: make test
-      run: make test
+      run: make test/junit
+
+    - name: Report test results
+      uses: dorny/test-reporter@v2
+      if: ${{ !cancelled() }}       # run this step even if previous step failed
+      with:
+        name: unit Tests            # Name of the check run which will be created
+        path: junit.xml    # Path to test results
+        reporter: java-junit        # Format of test results
 

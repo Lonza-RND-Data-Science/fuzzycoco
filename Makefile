@@ -11,6 +11,10 @@ build:
 test:
 	cd .build/tests/unit && ctest
 
+JUNIT_XML=$(PWD)/junit.xml
+test/junit:
+	cd .build/tests/unit && ctest --output-junit $(JUNIT_XML)
+
 test/memcheck:
 	cd .build/tests/unit && ctest --verbose --memcheck --overwrite MemoryCheckCommandOptions="--leak-check=full --error-exitcode=1"
 

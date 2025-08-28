@@ -29,7 +29,7 @@ coverage/info:
 	mkdir -p .coverage
 	lcov --capture --directory .build/src --output-file $(COVERAGE_INFO)
 	# Remove external/irrelevant directories
-	lcov --remove $(COVERAGE_INFO) '/usr/*' '11*'  --output-file $(COVERAGE_INFO)
+	lcov --remove $(COVERAGE_INFO) '/usr/*' '\d*'  --output-file $(COVERAGE_INFO)
 	lcov --list $(COVERAGE_INFO)
 
 coverage/html:

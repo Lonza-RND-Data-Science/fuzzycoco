@@ -27,13 +27,13 @@ verbose:
 COVERAGE_INFO=.coverage/coverage.info
 coverage/info:
 	mkdir -p .coverage
-	lcov --capture --directory .build/src --output-file $(COVERAGE_INFO)
+	lcov --capture --base-directory .build/src --directory .build/src --output-file $(COVERAGE_INFO)
 	# Remove external/irrelevant directories
 	lcov --remove $(COVERAGE_INFO) '/usr/*' '\d*' --ignore-errors unused --output-file $(COVERAGE_INFO)
 	lcov --list $(COVERAGE_INFO)
 
 coverage/html:
-	genhtml .coverage/coverage.info --output-directory .coverage	
+	genhtml .coverage/coverage.info --output-directory .coverage
 
 coverage: test coverage/info coverage/html
 

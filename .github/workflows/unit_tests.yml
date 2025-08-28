@@ -27,7 +27,7 @@ jobs:
         reporter: java-junit        # Format of test results
 
     - name: coverage.info
-      run: coverage.info
+      run: make coverage/info
 
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v5

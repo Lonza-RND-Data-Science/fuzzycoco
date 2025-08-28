@@ -26,3 +26,9 @@ jobs:
         path: junit.xml    # Path to test results
         reporter: java-junit        # Format of test results
 
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v5
+      with:
+        files: .coverage/coverage.info
+        flags: unittests
+        fail_ci_if_error: true

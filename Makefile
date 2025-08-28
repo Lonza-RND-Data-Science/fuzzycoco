@@ -24,9 +24,13 @@ debug:
 verbose:
 	cd .build/tests/unit && ctest -V
 
+COVERAGE_INFO=.coverage/coverage.info
 coverage/info:
 	mkdir -p .coverage
-	lcov --capture --directory . --output-file .coverage/coverage.info
+	lcov --capture --directory .build/src --output-file $(COVERAGE_INFO)
+	# Remove external/irrelevant directories
+	lcov --remove $(COVERAGE_INFO) '/usr/*' '11*'  --output-file $(COVERAGE_INFO)
+	lcov --list $(COVERAGE_INFO)
 
 coverage/html:
 	genhtml .coverage/coverage.info --output-directory .coverage	

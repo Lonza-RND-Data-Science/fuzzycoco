@@ -29,7 +29,7 @@ coverage/info:
 	mkdir -p .coverage
 	lcov --capture --base-directory .build/src --directory .build/src --output-file $(COVERAGE_INFO)
 	# Remove external/irrelevant directories
-	lcov --remove $(COVERAGE_INFO) '/usr/*' '\d*' --ignore-errors unused --output-file $(COVERAGE_INFO)
+	lcov --remove $(COVERAGE_INFO) '/usr/*' '\d*' '*/tests/*' 'tests/*' --ignore-errors unused --output-file $(COVERAGE_INFO)
 	lcov --list $(COVERAGE_INFO)
 
 coverage/html:

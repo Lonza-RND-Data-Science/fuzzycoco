@@ -26,6 +26,11 @@ jobs:
         path: junit.xml    # Path to test results
         reporter: java-junit        # Format of test results
 
+    - name: ⚙️ Install lcov
+      run: |
+        sudo apt-get update
+        sudo apt-get -y install lcov
+
     - name: coverage.info
       run: make coverage/info
 

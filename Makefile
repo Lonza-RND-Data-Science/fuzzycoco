@@ -27,7 +27,8 @@ verbose:
 COVERAGE_INFO=.coverage/coverage.info
 coverage/info:
 	mkdir -p .coverage
-	lcov --capture --base-directory .build/src --directory .build/src --output-file $(COVERAGE_INFO)
+	rm -f $(COVERAGE_INFO)
+	lcov --capture --base-directory .build/src --directory .build/src --filter brace --rc genhtml_exclude_lines="};" --output-file $(COVERAGE_INFO)
 	# Remove external/irrelevant directories
 	lcov --remove $(COVERAGE_INFO) '/usr/*' '\d*' '*/tests/*' 'tests/*' --ignore-errors unused --output-file $(COVERAGE_INFO)
 	lcov --list $(COVERAGE_INFO)

@@ -5,8 +5,6 @@ fuzzycoco
 
 [![codecov](https://codecov.io/github/Lonza-RND-Data-Science/fuzzycoco/graph/badge.svg?token=UMCPQXVXQA)](https://codecov.io/github/Lonza-RND-Data-Science/fuzzycoco)
 
-![code coverage grid graph](https://codecov.io/github/Lonza-RND-Data-Science/fuzzycoco/graphs/tree.svg?token=UMCPQXVXQA)
-
 ## Introduction
 
 This is a C++ implementation of the **FuzzyCoCo** algorithm.

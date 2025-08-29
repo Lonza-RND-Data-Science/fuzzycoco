@@ -11,6 +11,12 @@ set(CMAKE_CXX_FLAGS "-g -fprofile-arcs -ftest-coverage")
 include_directories(${PROJECT_SOURCE_DIR}/../../src)
 
 # GoogleTest setup
+
+# Avoid warning about DOWNLOAD_EXTRACT_TIMESTAMP in CMake 3.24:
+if (CMAKE_VERSION VERSION_GREATER_EQUAL "3.24.0")
+  cmake_policy(SET CMP0135 NEW)
+endif()
+
 include(FetchContent)
 FetchContent_Declare(
   googletest

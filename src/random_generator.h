@@ -15,15 +15,19 @@ public:
 
 
   int random(int min, int max) {
-    uniform_int_distribution<> distrib(min, max);
-    return distrib(_rng);
+    // uniform_int_distribution<> distrib(min, max);
+    // return distrib(_rng);
+
+    auto x = _rng();
+    double norm = double(x) / double(_rng.max() + 1.0);
+    return min + int(norm * double(max - min + 1));
   }
 
   // N.B: append. no reserve
   void random(int min, int max, int nb, vector<int>& stack) {
-    uniform_int_distribution<> distrib(min, max);
+    // uniform_int_distribution<> distrib(min, max);
     for (int i = 0 ; i < nb; i++)
-      stack.push_back(distrib(_rng));
+      stack.push_back(random(min, max));
   }
 
   template <typename T>
@@ -34,15 +38,19 @@ public:
   }
 
   double randomReal(double min, double max) {
-    uniform_real_distribution<double> distrib(min, max);
-    return distrib(_rng);
+    // uniform_real_distribution<double> distrib(min, max);
+    // return distrib(_rng);
+    auto x = _rng();
+    double norm = double(x) / double(_rng.max() + 1.0);
+    return min + (max - min) * norm;
   }
 
   // N.B: append. no reserve
   void randomReal(double min, double max, int nb, vector<double>& stack) {
-    uniform_real_distribution<double> distrib(min, max);
+    // uniform_real_distribution<double> distrib(min, max);
     for (int i = 0 ; i < nb; i++)
-      stack.push_back(distrib(_rng));
+      // stack.push_back(distrib(_rng));
+      stack.push_back(randomReal(min, max));
   }
 
 private:

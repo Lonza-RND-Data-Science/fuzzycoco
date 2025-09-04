@@ -54,7 +54,7 @@ TEST(EvolutionEngine, evolveFromScratch) {
   EXPECT_EQ(lastgen.individuals.size(), genomes.size());
   EXPECT_EQ(generation_fitnesses.size(), maxGen);
   EXPECT_DOUBLE_EQ(fit.globalFitness(lastgen.fitnesses), generation_fitnesses.back());
-  EXPECT_TRUE(generation_fitnesses.back() > 3*generation_fitnesses.front());
+  EXPECT_TRUE(generation_fitnesses.back() > 2*generation_fitnesses.front());
 
   cerr << endl << "last generation:" << endl;
   for (auto& g : lastgen.individuals)

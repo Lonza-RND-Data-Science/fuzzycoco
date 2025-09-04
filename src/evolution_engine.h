@@ -40,11 +40,6 @@ struct Generation {
     for (int i = 0; i < _elite_size; i++) elite.push_back(individuals[i]);
   }
 
-  // // use Implicitly-declared move constructor instead 
-  // Generation(const Generation&& gen) 
-  //   : individuals(move(gen.individuals)), elite(move(gen.elite)), 
-  //   fitnesses(move(gen.fitnesses)), fitness(gen.fitness), _elite_size(gen._elite_size 
-  // {}
 
   Genomes individuals;
   Genomes elite;

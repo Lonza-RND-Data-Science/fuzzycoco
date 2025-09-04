@@ -177,7 +177,7 @@ vector< map<string, int> > FuzzyVariablesDB::build_vars_set_names_to_index_mappe
   const int nb = vars.size();
   vector< map<string, int> > set_names_to_idx(nb);
   for (int i = 0; i < nb; i++) 
-    set_names_to_idx[i] = move(build_set_names_to_index_mapper(vars[i]));
+    set_names_to_idx[i] = std::move(build_set_names_to_index_mapper(vars[i]));
   
   return set_names_to_idx;
 }

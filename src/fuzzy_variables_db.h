@@ -25,7 +25,7 @@ public:
     FuzzyVariablesDB(const vector<string>& input_names, int nb_in_sets, 
       const vector<string>& output_names, int nb_out_sets);
     FuzzyVariablesDB(const FuzzyVariablesDB& db) : _input_vars(db._input_vars), _output_vars(db._output_vars) {}
-    FuzzyVariablesDB(FuzzyVariablesDB&& db) : _input_vars(move(db._input_vars)), _output_vars(move(db._output_vars)) {}
+    FuzzyVariablesDB(FuzzyVariablesDB&& db) : _input_vars(std::move(db._input_vars)), _output_vars(std::move(db._output_vars)) {}
     ~FuzzyVariablesDB() {}
 
   // meta data accessors

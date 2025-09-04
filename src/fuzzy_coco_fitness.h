@@ -55,7 +55,7 @@ public:
   FuzzySystem& getFuzzySystem() { return _fuzzy_system; }
   const FuzzySystem& getFuzzySystem() const { return _fuzzy_system; }
   FuzzySystemFitness& getFuzzySystemFitness() { return _fitter; }
-  // void setFuzzySystemFitness(unique_ptr<FuzzySystemFitness> fit_ptr) { _fit_ptr = move(fit_ptr); }
+
   FuzzySystemMetricsComputer& getMetricsComputer() { return _fsmc; }
   const vector<double>& getThresholds() const { return _thresholds; }
 

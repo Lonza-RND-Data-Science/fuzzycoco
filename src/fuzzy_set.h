@@ -18,7 +18,7 @@ class FuzzySet
 public:
     FuzzySet(string name, double pos = MISSING_DATA_DOUBLE) : _name(name), _position(pos) {}
     FuzzySet(const FuzzySet& set) : _name(set._name), _position(set._position) {}
-    FuzzySet(const FuzzySet&& set) : _name(move(set._name)), _position(set._position) {}
+    FuzzySet(FuzzySet&& set) : _name(std::move(set._name)), _position(set._position) {}
     ~FuzzySet() {}
     FuzzySet& operator=(FuzzySet set) { 
       swap(_name, set._name);

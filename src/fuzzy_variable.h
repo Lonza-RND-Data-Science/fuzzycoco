@@ -19,9 +19,9 @@ class FuzzyVariable
 public:
     FuzzyVariable(string name, int nbsets);
     FuzzyVariable(string name, const vector<string>& set_names);
-    FuzzyVariable(string name, vector<FuzzySet> sets) : _name(move(name)), _sets(move(sets)) {}
+    FuzzyVariable(string name, vector<FuzzySet> sets) : _name(std::move(name)), _sets(std::move(sets)) {}
     FuzzyVariable(const FuzzyVariable& var) : _name(var._name), _sets(var._sets) {   }
-    FuzzyVariable(FuzzyVariable&& var) : _name(move(var._name)), _sets(move(var._sets)) {}
+    FuzzyVariable(FuzzyVariable&& var) : _name(std::move(var._name)), _sets(std::move(var._sets)) {}
     ~FuzzyVariable() {}
 
 public: // ================= main methods =========================

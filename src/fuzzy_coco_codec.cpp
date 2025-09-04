@@ -126,7 +126,7 @@ void FuzzyCocoCodec::setRulesGenome(FuzzySystem& fs, const Genome& rules_genome)
   for (int i = 0; i < MAX_NB_RULES; i++) {
     FuzzyRule rule(fs.getDB(), _rules_in[i],  _rules_out[i], true); // NB: filter==true
     if (rule.getNbInputConditions() > 0 && rule.getNbOutputConditions() > 0)
-      fs.addRule(move(rule));
+      fs.addRule(std::move(rule));
   }
 
   fs.setDefaultRulesConditions(_default_rules);

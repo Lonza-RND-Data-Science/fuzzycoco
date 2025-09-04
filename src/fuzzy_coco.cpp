@@ -8,16 +8,16 @@ using namespace logging;
 FuzzyCoco::FuzzyCoco(const DataFrame& dfin, const DataFrame& dfout, const FuzzyCocoParams& params, RandomGenerator& rng) 
   :  _params(params),
     _fuzzy_system(dfin.colnames(), dfout.colnames(), params.input_vars_params.nb_sets, params.output_vars_params.nb_sets),
-    _fuzzy_system_fitter_ptr(move(selectFuzzySystemFitness(params))),
-    _fitter_ptr(move(selectFitnessMethods(dfin, dfout, params, _fuzzy_system, *_fuzzy_system_fitter_ptr))),
+    _fuzzy_system_fitter_ptr(std::move(selectFuzzySystemFitness(params))),
+    _fitter_ptr(std::move(selectFitnessMethods(dfin, dfout, params, _fuzzy_system, *_fuzzy_system_fitter_ptr))),
     _engine(dfin, dfout, *_fitter_ptr, params, rng)
 {}
 
 FuzzyCoco::FuzzyCoco(const DataFrame& dfin, const DataFrame& dfout, const FuzzyCocoParams& params, const FuzzySystem& fs, RandomGenerator& rng) 
   :  _params(params),
     _fuzzy_system(fs),
-    _fuzzy_system_fitter_ptr(move(selectFuzzySystemFitness(params))),
-    _fitter_ptr(move(selectFitnessMethods(dfin, dfout, params, _fuzzy_system, *_fuzzy_system_fitter_ptr))),
+    _fuzzy_system_fitter_ptr(std::move(selectFuzzySystemFitness(params))),
+    _fitter_ptr(std::move(selectFitnessMethods(dfin, dfout, params, _fuzzy_system, *_fuzzy_system_fitter_ptr))),
     _engine(dfin, dfout, *_fitter_ptr, params, rng)
 {}
 
@@ -163,23 +163,12 @@ namespace fuzzy_coco {
     out << "--------------------------------------------------------" << endl;
     out << "# PARAMS" << endl;
     out << coco._params << endl;
-    // out << "# Input Data" << endl << coco._actual_dfin << endl;
-    // out << "# Output Data" << endl << coco._actual_dfout << endl;
     out << "# Rules Codec " << coco.getFitnessMethod().getFuzzyCocoCodec().getRulesCodec() << endl;
     out << "# MFs Codec " << coco.getFitnessMethod().getFuzzyCocoCodec().getMFsCodec() << endl;
     return out;
   }
 }
 
-// FuzzyCocoCodec& FuzzyCoco::rebuildBestFuzzySystem() 
-// {
-//   auto [best_rule, best_mf] = getBest();
-//   auto& fs = getFuzzySystem();
-//   fs.setRulesGenome(best_rule);
-//   fs.setMFsGenome(best_mf);
-
-//   return fs;
-// }
 NamedList FuzzyCoco::describeFit(FuzzyCocoFitnessMethod& fitter, int nb_generations) {
   auto metrics = fitter.fitMetrics();
   double fitness = fitter.fitnessImpl();
@@ -242,20 +231,4 @@ void FuzzyCoco::influence_rules_genomes(
     }
   }
 }
-
-
-
-
-// void FuzzyCoco::save(ostream& out) {
-//   out << describe();
-
-// }
-
-// void FuzzyCoco::save(const string& filename) {
-//   FileUtils::mkdir_if_needed(filename);
-//   fstream output_file(filename, ios::out);
-//   if (!output_file.is_open()) throw runtime_error(string("unable to open file ") + filename);
-//   save(output_file);
-// }
-
 

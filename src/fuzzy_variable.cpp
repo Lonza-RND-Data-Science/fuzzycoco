@@ -1,7 +1,7 @@
 #include "fuzzy_variable.h"
 using namespace fuzzy_coco;
 
-FuzzyVariable::FuzzyVariable(string name, const vector<string>& set_names) : _name(move(name))
+FuzzyVariable::FuzzyVariable(string name, const vector<string>& set_names) : _name(std::move(name))
 { 
   _sets.reserve(set_names.size());
   for (const auto& name : set_names)

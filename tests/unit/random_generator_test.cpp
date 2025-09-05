@@ -163,6 +163,7 @@ TEST(mt19937, portability) {
         int r2 = rng.random();
         double k = rng.randomReal(min(r1, r2), max(r1, r2));
         // cout << '"' << double_to_hex(k) << '"' << ",";
+        EXPECT_EQ(double_to_hex(k), expected[i]);
         double k2 = hex_to_double(expected[i]);
         EXPECT_EQ(k, k2);
       }

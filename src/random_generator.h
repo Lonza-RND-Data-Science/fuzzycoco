@@ -13,15 +13,12 @@ class RandomGenerator
 public:
   RandomGenerator(int seed = random_device{}()) : _rng(seed) {}
 
-  int random() { return static_cast<int>(_rng()); }
+  uint32_t random() { return _rng(); }
 
   int random(int min, int max) {
     // uniform_int_distribution<> distrib(min, max);
     // return distrib(_rng);
-
-    auto x = _rng();
-    double norm = double(x) / double(_rng.max() + 1.0);
-    return min + int(norm * double(max - min + 1));
+    return scale_int(random(), min, max);
   }
 
   // N.B: append. no reserve
@@ -41,9 +38,10 @@ public:
   double randomReal(double min, double max) {
     // uniform_real_distribution<double> distrib(min, max);
     // return distrib(_rng);
-    auto x = _rng();
-    double norm = double(x) / double(_rng.max() + 1.0);
-    return min + (max - min) * norm;
+    return scale_int_to_double(random(), min, max);
+    // auto x = _rng();
+    // double norm = double(x) / double(_rng.max() + 1.0);
+    // return min + (max - min) * norm;
   }
 
   // N.B: append. no reserve
@@ -53,6 +51,22 @@ public:
       // stack.push_back(distrib(_rng));
       stack.push_back(randomReal(min, max));
   }
+
+  static int scale_int(uint32_t x, int min, int max) {
+    double norm = double(x) / double(mt19937::max() + 1.0);
+    return min + int(norm * double(max - min + 1));
+  }
+
+  static double scale_int_to_double(uint32_t x, double min, double max) {
+    double norm = double(x) / double(mt19937::max() + 1.0);
+    return min + (max - min) * norm;
+  }
+
+  static double scale_int_to_double2(uint32_t x, double min, double max) {
+    double norm = std::ldexp(x, -32);
+    return min + (max - min) * norm;
+  }
+
 
 private:
   mt19937 _rng;

@@ -114,11 +114,11 @@ double hex_to_double(const std::string& hex) {
 }
 
 TEST(mt19937, portability) {
-    std::mt19937 rng(666);
+    std::mt19937 mt(666);
     uint_fast32_t expected[10] = {3008354540,440739714,3625754029,907667358,2905606974,553951302,3126126537,3222645150,4086480804,1442973117};
 
     for (int i = 0; i < 10; i++) {
-      EXPECT_EQ(rng(), expected[i]);
+      EXPECT_EQ(mt(), expected[i]);
     }
 
     
@@ -154,18 +154,23 @@ TEST(mt19937, portability) {
 
     }
 
-    // randomReal
+    // scale_int_to_double
     {
       RandomGenerator rng(123);
       string expected[] = {"c1d31fc2945881b9","41d76ef50db9804a","c1d4fcd9b99f3522","41de795fb9eb3676","41d19f586e7b8631","c1d2d3caf9e4bb64","41d94a7eb8a3d11f","c1d5bdbf472cd5a6","41d067a39dd3ff05","41bcc8e2414511a8"};
+      string expected2[] = {"c1d31fc2945881b9","41d76ef50db9804a","c1d4fcd9b99f3522","41de795fb9eb3676","41d19f586e7b8631","c1d2d3caf9e4bb64","41d94a7eb8a3d11f","c1d5bdbf472cd5a6","41d067a39dd3ff05","41bcc8e2414511a8"};
       for (int i = 0; i < 10; i++) {
         int r1 = rng.random();
         int r2 = rng.random();
-        double k = rng.randomReal(min(r1, r2), max(r1, r2));
+        int x = rng.random();
+        double k = RandomGenerator::scale_int_to_double(x, min(r1, r2), max(r1, r2));
+        double k2 = RandomGenerator::scale_int_to_double2(x, min(r1, r2), max(r1, r2));
         // cout << '"' << double_to_hex(k) << '"' << ",";
+        // cout << '"' << double_to_hex(k2) << '"' << ",";
         EXPECT_EQ(double_to_hex(k), expected[i]);
-        double k2 = hex_to_double(expected[i]);
-        EXPECT_EQ(k, k2);
+        EXPECT_EQ(double_to_hex(k2), expected2[i]);
+        // double k2 = hex_to_double(expected[i]);
+        // EXPECT_EQ(k, k2);
       }
 
     }

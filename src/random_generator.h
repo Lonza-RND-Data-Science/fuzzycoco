@@ -4,6 +4,7 @@
 
 #include <random>
 #include <cassert>
+#include <cstring>
 
 namespace fuzzy_coco {
 
@@ -67,6 +68,26 @@ public:
     return min + (max - min) * norm;
   }
 
+  static double scale_int_to_double3(uint32_t x, double min, double max) {
+    // Convert to [0,1) by integer-to-double scaling
+    uint64_t numerator = x;
+    double norm = static_cast<double>(numerator) / 4294967296.0; // 2^32, exact
+    // Force rounding now
+    uint64_t bits;
+    std::memcpy(&bits, &norm, sizeof(norm));
+    std::memcpy(&norm, &bits, sizeof(norm));  // normalize rounding
+    return min + (max - min) * norm;
+  }
+
+  static double scale_int_to_double4(uint32_t x, double min, double max) {
+    // Exact fraction in [0,1)
+    double norm = std::ldexp(static_cast<double>(x), -32);
+    // Force canonical rounding to double
+    uint64_t bits;
+    std::memcpy(&bits, &norm, sizeof(norm));
+    std::memcpy(&norm, &bits, sizeof(norm));
+    return min + (max - min) * norm;
+  }
 
 private:
   mt19937 _rng;

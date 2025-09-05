@@ -98,4 +98,33 @@ TEST(mt19937, portability) {
     for (int i = 0; i < 10; i++) {
       EXPECT_EQ(rng(), expected[i]);
     }
+
+    // random
+    {
+      RandomGenerator rng(123);
+      int expected[10] = {-1283394130,1572590647,-1408460518,2045083368,1182622138,-1864563734,1697250018,-1459027229,1100910199,-2067864206};
+      for (int i = 0; i < 10; i++) {
+        int r1 = rng.random();
+        int r2 = rng.random();
+        int k = rng.random(min(r1, r2), max(r1, r2));
+        // cout << k << ",";
+        EXPECT_EQ(k, expected[i]);
+      }
+
+    }
+
+    // randomReal
+    {
+      RandomGenerator rng(123);
+      double expected[10] = {-1283394129.3829176,1572590646.8984551,-1408460518.487618,2045083367.675199,1182622137.9300654,-1263479783.5739374,1697250018.5596387,-1459027228.7005401,1100910199.3124402,482927169.26980066};
+      for (int i = 0; i < 10; i++) {
+        int r1 = rng.random();
+        int r2 = rng.random();
+        double k = rng.randomReal(min(r1, r2), max(r1, r2));
+        // cout << setprecision(numeric_limits<double>::max_digits10) << k << ",";
+        EXPECT_EQ(k, expected[i]);
+      }
+
+    }
+
 }

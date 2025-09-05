@@ -13,6 +13,7 @@ class RandomGenerator
 public:
   RandomGenerator(int seed = random_device{}()) : _rng(seed) {}
 
+  int random() { return static_cast<int>(_rng()); }
 
   int random(int min, int max) {
     // uniform_int_distribution<> distrib(min, max);

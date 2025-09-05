@@ -90,3 +90,12 @@ TEST(RandomGenerator, vector) {
   EXPECT_DOUBLE_EQ(rng1.random(v), v[rng2.random(0, nb - 1)]);
 
 }
+
+TEST(mt19937, portability) {
+    std::mt19937 rng(666);
+    uint_fast32_t expected[10] = {3008354540,440739714,3625754029,907667358,2905606974,553951302,3126126537,3222645150,4086480804,1442973117};
+
+    for (int i = 0; i < 10; i++) {
+      EXPECT_EQ(rng(), expected[i]);
+    }
+}

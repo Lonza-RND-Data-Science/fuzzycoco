@@ -6,4 +6,4 @@ bin/
 callgrind*
 *.o
 junit.xml
-
+Testing/

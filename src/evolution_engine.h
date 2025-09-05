@@ -91,7 +91,6 @@ public:
     // static Genomes selectBest(const Generation& generation);
 private:
     EvolutionParams _params;
-    RandomGenerator& _rng;
     OnePointCrossoverMethod _crossover_method;
     TogglingMutationMethod _mutation_method;
     ElitismWithRandomMethod _elite_selection_method;

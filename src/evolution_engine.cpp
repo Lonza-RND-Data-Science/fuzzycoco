@@ -11,7 +11,6 @@ double EvolutionFitnessMethod::globalFitness(const vector<double>& fitnesses) {
 
 EvolutionEngine::EvolutionEngine(const EvolutionParams& params, RandomGenerator& rng) :
         _params(params),
-        _rng(rng),
         _crossover_method(rng, params.cx_prob),
         _mutation_method(rng, params.mut_flip_genome, params.mut_flip_bit),
         _elite_selection_method(rng),

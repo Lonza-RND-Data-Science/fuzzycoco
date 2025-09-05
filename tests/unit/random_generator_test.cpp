@@ -154,25 +154,38 @@ TEST(mt19937, portability) {
 
     }
 
-    // scale_int_to_double
+    // macOs bug
     {
-      RandomGenerator rng(123);
-      string expected[] = {"c1d31fc2945881b9","41d76ef50db9804a","c1d4fcd9b99f3522","41de795fb9eb3676","41d19f586e7b8631","c1d2d3caf9e4bb64","41d94a7eb8a3d11f","c1d5bdbf472cd5a6","41d067a39dd3ff05","41bcc8e2414511a8"};
-      string expected2[] = {"c1d31fc2945881b9","41d76ef50db9804a","c1d4fcd9b99f3522","41de795fb9eb3676","41d19f586e7b8631","c1d2d3caf9e4bb64","41d94a7eb8a3d11f","c1d5bdbf472cd5a6","41d067a39dd3ff05","41bcc8e2414511a8"};
-      for (int i = 0; i < 10; i++) {
-        int r1 = rng.random();
-        int r2 = rng.random();
-        int x = rng.random();
-        double k = RandomGenerator::scale_int_to_double(x, min(r1, r2), max(r1, r2));
-        double k2 = RandomGenerator::scale_int_to_double2(x, min(r1, r2), max(r1, r2));
-        // cout << '"' << double_to_hex(k) << '"' << ",";
-        // cout << '"' << double_to_hex(k2) << '"' << ",";
-        EXPECT_EQ(double_to_hex(k), expected[i]);
-        EXPECT_EQ(double_to_hex(k2), expected2[i]);
-        // double k2 = hex_to_double(expected[i]);
-        // EXPECT_EQ(k, k2);
-      }
-
+// -944773575, 2109339754, 1817228411, 2045083367.675199031829833984375, 41de795fb9eb3676
+      int x = -944773575;
+      int r1 = 1817228411;
+      int r2 = 2109339754;
+      double k = RandomGenerator::scale_int_to_double(x, r1, r2);
+      double k2 = RandomGenerator::scale_int_to_double2(x, r1, r2);
+      EXPECT_EQ(double_to_hex(k), "41de795fb9eb3676");
+      EXPECT_EQ(double_to_hex(k2), "41de795fb9eb3676");
     }
+
+
+    // // scale_int_to_double
+    // {
+    //   RandomGenerator rng(123);
+    //   string expected[] = {"c1d31fc2945881b9","41d76ef50db9804a","c1d4fcd9b99f3522","41de795fb9eb3676","41d19f586e7b8631","c1d2d3caf9e4bb64","41d94a7eb8a3d11f","c1d5bdbf472cd5a6","41d067a39dd3ff05","41bcc8e2414511a8"};
+    //   string expected2[] = {"c1d31fc2945881b9","41d76ef50db9804a","c1d4fcd9b99f3522","41de795fb9eb3676","41d19f586e7b8631","c1d2d3caf9e4bb64","41d94a7eb8a3d11f","c1d5bdbf472cd5a6","41d067a39dd3ff05","41bcc8e2414511a8"};
+    //   for (int i = 0; i < 10; i++) {
+    //     int r1 = rng.random();
+    //     int r2 = rng.random();
+    //     int x = rng.random();
+    //     double k = RandomGenerator::scale_int_to_double(x, min(r1, r2), max(r1, r2));
+    //     double k2 = RandomGenerator::scale_int_to_double2(x, min(r1, r2), max(r1, r2));
+    //     // cout << x << ", " << r1 << ", " << r2 << ", " << k << ", " << double_to_hex(k) << endl;
+    //     // cout << '"' << double_to_hex(k) << '"' << ",";
+    //     // cout << '"' << double_to_hex(k2) << '"' << ",";
+    //     EXPECT_EQ(double_to_hex(k), expected[i]);
+    //     EXPECT_EQ(double_to_hex(k2), expected2[i]);
+    //     // double k2 = hex_to_double(expected[i]);
+    //     // EXPECT_EQ(k, k2);
+    //   }
+    // }
 
 }

@@ -8,16 +8,16 @@ using namespace logging;
 FuzzyCoco::FuzzyCoco(const DataFrame& dfin, const DataFrame& dfout, const FuzzyCocoParams& params, RandomGenerator& rng) 
   :  _params(params),
     _fuzzy_system(dfin.colnames(), dfout.colnames(), params.input_vars_params.nb_sets, params.output_vars_params.nb_sets),
-    _fuzzy_system_fitter_ptr(std::move(selectFuzzySystemFitness(params))),
-    _fitter_ptr(std::move(selectFitnessMethods(dfin, dfout, params, _fuzzy_system, *_fuzzy_system_fitter_ptr))),
+    _fuzzy_system_fitter_ptr(selectFuzzySystemFitness(params)),
+    _fitter_ptr(selectFitnessMethods(dfin, dfout, params, _fuzzy_system, *_fuzzy_system_fitter_ptr)),
     _engine(dfin, dfout, *_fitter_ptr, params, rng)
 {}
 
 FuzzyCoco::FuzzyCoco(const DataFrame& dfin, const DataFrame& dfout, const FuzzyCocoParams& params, const FuzzySystem& fs, RandomGenerator& rng) 
   :  _params(params),
     _fuzzy_system(fs),
-    _fuzzy_system_fitter_ptr(std::move(selectFuzzySystemFitness(params))),
-    _fitter_ptr(std::move(selectFitnessMethods(dfin, dfout, params, _fuzzy_system, *_fuzzy_system_fitter_ptr))),
+    _fuzzy_system_fitter_ptr(selectFuzzySystemFitness(params)),
+    _fitter_ptr(selectFitnessMethods(dfin, dfout, params, _fuzzy_system, *_fuzzy_system_fitter_ptr)),
     _engine(dfin, dfout, *_fitter_ptr, params, rng)
 {}
 

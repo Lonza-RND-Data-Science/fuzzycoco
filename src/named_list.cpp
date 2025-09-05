@@ -218,7 +218,7 @@ const NamedList& NamedList::get_list(const string& name, const NamedList& defaul
 const string& NamedList::get_string(const string& name, const string& default_value) const {
   return has(name) ? get_string(name) : default_value; 
 }
-double NamedList::get_bool(const string& name, bool default_value) const {
+bool NamedList::get_bool(const string& name, bool default_value) const {
   return has(name) ? get_bool(name) : default_value; 
 }
 int NamedList::get_int(const string& name, int default_value) const {

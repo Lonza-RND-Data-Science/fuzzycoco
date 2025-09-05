@@ -87,14 +87,14 @@ public: // ========= main read-only user interface =================
   const NamedList& get_list(const string& name) const { return fetch(name); }
   const NamedList& get_list(const string& name, const NamedList& default_lst) const;
   const string& get_string(const string& name) const { return fetch_scalar(name).get_string(); }
-  double get_bool(const string& name) const { return fetch_scalar(name).get_bool(); }
+  bool get_bool(const string& name) const { return fetch_scalar(name).get_bool(); }
   int get_int(const string& name) const { return fetch_scalar(name).get_int(); }
   double get_double(const string& name) const { return fetch_scalar(name).get_double(); }
   double get_numeric(const string& name) const { return fetch_scalar(name).get_numeric(); }
   int get_as_int(const string& name) const { return fetch_scalar(name).get_as_int(); }
 
   const string& get_string(const string& name, const string& default_value) const;
-  double get_bool(const string& name, bool default_value) const;
+  bool get_bool(const string& name, bool default_value) const;
   int get_int(const string& name, int default_value) const;
   int get_as_int(const string& name, int default_value) const;
   double get_double(const string& name, double default_value) const;

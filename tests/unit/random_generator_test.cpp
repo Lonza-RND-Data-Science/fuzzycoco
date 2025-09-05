@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 #include <algorithm>
+#include <cstring>
 #include "random_generator.h"
 
 using namespace fuzzy_coco;
@@ -91,6 +92,27 @@ TEST(RandomGenerator, vector) {
 
 }
 
+// Convert double → hex
+std::string double_to_hex(double value) {
+    uint64_t bits;
+    std::memcpy(&bits, &value, sizeof(value));
+
+    std::ostringstream oss;
+    oss << std::hex << std::setfill('0') << std::setw(16) << bits;
+    return oss.str();
+}
+
+// Convert hex → double
+double hex_to_double(const std::string& hex) {
+    uint64_t bits = 0;
+    std::istringstream iss(hex);
+    iss >> std::hex >> bits;
+
+    double value;
+    std::memcpy(&value, &bits, sizeof(value));
+    return value;
+}
+
 TEST(mt19937, portability) {
     std::mt19937 rng(666);
     uint_fast32_t expected[10] = {3008354540,440739714,3625754029,907667358,2905606974,553951302,3126126537,3222645150,4086480804,1442973117};
@@ -99,11 +121,30 @@ TEST(mt19937, portability) {
       EXPECT_EQ(rng(), expected[i]);
     }
 
+    
+    {
+      RandomGenerator rng(123);
+      for (int i = 0; i < 20; i++) {
+        int r = rng.random();
+        double norm1 = double(r) / double(mt19937::max() + 1.0);
+        double norm2 = std::ldexp(r, -32);
+        // cout  << setprecision(numeric_limits<double>::max_digits10 * 2)  << norm1 << "," << norm2 << endl;
+        // EXPECT_EQ(k, expected[i]);
+      }
+
+      int r = mt19937::max();
+      double norm1 = double(r) / double(mt19937::max() + 1.0);
+      double norm2 = std::ldexp(r, -32);
+      cout  << setprecision(numeric_limits<double>::max_digits10 * 2)  << r << ":" << norm1 << "," << norm2 << endl;
+
+    }
+
+
     // random
     {
       RandomGenerator rng(123);
-      int expected[10] = {-1283394130,1572590647,-1408460518,2045083368,1182622138,-1864563734,1697250018,-1459027229,1100910199,-2067864206};
-      for (int i = 0; i < 10; i++) {
+      int expected[] = {-1283394130,1572590647,-1408460518,2045083368,1182622138,-1864563734,1697250018,-1459027229,1100910199,-2067864206,-1498199443,848784249,-1599039828,-1834388561,-1758575032,-1472022046,-1615485263,-1953253780,988267000,-410378308};
+      for (int i = 0; i < 20; i++) {
         int r1 = rng.random();
         int r2 = rng.random();
         int k = rng.random(min(r1, r2), max(r1, r2));
@@ -116,13 +157,14 @@ TEST(mt19937, portability) {
     // randomReal
     {
       RandomGenerator rng(123);
-      double expected[10] = {-1283394129.3829176,1572590646.8984551,-1408460518.487618,2045083367.675199,1182622137.9300654,-1263479783.5739374,1697250018.5596387,-1459027228.7005401,1100910199.3124402,482927169.26980066};
+      string expected[] = {"c1d31fc2945881b9","41d76ef50db9804a","c1d4fcd9b99f3522","41de795fb9eb3676","41d19f586e7b8631","c1d2d3caf9e4bb64","41d94a7eb8a3d11f","c1d5bdbf472cd5a6","41d067a39dd3ff05","41bcc8e2414511a8"};
       for (int i = 0; i < 10; i++) {
         int r1 = rng.random();
         int r2 = rng.random();
         double k = rng.randomReal(min(r1, r2), max(r1, r2));
-        // cout << setprecision(numeric_limits<double>::max_digits10) << k << ",";
-        EXPECT_EQ(k, expected[i]);
+        // cout << '"' << double_to_hex(k) << '"' << ",";
+        double k2 = hex_to_double(expected[i]);
+        EXPECT_EQ(k, k2);
       }
 
     }

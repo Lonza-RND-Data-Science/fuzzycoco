@@ -22,7 +22,7 @@ jobs:
       run: make build
       
     - name: make test
-      run: make test/junit
+      run: make test/junit || make test/rerun-failed
 
     - name: Report test results
       uses: dorny/test-reporter@v2

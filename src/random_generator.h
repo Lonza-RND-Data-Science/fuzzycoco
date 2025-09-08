@@ -39,7 +39,7 @@ public:
   double randomReal(double min, double max) {
     // uniform_real_distribution<double> distrib(min, max);
     // return distrib(_rng);
-    return scale_int_to_double(random(), min, max);
+    return scale_int_to_double_strict(random(), min, max);
     // auto x = _rng();
     // double norm = double(x) / double(_rng.max() + 1.0);
     // return min + (max - min) * norm;

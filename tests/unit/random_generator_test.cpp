@@ -167,7 +167,7 @@ TEST(mt19937, portability) {
       EXPECT_EQ(double_to_hex(k2), "41de795fb9eb3676");
       EXPECT_EQ(double_to_hex(k3), "41de795fb9eb3676");
       EXPECT_EQ(double_to_hex(RandomGenerator::scale_int_to_double4(x, r1, r2)), "41de795fb9eb3676");
-
+      EXPECT_EQ(double_to_hex(RandomGenerator::scale_int_to_double5(x, r1, r2)), "41de795fb9eb3676");
     }
 
 

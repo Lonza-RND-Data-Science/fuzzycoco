@@ -89,6 +89,28 @@ public:
     return min + (max - min) * norm;
   }
 
+  static double scale_int_to_double5(uint32_t x, double min, double max) {
+    // Convert x ∈ [0, 2^32) to [0,1) exactly
+    // Division by 2^32 is exact in binary floating-point
+    double norm = static_cast<double>(x) / 4294967296.0; // 2^32
+
+
+    // Force materialization to double (no extended precision carry-over)
+    // i.e “Stop being clever, store this number exactly as a double right now, then continue.”
+    uint64_t bits;
+    std::memcpy(&bits, &norm, sizeof(norm));
+    std::memcpy(&norm, &bits, sizeof(norm));
+
+    // Map to [a, b)
+    double res = min + (max - min) * norm;
+
+    // Same round-trip to force exact 64-bit rounding
+    std::memcpy(&bits, &res, sizeof(res));
+    std::memcpy(&res, &bits, sizeof(res));
+
+    return res;
+  }
+
 private:
   mt19937 _rng;
 };

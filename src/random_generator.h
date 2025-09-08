@@ -54,7 +54,8 @@ public:
   }
 
   static int scale_int(uint32_t x, int min, int max) {
-    double norm = double(x) / double(mt19937::max() + 1.0);
+    double norm = force_round(static_cast<double>(x) / 4294967296.0);
+    // double norm = double(x) / double(mt19937::max() + 1.0);
     return min + int(norm * double(max - min + 1));
   }
 

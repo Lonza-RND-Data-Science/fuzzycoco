@@ -111,6 +111,21 @@ public:
     return res;
   }
 
+  static double force_round(double v) {
+      uint64_t bits;
+      std::memcpy(&bits, &v, sizeof(v));
+      std::memcpy(&v, &bits, sizeof(v));
+      return v;
+  };
+
+  static double scale_int_to_double_strict(uint32_t x, double min, double max) {
+      double norm = force_round(static_cast<double>(x) / 4294967296.0);
+      double diff = force_round(max - min);
+      double prod = force_round(diff * norm);
+      double res  = force_round(min + prod);
+      return res;
+  }
+
 private:
   mt19937 _rng;
 };

@@ -19,7 +19,7 @@ public:
   int random(int min, int max) {
     // uniform_int_distribution<> distrib(min, max);
     // return distrib(_rng);
-    return scale_int(random(), min, max);
+    return scale_int_strict(random(), min, max);
   }
 
   // N.B: append. no reserve
@@ -57,6 +57,14 @@ public:
     double norm = force_round(static_cast<double>(x) / 4294967296.0);
     // double norm = double(x) / double(mt19937::max() + 1.0);
     return min + int(norm * double(max - min + 1));
+  }
+
+  static double scale_int_strict(uint32_t x, int min, int max) {
+    double norm = force_round(static_cast<double>(x) / 4294967296.0);
+    double diff = force_round(max - min + 1);
+    double prod = force_round(diff * norm);
+    int res  = min + int(prod);
+    return res;
   }
 
   static double scale_int_to_double(uint32_t x, double min, double max) {

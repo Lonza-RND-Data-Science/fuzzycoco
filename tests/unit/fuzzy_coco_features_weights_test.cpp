@@ -157,6 +157,17 @@ TEST_F(FuzzyCocoTest, features_weights) {
 
     auto gen0 = coco.start(rng, false, 0.8);
 
+    EXPECT_EQ(digest(gen0.left_gen), "c685520f7f126040");
+    EXPECT_EQ(digest(gen0.left_gen.individuals), "d21393f22b177dc1");
+    EXPECT_EQ(digest(gen0.left_gen.elite), "20f062c1dd2e9559");
+    EXPECT_EQ(double_to_hex(gen0.left_gen.fitness), "3fd29c244fe2f34a");
+
+    EXPECT_EQ(digest(gen0.right_gen), "fe7a59d4acb1c735");
+    EXPECT_EQ(digest(gen0.right_gen.individuals), "2a26eb4d928138c8");
+    EXPECT_EQ(digest(gen0.right_gen.elite), "22d994a3aebe6d48");
+    EXPECT_EQ(double_to_hex(gen0.right_gen.fitness), "3fe2620ae4c415ca");
+
+
     auto gen = gen0;
     vector<string> digests;
     digests.push_back(digest(gen0));
@@ -203,6 +214,7 @@ TEST_F(FuzzyCocoTest, features_weights) {
     EXPECT_EQ(coco.getFitnessMethod().description(), "FuzzyCocoFeaturesWeightsFitnessMethod");
 
     auto gen0 = coco.start(rng, false, 0.8);
+
     auto gen = gen0;
     vector<string> digests;
     digests.push_back(digest(gen0));

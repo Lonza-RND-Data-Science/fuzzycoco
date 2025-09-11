@@ -2,10 +2,60 @@
 #include "fuzzy_coco.h"
 #include "file_utils.h"
 #include "logging_logger.h"
+#include "digest.h"
 
 using namespace fuzzy_coco;
 using namespace FileUtils;
 using namespace logging;
+using namespace Digest;
+
+string digest(const Genome& genome) {
+  auto n = genome.size();
+  auto byte_count = (n + 7) / 8; // round up to full bytes
+
+  ostringstream oss;
+  for (auto byte_idx = 0; byte_idx < byte_count; ++byte_idx) {
+    uint8_t byte = 0;
+    for (size_t bit = 0; bit < 8; ++bit) {
+      size_t idx = byte_idx * 8 + bit;
+      if (idx < n && genome[idx]) {
+          byte |= (1u << bit); // pack bit (LSB first)
+      }
+    }
+    oss << std::hex << std::setw(2) << std::setfill('0') << (int)byte;
+  }
+  return oss.str();
+}
+
+string digest(const Genomes& genomes) {
+  vector<string> hexs;
+  hexs.resize(genomes.size());
+  for (auto i = 0; i < genomes.size(); i++)
+    hexs[i] = digest(genomes[i]);
+  return digest(hexs);
+}
+
+string digest(const Generation& gen) {
+  vector<string> hashes;
+  hashes.reserve(3);
+  hashes.push_back(digest(gen.individuals));
+  hashes.push_back(digest(gen.elite));
+  hashes.push_back(uint64_to_hex(hash_string(double_to_hex(gen.fitness))));
+
+  return digest(hashes);
+}
+
+string digest(const CoevGeneration& cogen) {
+  vector<string> hashes;
+
+  hashes.reserve(3);
+  hashes.push_back(digest(cogen.left_gen));
+  hashes.push_back(digest(cogen.right_gen));
+  hashes.push_back(uint64_to_hex(hash_string(double_to_hex(cogen.fitness))));
+
+  return digest(hashes);
+
+}
 
 FuzzyCocoParams GET_SAMPLE_PARAMS(int nb_max_var_per_rule) {
   FuzzyCocoParams params;
@@ -105,7 +155,26 @@ TEST_F(FuzzyCocoTest, features_weights) {
 
     EXPECT_EQ(coco.getFitnessMethod().description(), "FuzzyCocoFitnessMethod");
 
-    auto gen = coco.run(100, 1);
+    auto gen0 = coco.start(rng, false, 0.8);
+
+    auto gen = gen0;
+    vector<string> digests;
+    digests.push_back(digest(gen0));
+    cerr << digests.back() << endl;
+    for (int i = 0; i < 100; i++) {
+      gen = coco.getEngine().run(gen, 1, 1);
+      digests.push_back(digest(gen));
+      cerr << digests.back() << endl;
+    }
+
+    auto digest_all = digest(digests);
+    cerr << "digest_all=" << digest_all << endl;
+    EXPECT_EQ(digests[0], "863d572fc9d3c0b3");
+    EXPECT_EQ(digests[1], "b81f740597dc7c19");
+    EXPECT_EQ(digests[2], "f98be2e2039d2833");
+    EXPECT_EQ(digest_all, "33bc05f1d2a8d1c4");
+
+    // auto gen = coco.run(100, 1);
 
     auto rules = coco.getEngine().describeBestFuzzySystem()["fuzzy_system"]["rules"];
     EXPECT_EQ(rules.size(), 1);
@@ -116,6 +185,7 @@ TEST_F(FuzzyCocoTest, features_weights) {
     EXPECT_EQ(antecedents[0].name(), "Temperature");
     // with perfect fitness
     EXPECT_EQ(gen.fitness, 1);
+
   }
 
   { 
@@ -132,7 +202,26 @@ TEST_F(FuzzyCocoTest, features_weights) {
 
     EXPECT_EQ(coco.getFitnessMethod().description(), "FuzzyCocoFeaturesWeightsFitnessMethod");
 
-    auto gen = coco.run(100, 1);
+    auto gen0 = coco.start(rng, false, 0.8);
+    auto gen = gen0;
+    vector<string> digests;
+    digests.push_back(digest(gen0));
+    cerr << digests.back() << endl;
+    for (int i = 0; i < 100; i++) {
+      gen = coco.getEngine().run(gen, 1, 1);
+      digests.push_back(digest(gen));
+      cerr << digests.back() << endl;
+    }
+
+    auto digest_all = digest(digests);
+    cerr << "digest_all=" << digest_all << endl;
+    EXPECT_EQ(digests[0], "8e12589a06706e15");
+    EXPECT_EQ(digests[1], "90d222b4dcbdbfd4");
+    EXPECT_EQ(digests[2], "3bba522f99920bb1");
+
+    EXPECT_EQ(digest_all, "f6244485099591ba");
+
+    // auto gen = coco.run(100, 1);
 // cerr << gen;
     auto rules = coco.describeBestFuzzySystem()["fuzzy_system"]["rules"];
     // cerr << rules;

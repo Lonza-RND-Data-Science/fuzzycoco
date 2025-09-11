@@ -14,7 +14,13 @@ class RandomGenerator
 public:
   RandomGenerator(int seed = random_device{}()) : _rng(seed) {}
 
-  uint32_t random() { return _rng(); }
+  uint32_t random() { 
+    // karl debug. to be 
+    uint32_t res = _rng();
+    _log.push_back(res);
+
+    return res; 
+  }
 
   int random(int min, int max) {
     // uniform_int_distribution<> distrib(min, max);
@@ -135,8 +141,12 @@ public:
       return res;
   }
 
+  // karl debug. to be 
+  vector<uint32_t> _log;
+
 private:
   mt19937 _rng;
+
 };
 
 }

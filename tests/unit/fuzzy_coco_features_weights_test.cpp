@@ -10,8 +10,8 @@ using namespace logging;
 using namespace Digest;
 
 string digest(const Genome& genome) {
-  auto n = genome.size();
-  auto byte_count = (n + 7) / 8; // round up to full bytes
+  size_t n = genome.size();
+  size_t byte_count = (n + 7) / 8; // round up to full bytes
 
   ostringstream oss;
   for (auto byte_idx = 0; byte_idx < byte_count; ++byte_idx) {
@@ -170,10 +170,11 @@ TEST_F(FuzzyCocoTest, features_weights) {
 
     // investigate right_gen
     cerr << gen0.right_gen << endl;
-    cerr << "gen0.right_gen.individuals\n";
-    for (auto geno : gen0.right_gen.individuals) {
+    cerr << "gen0.right_gen.elite\n";
+    for (auto geno : gen0.right_gen.elite) {
       cerr << digest(geno) << endl;
     }
+    cerr << "==== END of elite ====\n";
 
     auto gen = gen0;
     vector<string> digests;

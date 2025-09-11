@@ -4,6 +4,24 @@
 using namespace fuzzy_coco;
 using namespace logging;
 
+string digest(const Genome& genome) {
+  size_t n = genome.size();
+  size_t byte_count = (n + 7) / 8; // round up to full bytes
+
+  ostringstream oss;
+  for (size_t byte_idx = 0; byte_idx < byte_count; ++byte_idx) {
+    uint8_t byte = 0;
+    for (size_t bit = 0; bit < 8; ++bit) {
+      size_t idx = byte_idx * 8 + bit;
+      if (idx < n && genome[idx]) {
+          byte |= (1u << bit); // pack bit (LSB first)
+      }
+    }
+    oss << std::hex << std::setw(2) << std::setfill('0') << (int)byte;
+  }
+  return oss.str();
+}
+
 
 FuzzyCocoEngine::FuzzyCocoEngine(const DataFrame& dfin, const DataFrame& dfout, FuzzyCocoFitnessMethod& fitter,
   const FuzzyCocoParams& params, RandomGenerator& rng) 
@@ -70,6 +88,7 @@ Genomes FuzzyCocoEngine::buildRulesGenomes(int nb_pop_rules) {
   for (int i = 0; i < nb_pop_rules; i++) {
     Genome rules_geno = getFuzzyCocoCodec().buildRulesGenome();
     randomize(rules_geno, _rng);
+
     rules.push_back(rules_geno);
   }
   return rules;
@@ -81,9 +100,22 @@ Genomes FuzzyCocoEngine::buildMFsGenomes(int nb_pop_mfs) {
   for (int i = 0; i < nb_pop_mfs; i++) {
     Genome mf = getFuzzyCocoCodec().buildMFsGenome();
     randomize(mf, _rng);
+
+    // karl: debug. TO BE REMOVED
+    string hash = digest(mf);
+    cerr << "hash=" << hash << ",";
+    if (hash == "45bc4ea6e8bd95f6" || hash == "863d572fc9d3c0b3") {
+      cerr << "dumping rng log\n";
+      cerr << _rng._log;
+      cerr << "END\n";
+    }
+    
+
     mfs.push_back(mf);
   }
 
+  //debug
+  cerr << endl;
   return mfs;
 }
 

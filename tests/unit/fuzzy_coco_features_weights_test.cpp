@@ -168,6 +168,13 @@ TEST_F(FuzzyCocoTest, features_weights) {
     EXPECT_EQ(double_to_hex(gen0.right_gen.fitness), "3fe2620ae4c415ca");
 
 
+    // investigate right_gen
+    cerr << gen0.right_gen << endl;
+    cerr << "gen0.right_gen.individuals\n";
+    for (auto geno : gen0.right_gen.individuals) {
+      cerr << digest(geno) << endl;
+    }
+
     auto gen = gen0;
     vector<string> digests;
     digests.push_back(digest(gen0));
@@ -175,11 +182,11 @@ TEST_F(FuzzyCocoTest, features_weights) {
     for (int i = 0; i < 100; i++) {
       gen = coco.getEngine().run(gen, 1, 1);
       digests.push_back(digest(gen));
-      cerr << digests.back() << endl;
+      // cerr << digests.back() << endl;
     }
 
     auto digest_all = digest(digests);
-    cerr << "digest_all=" << digest_all << endl;
+    // cerr << "digest_all=" << digest_all << endl;
     EXPECT_EQ(digests[0], "863d572fc9d3c0b3");
     EXPECT_EQ(digests[1], "b81f740597dc7c19");
     EXPECT_EQ(digests[2], "f98be2e2039d2833");
@@ -222,11 +229,11 @@ TEST_F(FuzzyCocoTest, features_weights) {
     for (int i = 0; i < 100; i++) {
       gen = coco.getEngine().run(gen, 1, 1);
       digests.push_back(digest(gen));
-      cerr << digests.back() << endl;
+      // cerr << digests.back() << endl;
     }
 
     auto digest_all = digest(digests);
-    cerr << "digest_all=" << digest_all << endl;
+    // cerr << "digest_all=" << digest_all << endl;
     EXPECT_EQ(digests[0], "8e12589a06706e15");
     EXPECT_EQ(digests[1], "90d222b4dcbdbfd4");
     EXPECT_EQ(digests[2], "3bba522f99920bb1");

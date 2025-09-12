@@ -59,6 +59,7 @@ jobs:
       run: make build
       env:
         CMAKE_TLS_VERIFY: "0"
+        CMAKE_GENERATOR: "Unix Makefiles"
 
     - name: make test
       run: make test/junit || make test/rerun-failed

@@ -47,8 +47,8 @@ void ElitismWithRandomMethod::selectEntities(int nb, const vector<double>& fitne
     for (int i = 0; i < nb_entities; i++) fit_idx[i] = i;
 
 
-cerr << "ElitismWithRandomMethod::selectEntities()\n";
-cerr << "fitnesses=" << fitnesses << endl;
+// cerr << "ElitismWithRandomMethod::selectEntities()\n";
+// cerr << "fitnesses=" << fitnesses << endl;
 
     // sort the fitness indexes in decreasing order
     // improvement: make it a deterministic sort by handling ties with indices
@@ -56,7 +56,7 @@ cerr << "fitnesses=" << fitnesses << endl;
       return fitnesses[a] > fitnesses[b] ? true : fitnesses[a] < fitnesses[b] ? false : a < b;
     });
 
-cerr << "fit_idx=" << fit_idx << endl;
+// cerr << "fit_idx=" << fit_idx << endl;
 
     // only take the first nb-1 elements
     copy_n(fit_idx.begin(), min(nb - 1, nb_entities), back_inserter(indexes));
@@ -64,7 +64,7 @@ cerr << "fit_idx=" << fit_idx << endl;
     // the last element is taken randomly
     int random_fit_idx_idx = _rng.random(fit_idx);
 
-cerr << "random_fit_idx_idx=" << random_fit_idx_idx << endl;
+// cerr << "random_fit_idx_idx=" << random_fit_idx_idx << endl;
 
     indexes.push_back(random_fit_idx_idx);
 }

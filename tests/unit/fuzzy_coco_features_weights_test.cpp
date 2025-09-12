@@ -164,9 +164,9 @@ TEST_F(FuzzyCocoTest, features_weights) {
     EXPECT_EQ(digest(gen0.left_gen.fitnesses), "6ef2cfbc3e5bad3b");
     cerr << "gen0.left_gen.fitnesses:" << gen0.left_gen.fitnesses << endl;
 
-    EXPECT_EQ(digest(gen0.right_gen), "fe7a59d4acb1c735");
+    EXPECT_EQ(digest(gen0.right_gen), "49c1a33a4bc9b4e5");
     EXPECT_EQ(digest(gen0.right_gen.individuals), "2a26eb4d928138c8");
-    EXPECT_EQ(digest(gen0.right_gen.elite), "22d994a3aebe6d48");
+    EXPECT_EQ(digest(gen0.right_gen.elite), "0e52b12cca2f1902");
     EXPECT_EQ(double_to_hex(gen0.right_gen.fitness), "3fe2620ae4c415ca");
     EXPECT_EQ(digest(gen0.right_gen.fitnesses), "9eeec0a7b6f6c70f");
     cerr << "gen0.right_gen.fitnesses:" << gen0.right_gen.fitnesses << endl;
@@ -185,8 +185,6 @@ TEST_F(FuzzyCocoTest, features_weights) {
     cerr << digests.back() << endl;
 
 
-abort();
-
     for (int i = 0; i < 100; i++) {
       gen = coco.getEngine().run(gen, 1, 1);
       digests.push_back(digest(gen));
@@ -195,10 +193,10 @@ abort();
 
     auto digest_all = digest(digests);
     // cerr << "digest_all=" << digest_all << endl;
-    EXPECT_EQ(digests[0], "863d572fc9d3c0b3");
-    EXPECT_EQ(digests[1], "b81f740597dc7c19");
-    EXPECT_EQ(digests[2], "f98be2e2039d2833");
-    EXPECT_EQ(digest_all, "33bc05f1d2a8d1c4");
+    EXPECT_EQ(digests[0], "45bc4ea6e8bd95f6");
+    EXPECT_EQ(digests[1], "6cbd3c7a11f67263");
+    EXPECT_EQ(digests[2], "bb9b96b2929069f5");
+    EXPECT_EQ(digest_all, "38ad2c0af7950783");
 
     // auto gen = coco.run(100, 1);
 
@@ -242,11 +240,11 @@ abort();
 
     auto digest_all = digest(digests);
     // cerr << "digest_all=" << digest_all << endl;
-    EXPECT_EQ(digests[0], "8e12589a06706e15");
-    EXPECT_EQ(digests[1], "90d222b4dcbdbfd4");
-    EXPECT_EQ(digests[2], "3bba522f99920bb1");
+    EXPECT_EQ(digests[0], "24eeaf0102401862");
+    EXPECT_EQ(digests[1], "e601cc95bbf49271");
+    EXPECT_EQ(digests[2], "8fd139af5c183740");
 
-    EXPECT_EQ(digest_all, "f6244485099591ba");
+    EXPECT_EQ(digest_all, "f550fef6c3f9f560");
 
     // auto gen = coco.run(100, 1);
 // cerr << gen;

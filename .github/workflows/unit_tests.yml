@@ -20,19 +20,10 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     
-    # Cache the CMake install
-    - name: Cache CMake
-      uses: actions/cache@v4
-      with:
-        path: ~/.cmake-cache
-        key: cmake-${{ runner.os }}-${{ hashFiles('.github/workflows/**') }}
-
     - name: Setup cmake
       uses: jwlawson/actions-setup-cmake@v2
       with:
         cmake-version: '3.28.x'
-        # Tell the action where to install
-        install-dir: ~/.cmake-cache
     
     - name: make build
       run: make build

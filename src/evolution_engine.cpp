@@ -70,18 +70,18 @@ Generation EvolutionEngine::nextGeneration(const Generation& generation, Evoluti
 
     Genomes evolvers = selectEvolvers(nb_evolvers, generation.individuals, generation.fitnesses);
 
-    cerr << "EvolutionEngine::nextGeneration()\n";
-    cerr << "generation.individuals:" << digest(generation.individuals) << endl;
-    cerr << "evolvers:" << digest(evolvers) << endl;
+    logger() << "EvolutionEngine::nextGeneration()\n";
+    logger() << "generation.individuals:" << digest(generation.individuals) << endl;
+    logger() << "evolvers:" << digest(evolvers) << endl;
 
     // N.B: modify in-place
     _crossover_method.reproduceAllPairsOf(evolvers);
 
-    cerr << "after crossover: evolvers:" << digest(evolvers) << endl;
+    logger() << "after crossover: evolvers:" << digest(evolvers) << endl;
 
     _mutation_method.mutate(evolvers);
 
-    cerr << "after mutation: evolvers:" << digest(evolvers) << endl;
+    logger() << "after mutation: evolvers:" << digest(evolvers) << endl;
 
     // new generation is elite + evolved
     Genomes indiv;
@@ -92,11 +92,11 @@ Generation EvolutionEngine::nextGeneration(const Generation& generation, Evoluti
 
     Generation newgen(indiv, _params.elite_size);
 
-    cerr << "newgen:" << digest(newgen) << endl;
+    logger() << "newgen:" << digest(newgen) << endl;
 
     updateGeneration(newgen, fitness_method);
 
-    cerr << "after updateGeneration, newgen:" << digest(newgen) << endl;
+    logger() << "after updateGeneration, newgen:" << digest(newgen) << endl;
 
     return newgen;
 }

@@ -10,6 +10,7 @@
 #include <cstring>
 #include <sstream>
 #include <iomanip>
+#include "coevolution_engine.h"
 
 namespace fuzzy_coco {
   using namespace std;
@@ -112,6 +113,53 @@ namespace fuzzy_coco {
     }
 
 
+inline string digest(const Genome& genome) {
+  size_t n = genome.size();
+  size_t byte_count = (n + 7) / 8; // round up to full bytes
+
+  ostringstream oss;
+  for (size_t byte_idx = 0; byte_idx < byte_count; ++byte_idx) {
+    uint8_t byte = 0;
+    for (size_t bit = 0; bit < 8; ++bit) {
+      size_t idx = byte_idx * 8 + bit;
+      if (idx < n && genome[idx]) {
+          byte |= (1u << bit); // pack bit (LSB first)
+      }
+    }
+    oss << std::hex << std::setw(2) << std::setfill('0') << (int)byte;
+  }
+  return oss.str();
+}
+
+inline string digest(const Genomes& genomes) {
+  vector<string> hexs;
+  hexs.resize(genomes.size());
+  for (size_t i = 0; i < genomes.size(); i++)
+    hexs[i] = digest(genomes[i]);
+  return digest(hexs);
+}
+
+inline string digest(const Generation& gen) {
+  vector<string> hashes;
+  hashes.reserve(3);
+  hashes.push_back(digest(gen.individuals));
+  hashes.push_back(digest(gen.elite));
+  hashes.push_back(uint64_to_hex(hash_string(double_to_hex(gen.fitness))));
+
+  return digest(hashes);
+}
+
+inline string digest(const CoevGeneration& cogen) {
+  vector<string> hashes;
+
+  hashes.reserve(3);
+  hashes.push_back(digest(cogen.left_gen));
+  hashes.push_back(digest(cogen.right_gen));
+  hashes.push_back(uint64_to_hex(hash_string(double_to_hex(cogen.fitness))));
+
+  return digest(hashes);
+
+}
 
   }
 }

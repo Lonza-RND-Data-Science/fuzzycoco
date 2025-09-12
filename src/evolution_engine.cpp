@@ -2,8 +2,16 @@
 #include <algorithm>
 #include "logging_logger.h"
 
+
+
+
 using namespace fuzzy_coco;
 using namespace logging;
+
+#include "digest.h"
+using namespace Digest;
+
+
 
 double EvolutionFitnessMethod::globalFitness(const vector<double>& fitnesses) {
     return *max_element(fitnesses.begin(), fitnesses.end());
@@ -62,9 +70,18 @@ Generation EvolutionEngine::nextGeneration(const Generation& generation, Evoluti
 
     Genomes evolvers = selectEvolvers(nb_evolvers, generation.individuals, generation.fitnesses);
 
+    cerr << "EvolutionEngine::nextGeneration()\n";
+    cerr << "generation.individuals:" << digest(generation.individuals) << endl;
+    cerr << "evolvers:" << digest(evolvers) << endl;
+
     // N.B: modify in-place
     _crossover_method.reproduceAllPairsOf(evolvers);
+
+    cerr << "after crossover: evolvers:" << digest(evolvers) << endl;
+
     _mutation_method.mutate(evolvers);
+
+    cerr << "after mutation: evolvers:" << digest(evolvers) << endl;
 
     // new generation is elite + evolved
     Genomes indiv;
@@ -74,7 +91,13 @@ Generation EvolutionEngine::nextGeneration(const Generation& generation, Evoluti
     indiv.insert(indiv.end(), evolvers.begin(), evolvers.end());
 
     Generation newgen(indiv, _params.elite_size);
+
+    cerr << "newgen:" << digest(newgen) << endl;
+
     updateGeneration(newgen, fitness_method);
+
+    cerr << "after updateGeneration, newgen:" << digest(newgen) << endl;
+
     return newgen;
 }
  

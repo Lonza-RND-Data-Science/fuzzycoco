@@ -4,24 +4,6 @@
 using namespace fuzzy_coco;
 using namespace logging;
 
-string digest(const Genome& genome) {
-  size_t n = genome.size();
-  size_t byte_count = (n + 7) / 8; // round up to full bytes
-
-  ostringstream oss;
-  for (size_t byte_idx = 0; byte_idx < byte_count; ++byte_idx) {
-    uint8_t byte = 0;
-    for (size_t bit = 0; bit < 8; ++bit) {
-      size_t idx = byte_idx * 8 + bit;
-      if (idx < n && genome[idx]) {
-          byte |= (1u << bit); // pack bit (LSB first)
-      }
-    }
-    oss << std::hex << std::setw(2) << std::setfill('0') << (int)byte;
-  }
-  return oss.str();
-}
-
 
 FuzzyCocoEngine::FuzzyCocoEngine(const DataFrame& dfin, const DataFrame& dfout, FuzzyCocoFitnessMethod& fitter,
   const FuzzyCocoParams& params, RandomGenerator& rng) 

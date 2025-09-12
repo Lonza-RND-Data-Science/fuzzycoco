@@ -9,53 +9,53 @@ using namespace FileUtils;
 using namespace logging;
 using namespace Digest;
 
-string digest(const Genome& genome) {
-  size_t n = genome.size();
-  size_t byte_count = (n + 7) / 8; // round up to full bytes
+// string digest(const Genome& genome) {
+//   size_t n = genome.size();
+//   size_t byte_count = (n + 7) / 8; // round up to full bytes
 
-  ostringstream oss;
-  for (auto byte_idx = 0; byte_idx < byte_count; ++byte_idx) {
-    uint8_t byte = 0;
-    for (size_t bit = 0; bit < 8; ++bit) {
-      size_t idx = byte_idx * 8 + bit;
-      if (idx < n && genome[idx]) {
-          byte |= (1u << bit); // pack bit (LSB first)
-      }
-    }
-    oss << std::hex << std::setw(2) << std::setfill('0') << (int)byte;
-  }
-  return oss.str();
-}
+//   ostringstream oss;
+//   for (auto byte_idx = 0; byte_idx < byte_count; ++byte_idx) {
+//     uint8_t byte = 0;
+//     for (size_t bit = 0; bit < 8; ++bit) {
+//       size_t idx = byte_idx * 8 + bit;
+//       if (idx < n && genome[idx]) {
+//           byte |= (1u << bit); // pack bit (LSB first)
+//       }
+//     }
+//     oss << std::hex << std::setw(2) << std::setfill('0') << (int)byte;
+//   }
+//   return oss.str();
+// }
 
-string digest(const Genomes& genomes) {
-  vector<string> hexs;
-  hexs.resize(genomes.size());
-  for (auto i = 0; i < genomes.size(); i++)
-    hexs[i] = digest(genomes[i]);
-  return digest(hexs);
-}
+// string digest(const Genomes& genomes) {
+//   vector<string> hexs;
+//   hexs.resize(genomes.size());
+//   for (auto i = 0; i < genomes.size(); i++)
+//     hexs[i] = digest(genomes[i]);
+//   return digest(hexs);
+// }
 
-string digest(const Generation& gen) {
-  vector<string> hashes;
-  hashes.reserve(3);
-  hashes.push_back(digest(gen.individuals));
-  hashes.push_back(digest(gen.elite));
-  hashes.push_back(uint64_to_hex(hash_string(double_to_hex(gen.fitness))));
+// string digest(const Generation& gen) {
+//   vector<string> hashes;
+//   hashes.reserve(3);
+//   hashes.push_back(digest(gen.individuals));
+//   hashes.push_back(digest(gen.elite));
+//   hashes.push_back(uint64_to_hex(hash_string(double_to_hex(gen.fitness))));
 
-  return digest(hashes);
-}
+//   return digest(hashes);
+// }
 
-string digest(const CoevGeneration& cogen) {
-  vector<string> hashes;
+// string digest(const CoevGeneration& cogen) {
+//   vector<string> hashes;
 
-  hashes.reserve(3);
-  hashes.push_back(digest(cogen.left_gen));
-  hashes.push_back(digest(cogen.right_gen));
-  hashes.push_back(uint64_to_hex(hash_string(double_to_hex(cogen.fitness))));
+//   hashes.reserve(3);
+//   hashes.push_back(digest(cogen.left_gen));
+//   hashes.push_back(digest(cogen.right_gen));
+//   hashes.push_back(uint64_to_hex(hash_string(double_to_hex(cogen.fitness))));
 
-  return digest(hashes);
+//   return digest(hashes);
 
-}
+// }
 
 FuzzyCocoParams GET_SAMPLE_PARAMS(int nb_max_var_per_rule) {
   FuzzyCocoParams params;
@@ -173,11 +173,11 @@ TEST_F(FuzzyCocoTest, features_weights) {
 
     // investigate right_gen
     cerr << gen0.right_gen << endl;
-    cerr << "gen0.right_gen.elite\n";
-    for (auto geno : gen0.right_gen.elite) {
-      cerr << digest(geno) << endl;
-    }
-    cerr << "==== END of elite ====\n";
+    // cerr << "gen0.right_gen.elite\n";
+    // for (auto geno : gen0.right_gen.elite) {
+    //   cerr << digest(geno) << endl;
+    // }
+    // cerr << "==== END of elite ====\n";
 
     auto gen = gen0;
     vector<string> digests;
@@ -185,10 +185,10 @@ TEST_F(FuzzyCocoTest, features_weights) {
     cerr << digests.back() << endl;
 
 
-    for (int i = 0; i < 100; i++) {
+    for (int i = 0; i < 10; i++) {
       gen = coco.getEngine().run(gen, 1, 1);
       digests.push_back(digest(gen));
-      // cerr << digests.back() << endl;
+      cerr << digests.back() << endl;
     }
 
     auto digest_all = digest(digests);
@@ -196,6 +196,7 @@ TEST_F(FuzzyCocoTest, features_weights) {
     EXPECT_EQ(digests[0], "45bc4ea6e8bd95f6");
     EXPECT_EQ(digests[1], "6cbd3c7a11f67263");
     EXPECT_EQ(digests[2], "bb9b96b2929069f5");
+    abort();
     EXPECT_EQ(digest_all, "38ad2c0af7950783");
 
     // auto gen = coco.run(100, 1);

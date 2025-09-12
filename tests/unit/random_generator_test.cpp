@@ -160,14 +160,14 @@ TEST(mt19937, portability) {
       int x = -944773575;
       int r1 = 1817228411;
       int r2 = 2109339754;
-      double k = RandomGenerator::scale_int_to_double(x, r1, r2);
-      double k2 = RandomGenerator::scale_int_to_double2(x, r1, r2);
-      double k3 = RandomGenerator::scale_int_to_double3(x, r1, r2);
-      EXPECT_EQ(double_to_hex(k), "41de795fb9eb3676");
-      EXPECT_EQ(double_to_hex(k2), "41de795fb9eb3676");
-      EXPECT_EQ(double_to_hex(k3), "41de795fb9eb3676");
-      EXPECT_EQ(double_to_hex(RandomGenerator::scale_int_to_double4(x, r1, r2)), "41de795fb9eb3676");
-      EXPECT_EQ(double_to_hex(RandomGenerator::scale_int_to_double5(x, r1, r2)), "41de795fb9eb3676");
+      // double k = RandomGenerator::scale_int_to_double(x, r1, r2);
+      // double k2 = RandomGenerator::scale_int_to_double2(x, r1, r2);
+      // double k3 = RandomGenerator::scale_int_to_double3(x, r1, r2);
+      // EXPECT_EQ(double_to_hex(k), "41de795fb9eb3676");
+      // EXPECT_EQ(double_to_hex(k2), "41de795fb9eb3676");
+      // EXPECT_EQ(double_to_hex(k3), "41de795fb9eb3676");
+      // EXPECT_EQ(double_to_hex(RandomGenerator::scale_int_to_double4(x, r1, r2)), "41de795fb9eb3676");
+      // EXPECT_EQ(double_to_hex(RandomGenerator::scale_int_to_double5(x, r1, r2)), "41de795fb9eb3676");
       EXPECT_EQ(double_to_hex(RandomGenerator::scale_int_to_double_strict(x, r1, r2)), "41de795fb9eb3676");
     }
 

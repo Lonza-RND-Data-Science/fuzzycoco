@@ -86,5 +86,16 @@ TEST(ElitismWithRandomMethod, selectEntities) {
   for (int i = 0; i < 9; i++) 
     EXPECT_EQ(indexes[i], 99 - i);
   EXPECT_NE(indexes[9], 99 -9);
-  cerr << indexes;
+  // cerr << indexes << endl;;
+
+
+  // ============ ties handling ==========
+  {
+    vector<double> fitnesses = { 0, 2, 0, 0, 1, 2, 2, -2, 0};
+    selector.selectEntities(5, fitnesses, indexes);
+    cerr << indexes << endl;
+    for (auto i : indexes) cerr << fitnesses[i] << ", ";
+    cerr << endl;
+  }
+
 }

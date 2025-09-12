@@ -18,15 +18,12 @@ namespace fuzzy_coco {
     constexpr uint64_t FNV1A_64_OFFSET_BASIS = 14695981039346656037ULL;
     constexpr uint64_t FNV1A_64_PRIME        = 1099511628211ULL;
 
-
-
     // cf boost::hash_combine
     inline uint64_t hash_combine(uint64_t seed, uint64_t hash)
     {
       seed ^= hash + 0x9e3779b97f4a7c15ULL + (seed << 6) + (seed >> 2);
       return seed;
     }
-
 
     inline string uint64_to_hex(uint64_t value) {
         ostringstream oss;
@@ -97,9 +94,17 @@ namespace fuzzy_coco {
       }
       return vector_hash;
     }
+    
+    inline string digest(const string& s) {
+      return uint64_to_hex(hash_string(s));
+    }
 
     inline string digest(const vector<string>& v) {
       return uint64_to_hex(hash_vector(v));
+    }
+
+    inline string digest(double x) {
+      return double_to_hex(x);
     }
 
     inline string digest(const vector<double>& v) {

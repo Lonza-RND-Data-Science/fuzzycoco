@@ -161,12 +161,15 @@ TEST_F(FuzzyCocoTest, features_weights) {
     EXPECT_EQ(digest(gen0.left_gen.individuals), "d21393f22b177dc1");
     EXPECT_EQ(digest(gen0.left_gen.elite), "20f062c1dd2e9559");
     EXPECT_EQ(double_to_hex(gen0.left_gen.fitness), "3fd29c244fe2f34a");
+    EXPECT_EQ(digest(gen0.left_gen.fitnesses), "6ef2cfbc3e5bad3b");
+    cerr << "gen0.left_gen.fitnesses:" << gen0.left_gen.fitnesses << endl;
 
     EXPECT_EQ(digest(gen0.right_gen), "fe7a59d4acb1c735");
     EXPECT_EQ(digest(gen0.right_gen.individuals), "2a26eb4d928138c8");
     EXPECT_EQ(digest(gen0.right_gen.elite), "22d994a3aebe6d48");
     EXPECT_EQ(double_to_hex(gen0.right_gen.fitness), "3fe2620ae4c415ca");
-
+    EXPECT_EQ(digest(gen0.right_gen.fitnesses), "9eeec0a7b6f6c70f");
+    cerr << "gen0.right_gen.fitnesses:" << gen0.right_gen.fitnesses << endl;
 
     // investigate right_gen
     cerr << gen0.right_gen << endl;
@@ -180,6 +183,10 @@ TEST_F(FuzzyCocoTest, features_weights) {
     vector<string> digests;
     digests.push_back(digest(gen0));
     cerr << digests.back() << endl;
+
+
+abort();
+
     for (int i = 0; i < 100; i++) {
       gen = coco.getEngine().run(gen, 1, 1);
       digests.push_back(digest(gen));

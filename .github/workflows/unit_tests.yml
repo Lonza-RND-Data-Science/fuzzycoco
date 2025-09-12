@@ -15,9 +15,6 @@ jobs:
         os: [ubuntu-latest, macos-latest]
         # os: [ubuntu-latest, windows-latest, macos-latest]
         # os: [macos-latest]
-    # runs-on: ubuntu-24.04
-
-
     steps:
     - uses: actions/checkout@v4
     
@@ -52,6 +49,7 @@ jobs:
 
     - name: Upload coverage to Codecov
       if: runner.os == 'Linux'
+      run: make coverage/info
       uses: codecov/codecov-action@v5
       with:
         files: .coverage/coverage.info

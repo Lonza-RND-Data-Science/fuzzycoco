@@ -115,33 +115,28 @@ TEST_F(FuzzyCocoTest, features_weights) {
     EXPECT_EQ(digest(gen0.left_gen.elite), "20f062c1dd2e9559");
     EXPECT_EQ(double_to_hex(gen0.left_gen.fitness), "3fd29c244fe2f34a");
     EXPECT_EQ(digest(gen0.left_gen.fitnesses), "6ef2cfbc3e5bad3b");
-    cerr << "gen0.left_gen.fitnesses:" << gen0.left_gen.fitnesses << endl;
+    // cerr << "gen0.left_gen.fitnesses:" << gen0.left_gen.fitnesses << endl;
 
     EXPECT_EQ(digest(gen0.right_gen), "49c1a33a4bc9b4e5");
     EXPECT_EQ(digest(gen0.right_gen.individuals), "2a26eb4d928138c8");
     EXPECT_EQ(digest(gen0.right_gen.elite), "0e52b12cca2f1902");
     EXPECT_EQ(double_to_hex(gen0.right_gen.fitness), "3fe2620ae4c415ca");
     EXPECT_EQ(digest(gen0.right_gen.fitnesses), "9eeec0a7b6f6c70f");
-    cerr << "gen0.right_gen.fitnesses:" << gen0.right_gen.fitnesses << endl;
+    // cerr << "gen0.right_gen.fitnesses:" << gen0.right_gen.fitnesses << endl;
 
-    // investigate right_gen
-    cerr << gen0.right_gen << endl;
-    // cerr << "gen0.right_gen.elite\n";
-    // for (auto geno : gen0.right_gen.elite) {
-    //   cerr << digest(geno) << endl;
-    // }
-    // cerr << "==== END of elite ====\n";
+    // // investigate right_gen
+    // cerr << gen0.right_gen << endl;
 
     auto gen = gen0;
     vector<string> digests;
     digests.push_back(digest(gen0));
-    cerr << digests.back() << endl;
+    // cerr << digests.back() << endl;
 
 
     for (int i = 0; i < 100; i++) {
       gen = coco.getEngine().run(gen, 1, 1);
       digests.push_back(digest(gen));
-      cerr << digests.back() << endl;
+      // cerr << digests.back() << endl;
     }
 
     auto digest_all = digest(digests);
@@ -185,7 +180,7 @@ TEST_F(FuzzyCocoTest, features_weights) {
     auto gen = gen0;
     vector<string> digests;
     digests.push_back(digest(gen0));
-    cerr << digests.back() << endl;
+    // cerr << digests.back() << endl;
     for (int i = 0; i < 100; i++) {
       gen = coco.getEngine().run(gen, 1, 1);
       digests.push_back(digest(gen));

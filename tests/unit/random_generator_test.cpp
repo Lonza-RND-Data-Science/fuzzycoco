@@ -2,8 +2,10 @@
 #include <algorithm>
 #include <cstring>
 #include "random_generator.h"
+#include "digest.h"
 
 using namespace fuzzy_coco;
+using namespace Digest;
 
 template<typename T>
 ostream& operator<<(ostream& out, const vector<T>& v) {
@@ -92,27 +94,6 @@ TEST(RandomGenerator, vector) {
 
 }
 
-// Convert double → hex
-std::string double_to_hex(double value) {
-    uint64_t bits;
-    std::memcpy(&bits, &value, sizeof(value));
-
-    std::ostringstream oss;
-    oss << std::hex << std::setfill('0') << std::setw(16) << bits;
-    return oss.str();
-}
-
-// Convert hex → double
-double hex_to_double(const std::string& hex) {
-    uint64_t bits = 0;
-    std::istringstream iss(hex);
-    iss >> std::hex >> bits;
-
-    double value;
-    std::memcpy(&value, &bits, sizeof(value));
-    return value;
-}
-
 TEST(mt19937, portability) {
     std::mt19937 mt(666);
     uint_fast32_t expected[10] = {3008354540,440739714,3625754029,907667358,2905606974,553951302,3126126537,3222645150,4086480804,1442973117};
@@ -160,37 +141,6 @@ TEST(mt19937, portability) {
       int x = -944773575;
       int r1 = 1817228411;
       int r2 = 2109339754;
-      // double k = RandomGenerator::scale_int_to_double(x, r1, r2);
-      // double k2 = RandomGenerator::scale_int_to_double2(x, r1, r2);
-      // double k3 = RandomGenerator::scale_int_to_double3(x, r1, r2);
-      // EXPECT_EQ(double_to_hex(k), "41de795fb9eb3676");
-      // EXPECT_EQ(double_to_hex(k2), "41de795fb9eb3676");
-      // EXPECT_EQ(double_to_hex(k3), "41de795fb9eb3676");
-      // EXPECT_EQ(double_to_hex(RandomGenerator::scale_int_to_double4(x, r1, r2)), "41de795fb9eb3676");
-      // EXPECT_EQ(double_to_hex(RandomGenerator::scale_int_to_double5(x, r1, r2)), "41de795fb9eb3676");
       EXPECT_EQ(double_to_hex(RandomGenerator::scale_int_to_double_strict(x, r1, r2)), "41de795fb9eb3676");
     }
-
-
-    // // scale_int_to_double
-    // {
-    //   RandomGenerator rng(123);
-    //   string expected[] = {"c1d31fc2945881b9","41d76ef50db9804a","c1d4fcd9b99f3522","41de795fb9eb3676","41d19f586e7b8631","c1d2d3caf9e4bb64","41d94a7eb8a3d11f","c1d5bdbf472cd5a6","41d067a39dd3ff05","41bcc8e2414511a8"};
-    //   string expected2[] = {"c1d31fc2945881b9","41d76ef50db9804a","c1d4fcd9b99f3522","41de795fb9eb3676","41d19f586e7b8631","c1d2d3caf9e4bb64","41d94a7eb8a3d11f","c1d5bdbf472cd5a6","41d067a39dd3ff05","41bcc8e2414511a8"};
-    //   for (int i = 0; i < 10; i++) {
-    //     int r1 = rng.random();
-    //     int r2 = rng.random();
-    //     int x = rng.random();
-    //     double k = RandomGenerator::scale_int_to_double(x, min(r1, r2), max(r1, r2));
-    //     double k2 = RandomGenerator::scale_int_to_double2(x, min(r1, r2), max(r1, r2));
-    //     // cout << x << ", " << r1 << ", " << r2 << ", " << k << ", " << double_to_hex(k) << endl;
-    //     // cout << '"' << double_to_hex(k) << '"' << ",";
-    //     // cout << '"' << double_to_hex(k2) << '"' << ",";
-    //     EXPECT_EQ(double_to_hex(k), expected[i]);
-    //     EXPECT_EQ(double_to_hex(k2), expected2[i]);
-    //     // double k2 = hex_to_double(expected[i]);
-    //     // EXPECT_EQ(k, k2);
-    //   }
-    // }
-
 }

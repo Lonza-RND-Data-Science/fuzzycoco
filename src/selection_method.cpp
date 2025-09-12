@@ -1,9 +1,6 @@
 #include "selection_method.h"
 #include <algorithm>
 
-#include "digest.h"
-#include "types.h"
-
 using namespace fuzzy_coco;
 
 void RankBasedSelectionMethod::selectEntities(int nb, const vector<double>& fitnesses, vector<int>& indexes)
@@ -47,24 +44,17 @@ void ElitismWithRandomMethod::selectEntities(int nb, const vector<double>& fitne
     for (int i = 0; i < nb_entities; i++) fit_idx[i] = i;
 
 
-// cerr << "ElitismWithRandomMethod::selectEntities()\n";
-// cerr << "fitnesses=" << fitnesses << endl;
-
     // sort the fitness indexes in decreasing order
     // improvement: make it a deterministic sort by handling ties with indices
     sort(fit_idx.begin(), fit_idx.end(), [&](int a, int b) { 
       return fitnesses[a] > fitnesses[b] ? true : fitnesses[a] < fitnesses[b] ? false : a < b;
     });
 
-// cerr << "fit_idx=" << fit_idx << endl;
-
     // only take the first nb-1 elements
     copy_n(fit_idx.begin(), min(nb - 1, nb_entities), back_inserter(indexes));
 
     // the last element is taken randomly
     int random_fit_idx_idx = _rng.random(fit_idx);
-
-// cerr << "random_fit_idx_idx=" << random_fit_idx_idx << endl;
 
     indexes.push_back(random_fit_idx_idx);
 }

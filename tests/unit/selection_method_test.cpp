@@ -89,13 +89,4 @@ TEST(ElitismWithRandomMethod, selectEntities) {
   // cerr << indexes << endl;;
 
 
-  // ============ ties handling ==========
-  {
-    vector<double> fitnesses = { 0, 2, 0, 0, 1, 2, 2, -2, 0};
-    selector.selectEntities(5, fitnesses, indexes);
-    cerr << indexes << endl;
-    for (auto i : indexes) cerr << fitnesses[i] << ", ";
-    cerr << endl;
-  }
-
 }

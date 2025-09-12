@@ -82,22 +82,9 @@ Genomes FuzzyCocoEngine::buildMFsGenomes(int nb_pop_mfs) {
   for (int i = 0; i < nb_pop_mfs; i++) {
     Genome mf = getFuzzyCocoCodec().buildMFsGenome();
     randomize(mf, _rng);
-
-    // // karl: debug. TO BE REMOVED
-    // string hash = digest(mf);
-    // cerr << "hash=" << hash << ",";
-    // if (hash == "45bc4ea6e8bd95f6" || hash == "863d572fc9d3c0b3") {
-    //   cerr << "dumping rng log\n";
-    //   cerr << _rng._log;
-    //   cerr << "END\n";
-    // }
-    
-
     mfs.push_back(mf);
   }
 
-  //debug
-  cerr << endl;
   return mfs;
 }
 

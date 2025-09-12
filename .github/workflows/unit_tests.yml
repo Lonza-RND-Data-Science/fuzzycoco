@@ -57,7 +57,9 @@ jobs:
     
     - name: make build
       run: make build
-      
+      env:
+        CMAKE_TLS_VERIFY: "0"
+
     - name: make test
       run: make test/junit || make test/rerun-failed
 

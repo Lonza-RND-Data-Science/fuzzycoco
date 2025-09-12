@@ -51,7 +51,10 @@ cerr << "ElitismWithRandomMethod::selectEntities()\n";
 cerr << "fitnesses=" << fitnesses << endl;
 
     // sort the fitness indexes in decreasing order
-    sort(fit_idx.begin(), fit_idx.end(), [&](int a, int b) { return fitnesses[a] > fitnesses[b]; });
+    // improvement: make it a deterministic sort by handling ties with indices
+    sort(fit_idx.begin(), fit_idx.end(), [&](int a, int b) { 
+      return fitnesses[a] > fitnesses[b] ? true : fitnesses[a] < fitnesses[b] ? false : a < b;
+    });
 
 cerr << "fit_idx=" << fit_idx << endl;
 

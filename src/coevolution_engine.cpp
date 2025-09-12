@@ -78,7 +78,9 @@ CoevGeneration CoevolutionEngine::nextGeneration(const CoevGeneration& cogen)
   Genomes left_coops = selectCooperators(cogen.left_gen.elite, getNbCooperators());
   CoopCoevolutionFitnessMethodAdaptor right_fit(false, getFitnessMethod(), left_coops);
   
-  CoevGeneration newcogen(getLeftEngine().nextGeneration(cogen.left_gen, left_fit), getRightEngine().nextGeneration(cogen.right_gen, right_fit));
+  auto left_gen_next = getLeftEngine().nextGeneration(cogen.left_gen, left_fit);
+  auto right_gen_next = getRightEngine().nextGeneration(cogen.right_gen, right_fit);
+  CoevGeneration newcogen(left_gen_next, right_gen_next);
   newcogen.generation_number = cogen.generation_number + 1;
   newcogen.fitness = max(newcogen.left_gen.fitness, newcogen.right_gen.fitness);
 

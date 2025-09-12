@@ -194,8 +194,8 @@ TEST_F(FuzzyCocoTest, features_weights) {
     auto digest_all = digest(digests);
     // cerr << "digest_all=" << digest_all << endl;
     EXPECT_EQ(digests[0], "45bc4ea6e8bd95f6");
-    EXPECT_EQ(digests[1], "6cbd3c7a11f67263");
-    EXPECT_EQ(digests[2], "bb9b96b2929069f5");
+    EXPECT_EQ(digests[1], "502ccbadb3465dde");
+    EXPECT_EQ(digests[2], "33aa7a6c05de5e0a");
     abort();
     EXPECT_EQ(digest_all, "38ad2c0af7950783");
 

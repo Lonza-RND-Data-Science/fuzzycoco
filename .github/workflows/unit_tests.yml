@@ -12,17 +12,48 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [windows-latest]
-        # os: [ubuntu-latest, macos-latest]
-        # os: [ubuntu-latest, windows-latest, macos-latest]
-        # os: [macos-latest]
+        os: 
+          - windows-2022
+          # - ubuntu-latest
+          # - macos
+        compiler:
+          - gcc
     steps:
     - uses: actions/checkout@v4
     
-    - name: Setup cmake
-      uses: jwlawson/actions-setup-cmake@v2
+    - name: Cache
+      uses: actions/cache@v3
       with:
-        cmake-version: '3.28.x'
+        path: |
+          ./build/
+          ~/vcpkg
+          ~/.cache/vcpkg/archives
+          ${{ env.LOCALAPPDATA }}/vcpkg/archives
+          ${{ env.APPDATA }}/vcpkg/archives
+          ${{ env.XDG_CACHE_HOME }}/vcpkg/archives
+          ~/.cache/ccache
+          ~/.ccache
+          ~/.config/ccache
+          ~/Library/Caches/ccache
+          ${{ env.LOCALAPPDATA }}/ccache
+          ${{ env.XDG_CACHE_HOME }}/ccache
+        key: ${{ runner.os }}-${{ matrix.compiler }}-${{ env.BUILD_TYPE }}-${{ hashFiles('**/CMakeLists.txt', './vcpkg.json') }}
+        restore-keys: |
+          ${{ runner.os }}-${{ env.BUILD_TYPE }}-
+
+
+    - name: Setup Cpp
+      uses: aminya/setup-cpp@v1
+      with:
+        compiler: ${{ matrix.compiler }}
+        cmake: true
+        make: true
+
+
+    # - name: Setup cmake
+    #   uses: jwlawson/actions-setup-cmake@v2
+    #   with:
+    #     cmake-version: '3.28.x'
     
     - name: make build
       run: make build

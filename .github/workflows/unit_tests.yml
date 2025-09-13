@@ -62,6 +62,14 @@ jobs:
         ls /c/Users/runneradmin/gcc/mingw64/bin/*.dll
       shell: bash
     
+    - name: debug_build
+      run: |
+        if [ "$RUNNER_OS" == "Windows" ]; then
+          # Print PATH for debugging
+          echo "Current PATH: $PATH"
+          echo GITHUB_PATH=$GITHUB_PATH
+        fi
+
     - name: make build
       run: make build
       env:
@@ -71,12 +79,6 @@ jobs:
     # Updated test step with error handling
     - name: make test
       run: |
-        if [ "$RUNNER_OS" == "Windows" ]; then
-          # Print PATH for debugging
-          echo "Current PATH: $PATH"
-          # Print DLL dependencies for the test executable
-          objdump -p .build/tests/unit/crossover_method_test.exe | grep "DLL"
-        fi
         make test/junit || make test/rerun-failed
       shell: bash
 
@@ -106,4 +108,3 @@ jobs:
         flags: unittests
         fail_ci_if_error: true
         token: ${{ secrets.CODECOV_TOKEN }}
-        

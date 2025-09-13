@@ -39,7 +39,6 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-${{ env.BUILD_TYPE }}-
 
-
     - name: Setup Cpp
       uses: aminya/setup-cpp@v1
       with:
@@ -47,19 +46,20 @@ jobs:
         cmake: true
         make: true
 
-
-    # - name: Setup cmake
-    #   uses: jwlawson/actions-setup-cmake@v2
-    #   with:
-    #     cmake-version: '3.28.x'
-    
-    # Add MinGW to PATH on Windows
+    # Updated Windows setup step
     - name: Setup Windows
       if: runner.os == 'Windows'
       run: |
+        # Add MinGW to system PATH
         echo "C:\Users\runneradmin\gcc\mingw64\bin" >> $GITHUB_PATH
-        # Ensure the DLL directory is in the Path
-        echo "PATH=$PATH;C:\Users\runneradmin\gcc\mingw64\bin" >> $GITHUB_ENV
+        # Add to current shell PATH
+        export PATH="/c/Users/runneradmin/gcc/mingw64/bin:$PATH"
+        # Create a more comprehensive PATH update that includes lib directory
+        echo "PATH=$PATH:/c/Users/runneradmin/gcc/mingw64/bin:/c/Users/runneradmin/gcc/mingw64/lib" >> $GITHUB_ENV
+        # Verify GCC installation
+        gcc --version
+        # List available DLLs (for debugging)
+        ls /c/Users/runneradmin/gcc/mingw64/bin/*.dll
       shell: bash
     
     - name: make build
@@ -68,8 +68,17 @@ jobs:
         CMAKE_TLS_VERIFY: "0"
         CMAKE_GENERATOR: "Unix Makefiles"
 
+    # Updated test step with error handling
     - name: make test
-      run: make test/junit || make test/rerun-failed
+      run: |
+        if [ "$RUNNER_OS" == "Windows" ]; then
+          # Print PATH for debugging
+          echo "Current PATH: $PATH"
+          # Print DLL dependencies for the test executable
+          objdump -p .build/tests/unit/crossover_method_test.exe | grep "DLL"
+        fi
+        make test/junit || make test/rerun-failed
+      shell: bash
 
     - name: Report test results
       uses: dorny/test-reporter@v2
@@ -97,3 +106,4 @@ jobs:
         flags: unittests
         fail_ci_if_error: true
         token: ${{ secrets.CODECOV_TOKEN }}
+        

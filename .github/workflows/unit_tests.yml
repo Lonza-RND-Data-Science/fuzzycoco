@@ -69,12 +69,14 @@ jobs:
           echo "Current PATH: $PATH"
           echo GITHUB_PATH=$GITHUB_PATH
         fi
+      shell: bash
 
     - name: make build
       run: make build
       env:
         CMAKE_TLS_VERIFY: "0"
         CMAKE_GENERATOR: "Unix Makefiles"
+      shell: bash
 
     # Updated test step with error handling
     - name: make test

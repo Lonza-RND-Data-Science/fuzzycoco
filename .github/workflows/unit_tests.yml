@@ -129,6 +129,7 @@ jobs:
         name: unit Tests
         path: junit.xml
         reporter: java-junit
+      shell: bash
 
     - name: ⚙️ Install lcov
       if: runner.os == 'Linux' && github.ref == 'refs/heads/main'

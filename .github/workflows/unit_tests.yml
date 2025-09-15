@@ -46,21 +46,21 @@ jobs:
         cmake: true
         make: true
 
-    # Updated Windows setup step
-    - name: Setup Windows
-      if: runner.os == 'Windows'
-      run: |
-        # Add MinGW to system PATH
-        echo "C:\Users\runneradmin\gcc\mingw64\bin" >> $GITHUB_PATH
-        # Add to current shell PATH
-        export PATH="/c/Users/runneradmin/gcc/mingw64/bin:$PATH"
-        # Create a more comprehensive PATH update that includes lib directory
-        echo "PATH=$PATH:/c/Users/runneradmin/gcc/mingw64/bin:/c/Users/runneradmin/gcc/mingw64/lib" >> $GITHUB_ENV
-        # Verify GCC installation
-        gcc --version
-        # List available DLLs (for debugging)
-        ls /c/Users/runneradmin/gcc/mingw64/bin/*.dll
-      shell: bash
+    # # Updated Windows setup step
+    # - name: Setup Windows
+    #   if: runner.os == 'Windows'
+    #   run: |
+    #     # Add MinGW to system PATH
+    #     echo "C:\Users\runneradmin\gcc\mingw64\bin" >> $GITHUB_PATH
+    #     # Add to current shell PATH
+    #     export PATH="/c/Users/runneradmin/gcc/mingw64/bin:$PATH"
+    #     # Create a more comprehensive PATH update that includes lib directory
+    #     echo "PATH=$PATH:/c/Users/runneradmin/gcc/mingw64/bin:/c/Users/runneradmin/gcc/mingw64/lib" >> $GITHUB_ENV
+    #     # Verify GCC installation
+    #     gcc --version
+    #     # List available DLLs (for debugging)
+    #     ls /c/Users/runneradmin/gcc/mingw64/bin/*.dll
+    #   shell: bash
     
     - name: debug_build
       run: |

@@ -12,7 +12,7 @@ jobs:
       matrix:
         include:
           - os:  windows-2022
-            compiler: cl
+            compiler: msvc
           - os: windows-latest
             compiler: gcc 
           # - ubuntu-latest

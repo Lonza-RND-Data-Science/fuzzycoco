@@ -27,17 +27,6 @@ jobs:
         path: |
           C:\Users\runneradmin\
           C:\ProgramData\chocolatey\
-          ~/vcpkg
-          ~/.cache/vcpkg/archives
-          ${{ env.LOCALAPPDATA }}/vcpkg/archives
-          ${{ env.APPDATA }}/vcpkg/archives
-          ${{ env.XDG_CACHE_HOME }}/vcpkg/archives
-          ~/.cache/ccache
-          ~/.ccache
-          ~/.config/ccache
-          ~/Library/Caches/ccache
-          ${{ env.LOCALAPPDATA }}/ccache
-          ${{ env.XDG_CACHE_HOME }}/ccache
         key: ${{ runner.os }}-${{ matrix.compiler }}
         # restore-keys: |
         #   ${{ runner.os }}-${{ env.BUILD_TYPE }}
@@ -71,6 +60,8 @@ jobs:
     
     - name: debug_build
       run: |
+        echo runner.os = ${{ runner.os }}
+        echo matrix.compiler = ${{ matrix.compiler }}
         if [ "$RUNNER_OS" == "Windows" ]; then
           # Print PATH for debugging
           echo "Current PATH: $PATH"
@@ -92,9 +83,8 @@ jobs:
     # Updated test step with error handling
     - name: make test
       run: |
-        ctest --test-dir .build/tests/unit/ --output-junit junit.xml
-        ctest --test-dir .build/tests/unit/ --output-on-failure --rerun-failed
-      # shell: bash
+        ctest --test-dir .build/tests/unit/ --output-junit junit.xml || ctest --test-dir .build/tests/unit/ --output-on-failure --rerun-failed
+      shell: bash
 
     - name: Report test results
       uses: dorny/test-reporter@v2

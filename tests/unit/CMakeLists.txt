@@ -22,6 +22,7 @@ FetchContent_Declare(
   googletest
   URL https://github.com/google/googletest/archive/refs/tags/release-1.12.1.zip
 )
+set(BUILD_SHARED_LIBS OFF CACHE BOOL "" FORCE)    # force static linking of Gtest
 FetchContent_MakeAvailable(googletest)
 include(GoogleTest)
 enable_testing()

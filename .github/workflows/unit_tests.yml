@@ -82,7 +82,7 @@ jobs:
         cmake --build .build/ -j 4
       env:
         CMAKE_TLS_VERIFY: "0"
-      #   CMAKE_GENERATOR: "Unix Makefiles"
+        CMAKE_GENERATOR: "Unix Makefiles"
       # shell: bash
 
     # Updated test step with error handling

@@ -58,6 +58,17 @@ jobs:
         ls /c/Users/runneradmin/gcc/mingw64/bin/*.dll
       shell: bash
     
+    # explicit step to save the cache
+    - name: Save cache
+      if: runner.os == 'Windows'
+      uses: actions/cache/save@v4
+      with:
+        path: |
+          C:\Users\runneradmin\
+          C:\ProgramData\chocolatey\
+        key: ${{ runner.os }}-${{ matrix.compiler }}
+
+
     - name: debug_build
       run: |
         echo runner.os = ${{ runner.os }}
@@ -86,6 +97,8 @@ jobs:
     - name: make test
       run: |
         ctest --test-dir .build/tests/unit/ --output-junit junit.xml || ctest --test-dir .build/tests/unit/ --output-on-failure --rerun-failed
+      env:
+        GTEST_CATCH_EXCEPTIONS: "0"
       # shell: bash
 
     - name: Report test results

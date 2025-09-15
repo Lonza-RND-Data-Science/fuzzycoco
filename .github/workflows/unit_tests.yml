@@ -130,7 +130,7 @@ jobs:
     # Updated test step with error handling
     - name: make test
       run: |
-        ctest --test-dir .build/tests/unit/ --output-junit junit.xml || ctest --test-dir .build/tests/unit/ --output-on-failure --rerun-failed
+        ctest --test-dir .build/tests/unit/ --output-junit ../../../junit.xml || ctest --test-dir .build/tests/unit/ --output-on-failure --rerun-failed
       env:
         GTEST_CATCH_EXCEPTIONS: "0"
       # shell: bash

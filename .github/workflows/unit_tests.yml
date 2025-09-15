@@ -23,28 +23,6 @@ jobs:
     #checkout the git repo
     - uses: actions/checkout@v4
     
-
-    # - name: Restore cache
-    #   if: runner.os == 'Windows'
-    #   uses: actions/cache/restore@v4
-    #   with:
-    #     path: |
-    #       C:\Users\runneradmin\cmake
-    #       C:\ProgramData\chocolatey\lib\make
-    #       C:\Users\runneradmin\gcc
-    #     key: ${{ runner.os }}-${{ matrix.compiler }}
-
-    # # an attempt to cache. but the key is never found
-    # - name: Cache
-    #   uses: actions/cache@v3
-    #   with:
-    #     path: |
-    #       C:\Users\runneradmin\cmake
-    #       C:\Users\runneradmin\gcc
-    #     key: ${{ runner.os }}-${{ matrix.compiler }}
-    #     # restore-keys: |
-    #     #   ${{ runner.os }}-${{ env.BUILD_TYPE }}
-
     # install common c++ software: here gcc, cmake, make, git...
     - name: Setup Cpp
       uses: aminya/setup-cpp@v1
@@ -58,13 +36,10 @@ jobs:
     - name: Setup Windows
       if: runner.os == 'Windows'
       run: |
-        # # Add MinGW to system PATH
-        # echo "C:\Users\runneradmin\gcc\mingw64\bin:C:\Users\runneradmin\gcc\mingw64\lib" >> $GITHUB_PATH
         # Add to current shell PATH
         export PATH="/c/Users/runneradmin/gcc/mingw64/bin:$PATH"
         # # Create a more comprehensive PATH update that includes lib directory
         echo "PATH=$PATH:/c/Users/runneradmin/gcc/mingw64/bin:/c/Users/runneradmin/gcc/mingw64/lib" >> $GITHUB_ENV
-
 
         echo "${{ github.workspace }}/.build/src/" >> $GITHUB_PATH
 
@@ -74,50 +49,7 @@ jobs:
         # ls /c/Users/runneradmin/gcc/mingw64/bin/*.dll
       shell: bash
     
-    # # explicit step to save the cache
-    # - name: Save cache
-    #   if: runner.os == 'Windows'
-    #   uses: actions/cache/save@v4
-    #   with:
-    #     path: |
-    #       C:\Users\runneradmin\cmake
-    #       C:\Users\runneradmin\gcc
-    #     key: ${{ runner.os }}-${{ matrix.compiler }}
-
-
-    - name: debug_build
-      run: |
-        echo runner.os = ${{ runner.os }}
-        echo matrix.compiler = ${{ matrix.compiler }}
-        if [ "$RUNNER_OS" == "Windows" ]; then
-          # Print PATH for debugging
-          echo "Current PATH: $PATH"
-          echo GITHUB_PATH=$GITHUB_PATH
-          cat $GITHUB_PATH
-
-
-          # ls /c/Users/runneradmin/*
-          # ls /c/ProgramData/chocolatey/bin
-          type git
-        fi
-      shell: bash
-
-
-    - name: debug_build_cmd
-      if: runner.os == 'Windows'
-      run: |
-        echo PATH=
-        echo %PATH%
-        
-        echo GITHUB_PATH=
-
-        type %GITHUB_PATH%
-
-        echo GITHUB_ENV=
-        type %GITHUB_ENV%
-      shell: cmd
-        
-
+    # build all the c++ source files, tests included
     - name: make build
       run: | 
         cmake  -S . -B .build
@@ -127,14 +59,14 @@ jobs:
         CMAKE_GENERATOR: "Unix Makefiles"
       # shell: bash
 
-    # Updated test step with error handling
+    # run the unit tests
     - name: make test
       run: |
         ctest --test-dir .build/tests/unit/ --output-junit ../../../junit.xml || ctest --test-dir .build/tests/unit/ --output-on-failure --rerun-failed
       env:
         GTEST_CATCH_EXCEPTIONS: "0"
-      # shell: bash
 
+    # display nicely the test  results
     - name: Report test results
       uses: dorny/test-reporter@v2
       if: ${{ !cancelled() && runner.os != 'Windows' }}
@@ -143,12 +75,14 @@ jobs:
         path: junit.xml
         reporter: java-junit
 
+    # install lcov for parsing the test coverage
     - name: ⚙️ Install lcov
       if: runner.os == 'Linux' && github.ref == 'refs/heads/main'
       run: |
         sudo apt-get update
         sudo apt-get -y install lcov
 
+    # generate the test coverage info
     - name: coverage.info
       if: runner.os == 'Linux' && github.ref == 'refs/heads/main'
       run: make coverage/info

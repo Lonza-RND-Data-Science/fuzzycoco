@@ -1,21 +1,7 @@
-#include <gtest/gtest.h>
+#include "tests.h"
 #include "mutation_method.h"
 
 using namespace fuzzy_coco;
-
-template<typename T>
-ostream& operator<<(ostream& out, const vector<T>& v) {
-  out << "{";
-  const int nb = v.size() - 1;
-  for (int i = 0; i < nb; ++i) {
-      out << v[i] << ", "; 
-  }
-  if (nb >= 0) out << v[nb];
-  out << "}";
-  return out;
-}
-
-auto sum = [](auto v) { return accumulate(v.begin(), v.end(), 0); };
 
 
 TEST(TogglingMutationMethod, mutate) {

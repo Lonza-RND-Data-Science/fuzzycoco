@@ -1,4 +1,4 @@
-#include <gtest/gtest.h>
+#include "tests.h"
 #include <algorithm>
 #include "logging_logger.h"
 
@@ -8,10 +8,6 @@
 using namespace fuzzy_coco;
 using namespace logging;
 
-template<typename T, class UnaryPred>
-bool all(const vector<T>& v, UnaryPred pred) { 
-  return std::all_of(v.cbegin(), v.cend(), pred);
-}
 
 TEST(VarsParams, basic) {
   VarsParams p;

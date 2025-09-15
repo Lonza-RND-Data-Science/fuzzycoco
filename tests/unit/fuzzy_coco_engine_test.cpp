@@ -1,4 +1,4 @@
-#include <gtest/gtest.h>
+#include "tests.h"
 #include "fuzzy_coco_engine.h"
 #include "file_utils.h"
 #include "logging_logger.h"
@@ -103,7 +103,7 @@ TEST_F(FuzzyCocoTest, custom_fitness) {
 
 // testing the use of a custom FuzzySystemMethod class with FuzzyCoco
 // this class adds some terms related to the actual input variables used in the rules of the current fuzzy system
-auto sum = [](auto v) { return accumulate(v.begin(), v.end(), 0); };
+
 class CustomFuzzyCocoFitnessMethod : public FuzzyCocoFitnessMethod {
 public:
   CustomFuzzyCocoFitnessMethod(FuzzySystem& fs, FuzzySystemFitness& fitter, const DataFrame& dfin, const DataFrame& dfout, const FuzzyCocoParams& params) 

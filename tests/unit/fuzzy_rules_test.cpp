@@ -1,4 +1,4 @@
-#include <gtest/gtest.h>
+#include "tests.h"
 #include "fuzzy_rule.h"
 #include "fuzzy_operator.h"
 

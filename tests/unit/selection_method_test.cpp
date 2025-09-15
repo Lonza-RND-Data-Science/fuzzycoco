@@ -1,23 +1,8 @@
-#include <gtest/gtest.h>
+#include "tests.h"
 #include <algorithm>
 #include "selection_method.h"
 using namespace fuzzy_coco;
 
-template<typename T>
-ostream& operator<<(ostream& out, const vector<T>& v) {
-  out << "{";
-  const int nb = v.size() - 1;
-  for (int i = 0; i < nb; ++i) {
-      out << v[i] << ", "; 
-  }
-  if (nb >= 0) out << v[nb];
-  out << "}";
-  return out;
-}
-template<typename T, class UnaryPred>
-bool all(const vector<T>& v, UnaryPred pred) { 
-  return std::all_of(v.cbegin(), v.cend(), pred);
-}
 
 TEST(RankBasedSelectionMethod, selectEntities) {
   vector<double> fitnesses;

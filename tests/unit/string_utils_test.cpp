@@ -1,4 +1,4 @@
-#include <gtest/gtest.h>
+#include "tests.h"
 #include "string_utils.h"
 
 using namespace fuzzy_coco;

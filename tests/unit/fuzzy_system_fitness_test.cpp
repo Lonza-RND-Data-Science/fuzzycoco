@@ -1,4 +1,4 @@
-#include <gtest/gtest.h>
+#include "tests.h"
 
 #include "fuzzy_system_fitness.h"
 #include "fuzzy_system_metrics_computer.h"

@@ -1,9 +1,7 @@
-#include <gtest/gtest.h>
+#include "tests.h"
 #include "discretizer.h"
 
 using namespace fuzzy_coco;
-
-auto sum = [](auto v) { return accumulate(v.begin(), v.end(), 0); };
 
 TEST(Discretizer, basic) {
   Discretizer ds(2, 0, 1);

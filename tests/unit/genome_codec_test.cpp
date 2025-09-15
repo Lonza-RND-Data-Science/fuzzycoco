@@ -1,4 +1,4 @@
-#include <gtest/gtest.h>
+#include "tests.h"
 #include "genome_codec.h"
 
 using namespace fuzzy_coco;

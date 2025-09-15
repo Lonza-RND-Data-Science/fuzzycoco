@@ -1,9 +1,9 @@
-#include <gtest/gtest.h>
+#include "tests.h"
 #include "coevolution_engine.h"
 
 using namespace fuzzy_coco;
 
-auto sum = [](auto v) { return accumulate(v.begin(), v.end(), 0); };
+
 
 class AlignedBitsFitness : public CoopCoevolutionFitnessMethod {
 public:

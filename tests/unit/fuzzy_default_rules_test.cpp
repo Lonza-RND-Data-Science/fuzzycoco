@@ -1,4 +1,4 @@
-#include <gtest/gtest.h>
+#include "tests.h"
 #include "fuzzy_default_rule.h"
 
 using namespace fuzzy_coco;

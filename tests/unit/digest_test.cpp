@@ -1,4 +1,4 @@
-#include <gtest/gtest.h>
+#include "tests.h"
 #include <algorithm>
 #include <cstring>
 #include "digest.h"

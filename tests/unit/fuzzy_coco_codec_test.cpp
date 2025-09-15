@@ -1,4 +1,4 @@
-#include <gtest/gtest.h>
+#include "tests.h"
 #include "fuzzy_coco.h"
 #include "file_utils.h"
 

@@ -1,4 +1,4 @@
-#include <gtest/gtest.h>
+#include "tests.h"
 #include <cstdio>
 #include "file_utils.h"
 

@@ -105,7 +105,6 @@ TEST_F(FuzzyCocoTest, run) {
   cerr << endl << "best pair: " << endl;
   cerr << best_rule << endl << best_mf << endl;
 
-  auto& fs = coco.getFuzzySystem();
   coco.getFitnessMethod().setRulesGenome(best_rule);
   coco.getFitnessMethod().setMFsGenome(best_mf);
 

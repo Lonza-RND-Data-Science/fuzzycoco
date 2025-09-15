@@ -25,7 +25,7 @@ endif()
 include(FetchContent)
 FetchContent_Declare(
   googletest
-  URL https://github.com/google/googletest/archive/refs/tags/release-1.12.1.zip
+  URL https://github.com/google/googletest/archive/refs/tags/v1.17.0.zip
 )
 # force static linking of Gtest
 set(BUILD_GMOCK OFF CACHE BOOL "" FORCE)

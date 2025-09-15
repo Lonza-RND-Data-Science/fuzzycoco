@@ -15,8 +15,8 @@ jobs:
           #   compiler: msvc
           - os: windows-latest
             compiler: gcc 
-          - ubuntu-latest
-          - macos
+          - os: ubuntu-latest
+          - os: macos
 
     steps:
 

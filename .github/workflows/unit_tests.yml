@@ -59,8 +59,8 @@ jobs:
         echo "C:\Users\runneradmin\gcc\mingw64\bin" >> $GITHUB_PATH
         # Add to current shell PATH
         export PATH="/c/Users/runneradmin/gcc/mingw64/bin:$PATH"
-        # Create a more comprehensive PATH update that includes lib directory
-        echo "PATH=$PATH:/c/Users/runneradmin/gcc/mingw64/bin:/c/Users/runneradmin/gcc/mingw64/lib" >> $GITHUB_ENV
+        # # Create a more comprehensive PATH update that includes lib directory
+        # echo "PATH=$PATH:/c/Users/runneradmin/gcc/mingw64/bin:/c/Users/runneradmin/gcc/mingw64/lib" >> $GITHUB_ENV
 
 
         echo "${{ github.workspace }}/.build/src/" >> $GITHUB_PATH
@@ -91,7 +91,8 @@ jobs:
           # Print PATH for debugging
           echo "Current PATH: $PATH"
           echo GITHUB_PATH=$GITHUB_PATH
-          echo GITHUB_ENV=$GITHUB_ENV
+          cat $GITHUB_PATH
+
 
           ls /c/Users/runneradmin/*
           ls /c/ProgramData/chocolatey/bin

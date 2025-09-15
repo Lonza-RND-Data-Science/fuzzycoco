@@ -55,7 +55,7 @@ public:
       stack.push_back(randomReal(min, max));
   }
 
-  static double scale_int_strict(uint32_t x, int min, int max) {
+  static int scale_int_strict(uint32_t x, int min, int max) {
     double norm = force_round(static_cast<double>(x) / 4294967296.0);
     double diff = force_round(max - min + 1);
     double prod = force_round(diff * norm);

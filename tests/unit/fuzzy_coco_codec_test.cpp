@@ -205,10 +205,9 @@ TEST(FuzzyCocoCodec, modifyRuleAntecedent) {
   vector<ConditionIndexes> in_idx, out_idx;
   vector<int> default_rules;
   int nb_in_conditions = rules[0].getNbInputConditions();
-  for (int i = 0; i < rules.size(); i++) {
+  for (size_t i = 0; i < rules.size(); i++) {
     for (int j = 0; j < nb_in_conditions; j++) {
       fcs.decode(rules_geno, in_idx, out_idx, default_rules);
-      int before = in_idx[i][j].var_idx;
 
       Genome modified = rules_geno;
       fcs.modifyRuleAntecedent(modified, i, j, i + j);

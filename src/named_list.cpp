@@ -174,7 +174,7 @@ vector<double> NamedList::as_numeric_vector() const
     return vector<double>{scalar().get_numeric()};
   }
   vector<double> v(size());
-  for (int i = 0; i < size(); i++) {
+  for (size_t i = 0; i < size(); i++) {
     if (!_children[i].is_scalar()) throw runtime_error("item is not a scalar!");
     const auto& scalar = _children[i].scalar();
     if (!scalar.is_numeric()) 
@@ -188,7 +188,7 @@ map<string, double> NamedList::as_string_numeric_map() const
 {
   if (!is_list()) throw runtime_error("not a list!");
   map<string, double> hash;
-  for (int i = 0; i < size(); i++) {
+  for (size_t i = 0; i < size(); i++) {
     if (!_children[i].is_scalar()) throw runtime_error("item is not a scalar!");
     const auto& scalar = _children[i].scalar();
     if (!scalar.is_numeric()) 

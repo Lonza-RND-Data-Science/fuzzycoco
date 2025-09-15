@@ -21,20 +21,20 @@ void BitArrayUtils::encode_number(int number, BitArray::iterator it, int nb_bits
 }
 
 void BitArrayUtils::randomize(BitArray& bits, RandomGenerator& rng) {
-    const int nb = bits.size();
+    const size_t nb = bits.size();
     vector<int> probs(nb);
     probs.resize(0);
     rng.random(0, 1, nb, probs); // batch
 
-    for (int i = 0; i < nb; i++) {
-        bits[i] = probs[i];
+    for (size_t i = 0; i < nb; i++) {
+      bits[i] = probs[i];
     }
 }
 
 namespace fuzzy_coco {
   ostream& operator<<(ostream& out, const BitArray& bits) {
-      for (const auto& bit: bits)
-          out << noboolalpha << bit;
-      return out;
+    for (const auto& bit: bits)
+      out << noboolalpha << bit;
+    return out;
   }
 }

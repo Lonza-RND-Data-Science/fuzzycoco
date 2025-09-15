@@ -68,7 +68,7 @@ public: // ========= main read-only user interface =================
   bool is_scalar() const { return !_value.is_null(); }
   bool is_list() const { return !is_scalar(); }
   // N.B: size==0 for scalar
-  int size() const { return _children.size(); }
+  size_t size() const { return _children.size(); }
 
   // accessing elements
   const NamedList& operator[](int idx) const { return _children.at(idx); }

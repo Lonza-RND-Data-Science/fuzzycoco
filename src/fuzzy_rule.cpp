@@ -88,7 +88,7 @@ ConditionIndexes FuzzyRule::convert_to_conditions(const NamedList& lst, const ve
     return search->second;
   };
 
-  for (int i = 0; i < lst.size(); i++) {
+  for (size_t i = 0; i < lst.size(); i++) {
     int var_idx = lookup(var_to_idx, lst[i].name());
     string set_name = lst[i].is_list() ? lst[i][0].name() : lst[i].get_string();
     int set_idx = lookup(set_names_to_idx[var_idx], set_name);

@@ -12,11 +12,9 @@ jobs:
       matrix:
         include:
           - os:  windows-2022
-            compiler:
-              - cl
+            compiler: cl
           - os: windows-latest
-            compiler:
-              - gcc 
+            compiler: gcc 
           # - ubuntu-latest
           # - macos
 

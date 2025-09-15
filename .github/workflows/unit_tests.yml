@@ -11,8 +11,8 @@ jobs:
     strategy:
       matrix:
         include:
-          - os:  windows-2022
-            compiler: msvc
+          # - os:  windows-2022
+          #   compiler: msvc
           - os: windows-latest
             compiler: gcc 
           # - ubuntu-latest

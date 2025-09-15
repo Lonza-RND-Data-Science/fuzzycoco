@@ -16,7 +16,7 @@ jobs:
           - os: windows-latest
             compiler: gcc 
           - os: ubuntu-latest
-          - os: macos
+          - os: macos-latest
 
     steps:
 

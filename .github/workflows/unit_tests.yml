@@ -51,6 +51,7 @@ jobs:
       with:
         compiler: ${{ matrix.compiler }}
         cmake: true
+        make: true
 
 
     # Updated Windows setup step: try to fix mingw c++ build on windows to correctly execute executables

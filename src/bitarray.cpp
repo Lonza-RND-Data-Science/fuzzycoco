@@ -24,7 +24,7 @@ void BitArrayUtils::randomize(BitArray& bits, RandomGenerator& rng) {
     const size_t nb = bits.size();
     vector<int> probs(nb);
     probs.resize(0);
-    rng.random(0, 1, nb, probs); // batch
+    rng.random(0, 1, int(nb), probs); // batch
 
     for (size_t i = 0; i < nb; i++) {
       bits[i] = probs[i];

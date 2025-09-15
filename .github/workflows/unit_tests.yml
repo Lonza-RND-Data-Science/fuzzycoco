@@ -49,6 +49,7 @@ jobs:
         compiler: ${{ matrix.compiler }}
         cmake: true
         make: true
+        git: true
 
     # Updated Windows setup step
     - name: Setup Windows

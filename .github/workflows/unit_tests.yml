@@ -66,8 +66,10 @@ jobs:
       uses: actions/cache/save@v4
       with:
         path: |
-          C:\Users\runneradmin\
-          C:\ProgramData\chocolatey\
+          C:\Users\runneradmin\cmake
+          C:\ProgramData\chocolatey\lib\make
+          C:\Users\runneradmin\cmake
+          C:\Users\runneradmin\gcc
         key: ${{ runner.os }}-${{ matrix.compiler }}
 
 

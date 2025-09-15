@@ -34,17 +34,16 @@ jobs:
     #       C:\Users\runneradmin\gcc
     #     key: ${{ runner.os }}-${{ matrix.compiler }}
 
-    # an attempt to cache. but the key is never found
-    - name: Cache
-      uses: actions/cache@v3
-      with:
-        path: |
-          C:\Users\runneradmin\cmake
-          C:\ProgramData\chocolatey\lib\make
-          C:\Users\runneradmin\gcc
-        key: ${{ runner.os }}-${{ matrix.compiler }}
-        # restore-keys: |
-        #   ${{ runner.os }}-${{ env.BUILD_TYPE }}
+    # # an attempt to cache. but the key is never found
+    # - name: Cache
+    #   uses: actions/cache@v3
+    #   with:
+    #     path: |
+    #       C:\Users\runneradmin\cmake
+    #       C:\Users\runneradmin\gcc
+    #     key: ${{ runner.os }}-${{ matrix.compiler }}
+    #     # restore-keys: |
+    #     #   ${{ runner.os }}-${{ env.BUILD_TYPE }}
 
     # install common c++ software: here gcc, cmake, make, git...
     - name: Setup Cpp
@@ -52,8 +51,7 @@ jobs:
       with:
         compiler: ${{ matrix.compiler }}
         cmake: true
-        make: true
-        git: true
+
 
     # Updated Windows setup step: try to fix mingw c++ build on windows to correctly execute executables
     - name: Setup Windows
@@ -82,7 +80,6 @@ jobs:
     #   with:
     #     path: |
     #       C:\Users\runneradmin\cmake
-    #       C:\ProgramData\chocolatey\lib\make
     #       C:\Users\runneradmin\gcc
     #     key: ${{ runner.os }}-${{ matrix.compiler }}
 

@@ -135,7 +135,7 @@ fuzzy_coco::convertFeaturesWeights(const vector<string>& input_vars, const map<s
     if (search == var_to_idx.end())
       throw runtime_error("bad input variable name '" + key + "'");
     if (value < 0 || value > 1)
-      throw runtime_error("bad features weight value, mut be in [0,1]: '" + to_string(value) + "'");
+      throw runtime_error("bad features weight value, mut be in [0,1]: '" + std::to_string(value) + "'");
     weights[search->second] = value;
   }
 

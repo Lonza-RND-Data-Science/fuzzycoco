@@ -144,7 +144,7 @@ NamedList FuzzyRule::describeRules(const vector <FuzzyRule>& rules, bool set_pos
   NamedList desc;
   const int nb_rules = rules.size();
   for (int i = 0; i < nb_rules; i++) {
-    desc.add("rule" + to_string(i + 1), rules[i].describe(set_pos));
+    desc.add("rule" + std::to_string(i + 1), rules[i].describe(set_pos));
   }
   return desc;
 }

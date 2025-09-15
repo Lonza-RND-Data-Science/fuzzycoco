@@ -63,7 +63,7 @@ void DataFrame::assign(const vector<vector<string>>& rows, bool rownames) {
     col = j - first_col;
     for (int i = 1; i < nbrows; i++)  {
       if (rows[i].size() != nbcols) {
-          throw runtime_error(string("Error in DataFrame::assign(): bad number of columns:") + to_string(rows[i].size()) + " at row " + to_string(i) );
+          throw runtime_error(string("Error in DataFrame::assign(): bad number of columns:") + std::to_string(rows[i].size()) + " at row " + std::to_string(i) );
       }
       row = i - 1;
       try {
@@ -131,7 +131,7 @@ DataFrame DataFrame::subsetColumns(const vector<int>& col_idx) const {
 
   for (int i = 0; i < df._nbcols; i++) {
     if (! (col_idx[i] >=0 && col_idx[i] < _nbcols))
-      throw runtime_error("bad column index " + to_string(col_idx[i]));
+      throw runtime_error("bad column index " + std::to_string(col_idx[i]));
     int col = col_idx[i];
     df._colnames[i] = _colnames[col];
     df._cols[i] = _cols[col];

@@ -151,7 +151,7 @@ vector<string> FuzzyVariablesDB::build_default_var_names(int nbvars, const strin
   vector<string> names;
   names.reserve(nbvars);
   for (int i = 0; i < nbvars; i++)
-    names.push_back(base_name + '_' + to_string(i + 1));
+    names.push_back(base_name + '_' + std::to_string(i + 1));
   return names;
 }
 

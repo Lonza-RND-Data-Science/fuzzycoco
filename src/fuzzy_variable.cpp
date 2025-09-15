@@ -16,7 +16,7 @@ vector<string> FuzzyVariable::build_default_set_names(int nbsets, const string& 
   vector<string> set_names;
   set_names.reserve(nbsets);
   for (int i = 0; i < nbsets; i++)
-    set_names.push_back(set_base_name + '.' + to_string(i + 1));
+    set_names.push_back(set_base_name + '.' + std::to_string(i + 1));
   return set_names;
 }
 

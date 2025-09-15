@@ -46,9 +46,9 @@ ostream& operator<<(ostream& out, const vector<T>& v) {
 
 inline void throwWithLocation(const string& message, const char* file, int line, const char* func) {
     string fullMessage = "Exception: " + message + "\n"
-                              + "File: " + file 
-                              + ":" + to_string(line) + "\n"
-                              + "Function: " + func;
+                              + "File: " + string(file )
+                              + ":" + std::to_string(line) + string("\n")
+                              + string("Function: ") + string(func);
     throw runtime_error(fullMessage);
 }
 

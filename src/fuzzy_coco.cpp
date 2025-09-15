@@ -1,3 +1,5 @@
+#include <numeric>
+
 #include "fuzzy_coco.h"
 #include "file_utils.h"
 #include "logging_logger.h"
@@ -201,7 +203,7 @@ void FuzzyCoco::influence_rules_genomes(
 {
   logger() << L_time << "FuzzyCoco::influence_rules_genomes()" << endl;
   logger().stream() << "features_weights=" << features_weights << endl;
-  auto sum = [](auto v) { return accumulate(v.begin(), v.end(), 0.0); };
+  auto sum = [](auto v) { return std::accumulate(v.begin(), v.end(), 0.0); };
   double sum_of_weights = sum(features_weights);
   // logger() << "sum_of_weights=" << sum_of_weights << endl;
   if (sum_of_weights <= 0) return;

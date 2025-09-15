@@ -1,3 +1,5 @@
+#include <numeric>
+
 #include "fuzzy_coco_fitness.h"
 #include "fuzzy_coco.h"
 #include "logging_logger.h"
@@ -79,7 +81,7 @@ FuzzyCocoFeaturesWeightsFitnessMethod::FuzzyCocoFeaturesWeightsFitnessMethod(
 : FuzzyCocoFitnessMethod(fs, fitter, dfin, dfout, params),
   _features_weights(params.fitness_params.asFeaturesWeightsByIdx(dfin.colnames()))
 {
-  _sum_of_weights = accumulate(_features_weights.begin(), _features_weights.end(), double(0));
+  _sum_of_weights = std::accumulate(_features_weights.begin(), _features_weights.end(), double(0));
 }
 
 double FuzzyCocoFeaturesWeightsFitnessMethod::fitnessImpl(const Genome& rules_genome, const Genome& mfs_genome) 

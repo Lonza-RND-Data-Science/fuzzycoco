@@ -34,7 +34,7 @@ public:
     int get_as_int() const {
       double v = get_numeric();
       int i = static_cast<int>(v);
-      if (i != v) throw runtime_error("numeric value is not an integer: " + to_string(v));
+      if (i != v) throw runtime_error("numeric value is not an integer: " + std::to_string(v));
       return i;
     }
 

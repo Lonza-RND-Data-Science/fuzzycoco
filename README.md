@@ -33,6 +33,7 @@ FUGE-LC credits:
 - FUGE-LC by Jean-Philippe Meylan (2009-2010)
 - Genetic algorithm update by Yvan Da Silva (2012)
 - Code upgrade by [Rochus Keller](http://rochus-keller.ch/) <me@rochus.keller.ch> (2022)
+- New feature: initialization using expert knowledge by Magali Egger<magali.egger@heig-vd.ch>, Data Scientist (2024)
 
 
 ## Contents

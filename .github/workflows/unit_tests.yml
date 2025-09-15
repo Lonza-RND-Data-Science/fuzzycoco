@@ -19,6 +19,8 @@ jobs:
           # - macos
 
     steps:
+
+    #checkout the git repo
     - uses: actions/checkout@v4
     
 
@@ -32,6 +34,7 @@ jobs:
     #       C:\Users\runneradmin\gcc
     #     key: ${{ runner.os }}-${{ matrix.compiler }}
 
+    # an attempt to cache. but the key is never found
     - name: Cache
       uses: actions/cache@v3
       with:
@@ -43,6 +46,7 @@ jobs:
         # restore-keys: |
         #   ${{ runner.os }}-${{ env.BUILD_TYPE }}
 
+    # install common c++ software: here gcc, cmake, make, git...
     - name: Setup Cpp
       uses: aminya/setup-cpp@v1
       with:
@@ -51,7 +55,7 @@ jobs:
         make: true
         git: true
 
-    # Updated Windows setup step
+    # Updated Windows setup step: try to fix mingw c++ build on windows to correctly execute executables
     - name: Setup Windows
       if: runner.os == 'Windows'
       run: |
@@ -108,7 +112,7 @@ jobs:
       env:
         CMAKE_TLS_VERIFY: "0"
         CMAKE_GENERATOR: "Unix Makefiles"
-      shell: bash
+      # shell: bash
 
     # Updated test step with error handling
     - name: make test

@@ -139,7 +139,7 @@ jobs:
 
     - name: Report test results
       uses: dorny/test-reporter@v2
-      if: ${{ !cancelled() }}
+      if: ${{ !cancelled() }} && runner.os != 'Windows'
       with:
         name: unit Tests
         path: junit.xml

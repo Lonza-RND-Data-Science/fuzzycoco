@@ -94,8 +94,8 @@ jobs:
           cat $GITHUB_PATH
 
 
-          ls /c/Users/runneradmin/*
-          ls /c/ProgramData/chocolatey/bin
+          # ls /c/Users/runneradmin/*
+          # ls /c/ProgramData/chocolatey/bin
           type git
         fi
       shell: bash
@@ -108,7 +108,7 @@ jobs:
       env:
         CMAKE_TLS_VERIFY: "0"
         CMAKE_GENERATOR: "Unix Makefiles"
-      # shell: bash
+      shell: bash
 
     # Updated test step with error handling
     - name: make test

@@ -21,17 +21,27 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     
-    - name: Cache
-      uses: actions/cache@v3
+
+    - name: Restore cache
+      if: runner.os == 'Windows'
+      uses: actions/cache/restore@v4
       with:
         path: |
           C:\Users\runneradmin\cmake
           C:\ProgramData\chocolatey\lib\make
-          C:\Users\runneradmin\cmake
           C:\Users\runneradmin\gcc
         key: ${{ runner.os }}-${{ matrix.compiler }}
-        # restore-keys: |
-        #   ${{ runner.os }}-${{ env.BUILD_TYPE }}
+
+    # - name: Cache
+    #   uses: actions/cache@v3
+    #   with:
+    #     path: |
+    #       C:\Users\runneradmin\cmake
+    #       C:\ProgramData\chocolatey\lib\make
+    #       C:\Users\runneradmin\gcc
+    #     key: ${{ runner.os }}-${{ matrix.compiler }}
+    #     # restore-keys: |
+    #     #   ${{ runner.os }}-${{ env.BUILD_TYPE }}
 
     - name: Setup Cpp
       uses: aminya/setup-cpp@v1
@@ -68,7 +78,6 @@ jobs:
         path: |
           C:\Users\runneradmin\cmake
           C:\ProgramData\chocolatey\lib\make
-          C:\Users\runneradmin\cmake
           C:\Users\runneradmin\gcc
         key: ${{ runner.os }}-${{ matrix.compiler }}
 

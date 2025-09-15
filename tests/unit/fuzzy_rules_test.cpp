@@ -27,7 +27,7 @@ TEST(FuzzyRule, ctor_filter) {
   //                     GOOD     GOOD      GOOD     DUP
   EXPECT_EQ(rule3.getNbInputConditions(), 2);
   EXPECT_EQ(rule3.getNbOutputConditions(), 1);
-  EXPECT_EQ(rule2.getOutputConditionIndex(0), ConditionIndex({0, 0})); // took the first one
+  EXPECT_EQ(rule3.getOutputConditionIndex(0), ConditionIndex({0, 0})); // took the first one
 
   cerr << rule3 << endl;
 
@@ -37,7 +37,7 @@ TEST(FuzzyRule, ctor_filter) {
   EXPECT_EQ(rule4.getNbOutputConditions(), 2);
 
 
-    cerr << rule4 << endl;
+  cerr << rule4 << endl;
 
 }
 

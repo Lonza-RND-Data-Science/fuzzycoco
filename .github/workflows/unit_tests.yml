@@ -22,26 +22,26 @@ jobs:
     - uses: actions/checkout@v4
     
 
-    - name: Restore cache
-      if: runner.os == 'Windows'
-      uses: actions/cache/restore@v4
-      with:
-        path: |
-          C:\Users\runneradmin\cmake
-          C:\ProgramData\chocolatey\lib\make
-          C:\Users\runneradmin\gcc
-        key: ${{ runner.os }}-${{ matrix.compiler }}
-
-    # - name: Cache
-    #   uses: actions/cache@v3
+    # - name: Restore cache
+    #   if: runner.os == 'Windows'
+    #   uses: actions/cache/restore@v4
     #   with:
     #     path: |
     #       C:\Users\runneradmin\cmake
     #       C:\ProgramData\chocolatey\lib\make
     #       C:\Users\runneradmin\gcc
     #     key: ${{ runner.os }}-${{ matrix.compiler }}
-    #     # restore-keys: |
-    #     #   ${{ runner.os }}-${{ env.BUILD_TYPE }}
+
+    - name: Cache
+      uses: actions/cache@v3
+      with:
+        path: |
+          C:\Users\runneradmin\cmake
+          C:\ProgramData\chocolatey\lib\make
+          C:\Users\runneradmin\gcc
+        key: ${{ runner.os }}-${{ matrix.compiler }}
+        # restore-keys: |
+        #   ${{ runner.os }}-${{ env.BUILD_TYPE }}
 
     - name: Setup Cpp
       uses: aminya/setup-cpp@v1
@@ -67,20 +67,20 @@ jobs:
 
         # Verify GCC installation
         gcc --version
-        # List available DLLs (for debugging)
-        ls /c/Users/runneradmin/gcc/mingw64/bin/*.dll
+        # # List available DLLs (for debugging)
+        # ls /c/Users/runneradmin/gcc/mingw64/bin/*.dll
       shell: bash
     
-    # explicit step to save the cache
-    - name: Save cache
-      if: runner.os == 'Windows'
-      uses: actions/cache/save@v4
-      with:
-        path: |
-          C:\Users\runneradmin\cmake
-          C:\ProgramData\chocolatey\lib\make
-          C:\Users\runneradmin\gcc
-        key: ${{ runner.os }}-${{ matrix.compiler }}
+    # # explicit step to save the cache
+    # - name: Save cache
+    #   if: runner.os == 'Windows'
+    #   uses: actions/cache/save@v4
+    #   with:
+    #     path: |
+    #       C:\Users\runneradmin\cmake
+    #       C:\ProgramData\chocolatey\lib\make
+    #       C:\Users\runneradmin\gcc
+    #     key: ${{ runner.os }}-${{ matrix.compiler }}
 
 
     - name: debug_build
@@ -91,9 +91,11 @@ jobs:
           # Print PATH for debugging
           echo "Current PATH: $PATH"
           echo GITHUB_PATH=$GITHUB_PATH
-          cat $GITHUB_PATH
           echo GITHUB_ENV=$GITHUB_ENV
-          cat $GITHUB_ENV
+
+          ls /c/Users/runneradmin/*
+          ls /c/ProgramData/chocolatey/bin
+          type git
         fi
       shell: bash
 

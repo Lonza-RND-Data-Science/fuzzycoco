@@ -469,7 +469,7 @@ TEST_F(FuzzySystemTestNoThreshold, predict) {
 
   auto predicted = fs.predict(DFIN);
   NumColumn expected = {0, 98, 50, 0};
-  for (int i = 0; i < expected.size(); i++)
+  for (auto i = 0U; i < expected.size(); i++)
     EXPECT_DOUBLE_EQ(predicted[0][i], expected[i]);
 }
 

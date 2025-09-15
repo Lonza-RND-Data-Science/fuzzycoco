@@ -39,10 +39,6 @@ TEST(CoEvolutionEngine, evolve) {
   }
   // N.B: inequal pop sizes
 
-
-
-  int maxGen = 10;
-  double maxFit = 1;
   EvolutionParams params;
   params.elite_size = 2;
   params.cx_prob = 1;
@@ -62,8 +58,7 @@ TEST(CoEvolutionEngine, evolve) {
   auto [lastgen, generation_fitnesses] = coevo.evolve(left_genomes, right_genomes, 20, 1);
   EXPECT_EQ(lastgen.generation_number, 20);
 
-  int nb_gen = generation_fitnesses.size();
-  cerr << "fitnesses: " << generation_fitnesses << endl;
+  // cerr << "fitnesses: " << generation_fitnesses << endl;
 
   EXPECT_EQ(lastgen.left_gen.individuals.size(), left_genomes.size());
   EXPECT_EQ(lastgen.right_gen.individuals.size(), right_genomes.size());
@@ -95,9 +90,6 @@ TEST(CoEvolutionEngine, iterator) {
     right_genomes.push_back(zero);
   }
 
-  int maxGen = 10;
-  double maxFit = 1;
-
   EvolutionParams params;
   params.elite_size = 2;
   params.cx_prob = 1;
@@ -117,7 +109,7 @@ TEST(CoEvolutionEngine, iterator) {
     generation_fitnesses.push_back(gen.fitness);
   }
   EXPECT_EQ(gen.generation_number, 20);
-  double fitness = gen.fitness;
+
   // ========= selectBest =========
   auto [left_best, right_best] = coevo.getBest();
   int nbbest = left_best.size();

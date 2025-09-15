@@ -45,7 +45,7 @@ TEST(bitarray, randomize) {
 
   randomize(bits, rng);
   EXPECT_TRUE(sum(bits) > 0);
-  EXPECT_TRUE(sum(bits) < bits.size());
+  EXPECT_TRUE(sum(bits) < int(bits.size()));
 
   // reproducible
   BitArray bits2(100);

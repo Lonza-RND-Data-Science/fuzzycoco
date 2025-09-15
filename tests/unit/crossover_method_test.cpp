@@ -44,7 +44,7 @@ TEST(TogglingMutationMethod, reproduceAllPairsOf) {
   // prob == 0
   vector<Genome> gs1 = genomes;
   cross0.reproduceAllPairsOf(gs1);
-  for (int i = 0; i < gs1.size(); i++) {
+  for (auto i = 0U; i < gs1.size(); i++) {
     EXPECT_EQ(sum(gs1[i]), i%2 == 0 ? 100 : 0);
   }
   EXPECT_EQ(gs1, genomes);

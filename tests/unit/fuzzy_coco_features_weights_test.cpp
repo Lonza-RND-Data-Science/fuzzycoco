@@ -603,7 +603,6 @@ TEST_F(FuzzyCocoTest2, features_weights_and_convergence) {
   // =========================================================================================================
   {
     double fit1, fit2;
-    double nb1, nb2;
     auto params2 = params;
     params2.fitness_params.features_weights["ind1"] = 0.8;
     // params2.fitness_params.features_weights["ind2"] = 0;
@@ -616,7 +615,6 @@ TEST_F(FuzzyCocoTest2, features_weights_and_convergence) {
       auto gen = coco.run(100, .6);
       // cerr << gen;
       fit1 = gen.fitness;
-      nb1 = gen.generation_number;
       // cerr << coco.describeBestFuzzySystem()["fuzzy_system"]["rules"];
     }
 
@@ -628,7 +626,6 @@ TEST_F(FuzzyCocoTest2, features_weights_and_convergence) {
       auto gen = coco.start(rng2, true, 0.6);
       auto gen2 = coco.run(100, .6, gen);
       fit2 = gen2.fitness;
-      nb2 = gen2.generation_number;
     }
 
     // nothing really to test....
@@ -640,7 +637,6 @@ TEST_F(FuzzyCocoTest2, features_weights_and_convergence) {
     // actually not that obvious
   // =========================================================================================================
   {
-    double fit1, fit2;
     double nb1, nb2;
     auto params2 = params;
 
@@ -656,7 +652,7 @@ TEST_F(FuzzyCocoTest2, features_weights_and_convergence) {
       FuzzyCoco coco(DFIN, DFOUT, params2, rng);
       auto gen = coco.run(100, .95);
       cerr << gen;
-      fit1 = gen.fitness;
+  
       nb1 = gen.generation_number;
       cerr << coco.describeBestFuzzySystem()["fuzzy_system"]["rules"];
     }
@@ -670,7 +666,6 @@ TEST_F(FuzzyCocoTest2, features_weights_and_convergence) {
       auto gen = coco.run(100, .95, gen0);
       cerr << coco.describeBestFuzzySystem()["fuzzy_system"]["rules"];
       cerr << gen;
-      fit2 = gen.fitness;
       nb2 = gen.generation_number;
     }
 

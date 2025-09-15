@@ -6,7 +6,12 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
-set(CMAKE_CXX_FLAGS "-g -fprofile-arcs -ftest-coverage -Wall -Werror")
+if (MSVC)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /Zi /W4 /WX")
+else()
+  # GCC/Clang flags
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -fprofile-arcs -ftest-coverage -Wall -Werror")
+endif()
 
 add_subdirectory(src)
 add_subdirectory(tests/unit)

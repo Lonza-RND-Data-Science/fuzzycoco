@@ -6,7 +6,12 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
-set(CMAKE_CXX_FLAGS "-g -fprofile-arcs -ftest-coverage")
+if (MSVC)
+  set(CMAKE_CXX_FLAGS "/Zi /W4")
+else()
+  # GCC/Clang flags
+  set(CMAKE_CXX_FLAGS "-g -fprofile-arcs -ftest-coverage -Wall")
+endif()
 
 include_directories(${PROJECT_SOURCE_DIR}/../../src)
 

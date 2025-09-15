@@ -37,7 +37,7 @@ jobs:
           ~/Library/Caches/ccache
           ${{ env.LOCALAPPDATA }}/ccache
           ${{ env.XDG_CACHE_HOME }}/ccache
-        key: ${{ runner.os }}-${{ matrix.compiler }}-${{ env.BUILD_TYPE }}-${{ hashFiles('**/CMakeLists.txt', './vcpkg.json') }}
+        key: ${{ runner.os }}-${{ matrix.compiler }}-${{ env.BUILD_TYPE }} }}
         restore-keys: |
           ${{ runner.os }}-${{ env.BUILD_TYPE }}-
 

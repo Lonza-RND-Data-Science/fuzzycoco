@@ -14,8 +14,8 @@ jobs:
           - windows-2022
           # - ubuntu-latest
           # - macos
-        compiler:
-          - gcc
+        # compiler:
+        #   - gcc
     steps:
     - uses: actions/checkout@v4
     

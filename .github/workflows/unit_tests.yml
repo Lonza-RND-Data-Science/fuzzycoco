@@ -105,6 +105,20 @@ jobs:
       shell: bash
 
 
+    - name: debug_build_cmd
+      if: runner.os == 'Windows'
+      run: |
+        echo PATH=
+        echo %PATH%
+        
+        echo GITHUB_PATH=
+
+        type %GITHUB_PATH%
+
+        echo GITHUB_ENV=
+        type %GITHUB_ENV%
+        
+
     - name: make build
       run: | 
         cmake  -S . -B .build
@@ -129,7 +143,6 @@ jobs:
         name: unit Tests
         path: junit.xml
         reporter: java-junit
-      shell: bash
 
     - name: ⚙️ Install lcov
       if: runner.os == 'Linux' && github.ref == 'refs/heads/main'

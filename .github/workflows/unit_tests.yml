@@ -59,6 +59,10 @@ jobs:
         export PATH="/c/Users/runneradmin/gcc/mingw64/bin:$PATH"
         # Create a more comprehensive PATH update that includes lib directory
         echo "PATH=$PATH:/c/Users/runneradmin/gcc/mingw64/bin:/c/Users/runneradmin/gcc/mingw64/lib" >> $GITHUB_ENV
+
+
+        echo "${{ github.workspace }}/.build/src/" >> $GITHUB_PATH
+
         # Verify GCC installation
         gcc --version
         # List available DLLs (for debugging)

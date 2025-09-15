@@ -25,7 +25,8 @@ jobs:
       uses: actions/cache@v3
       with:
         path: |
-          ./build/
+          C:\Users\runneradmin\
+          C:\ProgramData\chocolatey\
           ~/vcpkg
           ~/.cache/vcpkg/archives
           ${{ env.LOCALAPPDATA }}/vcpkg/archives
@@ -37,9 +38,9 @@ jobs:
           ~/Library/Caches/ccache
           ${{ env.LOCALAPPDATA }}/ccache
           ${{ env.XDG_CACHE_HOME }}/ccache
-        key: ${{ runner.os }}-${{ matrix.compiler }}-${{ env.BUILD_TYPE }}
-        restore-keys: |
-          ${{ runner.os }}-${{ env.BUILD_TYPE }}-
+        key: ${{ runner.os }}-${{ matrix.compiler }}
+        # restore-keys: |
+        #   ${{ runner.os }}-${{ env.BUILD_TYPE }}
 
     - name: Setup Cpp
       uses: aminya/setup-cpp@v1

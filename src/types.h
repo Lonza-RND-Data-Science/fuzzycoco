@@ -12,6 +12,7 @@
 #include <limits>
 #include <iostream>
 #include <vector>
+#include <string>
 
 namespace fuzzy_coco {
 
@@ -43,6 +44,8 @@ ostream& operator<<(ostream& out, const vector<T>& v) {
   out << "}";
   return out;
 }
+
+
 
 inline void throwWithLocation(const string& message, const char* file, int line, const char* func) {
     string fullMessage = "Exception: " + message + "\n"

@@ -1,4 +1,5 @@
 #include <gtest/gtest.h>
+#include <algorithm>
 #include "file_utils.h"
 #include "fuzzy_system.h"
 #include "logging_logger.h"
@@ -17,7 +18,7 @@ day4;5;3;2
 
 template<typename T, class UnaryPred>
 bool all(const vector<T>& v, UnaryPred pred) { 
-  return all_of(v.cbegin(), v.cend(), pred);
+  return std::all_of(v.cbegin(), v.cend(), pred);
 }
 
 template<typename T>

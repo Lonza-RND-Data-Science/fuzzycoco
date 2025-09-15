@@ -1,4 +1,5 @@
 #include <gtest/gtest.h>
+#include <algorithm>
 #include "selection_method.h"
 using namespace fuzzy_coco;
 
@@ -15,7 +16,7 @@ ostream& operator<<(ostream& out, const vector<T>& v) {
 }
 template<typename T, class UnaryPred>
 bool all(const vector<T>& v, UnaryPred pred) { 
-  return all_of(v.cbegin(), v.cend(), pred);
+  return std::all_of(v.cbegin(), v.cend(), pred);
 }
 
 TEST(RankBasedSelectionMethod, selectEntities) {

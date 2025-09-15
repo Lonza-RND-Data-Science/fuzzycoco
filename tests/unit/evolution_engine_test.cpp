@@ -1,4 +1,5 @@
 #include <gtest/gtest.h>
+#include <algorithm>
 #include "evolution_engine.h"
 
 using namespace fuzzy_coco;
@@ -16,7 +17,7 @@ using namespace fuzzy_coco;
 // }
 template<typename T, class UnaryPred>
 bool all(const vector<T>& v, UnaryPred pred) { 
-  return all_of(v.cbegin(), v.cend(), pred);
+  return std::all_of(v.cbegin(), v.cend(), pred);
 }
 auto sum = [](auto v) { return accumulate(v.begin(), v.end(), 0); };
 

@@ -14,10 +14,7 @@ ostream& operator<<(ostream& out, const vector<T>& v) {
   out << "}";
   return out;
 }
-template<typename T, class UnaryPred>
-bool all(const vector<T>& v, UnaryPred pred) { 
-  return all_of(v.cbegin(), v.cend(), pred);
-}
+
 auto sum = [](auto v) { return accumulate(v.begin(), v.end(), 0); };
 
 

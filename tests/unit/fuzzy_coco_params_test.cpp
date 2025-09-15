@@ -1,4 +1,5 @@
 #include <gtest/gtest.h>
+#include <algorithm>
 #include "logging_logger.h"
 
 #include "fuzzy_coco_params.h"
@@ -9,7 +10,7 @@ using namespace logging;
 
 template<typename T, class UnaryPred>
 bool all(const vector<T>& v, UnaryPred pred) { 
-  return all_of(v.cbegin(), v.cend(), pred);
+  return std::all_of(v.cbegin(), v.cend(), pred);
 }
 
 TEST(VarsParams, basic) {

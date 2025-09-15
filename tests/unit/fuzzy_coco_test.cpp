@@ -7,10 +7,6 @@ using namespace fuzzy_coco;
 using namespace FileUtils;
 using namespace logging;
 
-template<typename T, class UnaryPred>
-bool all(const vector<T>& v, UnaryPred pred) { 
-  return all_of(v.cbegin(), v.cend(), pred);
-}
 
 
 string CSV = 

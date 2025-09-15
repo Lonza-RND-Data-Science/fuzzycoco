@@ -10,11 +10,11 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: 
-          - windows-2022
+        include:
+          - os:  windows-2022
             compiler:
               - cl
-          - windows-latest
+          - os: windows-latest
             compiler:
               - gcc 
           # - ubuntu-latest

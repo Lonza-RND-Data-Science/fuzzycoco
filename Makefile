@@ -5,27 +5,26 @@ clean: coverage/clean
 
 # build the FUGE-LC executable and copy it into bin/
 build:
-	mkdir -p .build
-	cd .build && cmake .. && make -j 4 
+	cmake  -S . -B .build
+	cmake --build .build/ -j 4
 
 test:
-	cd .build/tests/unit && ctest
+	ctest --test-dir .build/tests/unit/ --output-on-failure -j 4
 
 test/rerun-failed:
-	cd .build/tests/unit && ctest --rerun-failed --output-on-failure
+	ctest --test-dir .build/tests/unit/ --output-on-failure --rerun-failed
 
-JUNIT_XML=$(PWD)/junit.xml
 test/junit:
-	cd .build/tests/unit && ctest --output-junit $(JUNIT_XML)
+	ctest --test-dir .build/tests/unit/ --output-junit junit.xml
 
 test/memcheck:
-	cd .build/tests/unit && ctest --verbose --memcheck --overwrite MemoryCheckCommandOptions="--leak-check=full --error-exitcode=1"
+	ctest --test-dir .build/tests/unit --verbose --memcheck --overwrite MemoryCheckCommandOptions="--leak-check=full --error-exitcode=1"
 
 debug:
-	cd .build/tests/unit && ctest --rerun-failed --output-on-failure
+	ctest --test-dir .build/tests/unit --rerun-failed --output-on-failure
 
 verbose:
-	cd .build/tests/unit && ctest -V
+	ctest --test-dir .build/tests/unit  -V
 
 COVERAGE_INFO=.coverage/coverage.info
 coverage/info:

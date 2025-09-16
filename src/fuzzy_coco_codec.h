@@ -49,7 +49,7 @@ public: // utils, mainly for testing and debugging
   void decode(const Genome& mfs_genome, Matrix<double>& pos_in, Matrix<double>& pos_out);
   void decode(const Genome& rules_genome, vector<ConditionIndexes>& rules_in, vector<ConditionIndexes>& rules_out,
     vector<int>& default_rules);
-  void decode(const Genome& rules_genome, const FuzzyVariablesDB& db, vector<FuzzyRule>& rules, vector<FuzzyDefaultRule>& default_rules);
+  // void decode(const Genome& rules_genome, const FuzzyVariablesDB& db, vector<FuzzyRule>& rules, vector<FuzzyDefaultRule>& default_rules);
 private:
   void init(const DataFrame& dfin, const DataFrame& dfout, const FuzzyCocoParams& params);
 

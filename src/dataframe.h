@@ -34,7 +34,7 @@ public:
   DataFrame(const vector<vector<string>>& rows, bool rownames) {
     assign(rows, rownames);
   }
-  ~DataFrame() {}
+
 
   // parse and assign data from strings (as parsed from a CSV, cf FuzzyCocoUtils::parseCSV())
   // rownames: if TRUE, consider the first column as the rownames

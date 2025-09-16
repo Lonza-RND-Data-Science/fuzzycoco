@@ -1,3 +1,5 @@
+#include <fstream>
+#include <sstream>
 #include "tests.h"
 #include "fuzzy_coco.h"
 #include "file_utils.h"
@@ -143,6 +145,28 @@ TEST_F(FuzzyCocoTest, searchBestFuzzySystem) {
   // predict
   auto predicted = FuzzyCoco::loadAndPredict(DF, desc);
   EXPECT_EQ(predicted, fs2.smartPredict(DF));
+
+
+  // simulating best fitness == 0
+  {
+    params.global_params.max_generations = 0;
+    params.rules_params.pop_size = 1;
+    params.rules_params.elite_size = 1;
+    params.mfs_params.pop_size = 1;
+    params.mfs_params.elite_size = 1;
+    // set weigths so that fitness == 0
+    params.fitness_params.metrics_weights.sensitivity = 0;
+    params.fitness_params.metrics_weights.specificity = 0;
+    params.fitness_params.metrics_weights.nb_vars = 0;
+    params.fitness_params.metrics_weights.ppv = 1;
+
+
+    auto desc = FuzzyCoco::searchBestFuzzySystem(DF, DFOUT.nbcols(), params, 6423);
+    // cerr << desc;
+    EXPECT_TRUE(desc.empty());
+    // abort();
+  }
+
 }
 
 TEST_F(FuzzyCocoTest, predict_save_load) {
@@ -151,11 +175,13 @@ TEST_F(FuzzyCocoTest, predict_save_load) {
   FuzzyCoco coco(DFIN, DFOUT, params, rng);
 
   auto gen = coco.run(1000, 0.7);
-cerr << gen;
+// cerr << gen;
   coco.selectBestFuzzySystem();
   EXPECT_GT(coco.getFitness(), 0.7);
   double fitness = coco.getFitness() ;
   // cerr << fitness << endl;
+
+  cerr << coco; // for coverage
 
   auto df1 = coco.predict(DFIN);
 
@@ -164,6 +190,37 @@ cerr << gen;
 
   double fitness2 = coco.getFitnessMethod().computeFuzzySystemFitness(coco.getFuzzySystem(), coco.getFuzzySystemFitness(), metrics, 0, 0);
   EXPECT_EQ(fitness2, fitness);
+
+  {
+    auto fs = coco.getFuzzySystem();
+
+    path temp_fuzzy_system = tmpnam(nullptr);
+cerr << temp_fuzzy_system << endl;
+    ofstream fs_out(temp_fuzzy_system);
+    fs_out << coco.describe(-1);
+    fs_out.close();
+
+    // ================== loadFuzzyFile ===========================
+
+    auto loaded = FuzzyCoco::loadFuzzyFile(temp_fuzzy_system);
+    EXPECT_EQ(loaded.names(), vector<string>({"fit", "fuzzy_system", "params"}));
+  
+    // ================== loadAndPredict ===========================
+
+    auto df2 = FuzzyCoco::loadAndPredict(DFIN, temp_fuzzy_system);
+    EXPECT_EQ(df2, FuzzyCoco::loadAndPredict(DFIN, loaded));
+
+    // ================== evalAndSave ===========================
+    ostringstream oss;
+    FuzzyCoco::evalAndSave(DF, temp_fuzzy_system, oss);
+    auto eval1 = NamedList::parse(oss.str());
+    auto eval2 = FuzzyCoco::eval(DF, FuzzySystem::load(loaded["fuzzy_system"]), FuzzyCocoParams(loaded["params"]));
+
+    EXPECT_TRUE(cmp(eval1, eval2));
+
+
+    remove(temp_fuzzy_system);
+  }
 }
 
 

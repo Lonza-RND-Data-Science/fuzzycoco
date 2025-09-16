@@ -254,6 +254,14 @@ TEST(Scalar, IO) {
     auto s2 = Scalar::parse(io);
     EXPECT_EQ(s2, s);
   }
+
+  // badstring: without quote, not starting with t or f
+  { 
+    stringstream io;
+    io << "bad";
+    EXPECT_THROW(Scalar::parse(io), invalid_argument); // thrown by stoi()
+  }
+
   // int
   {
     stringstream io;
@@ -286,9 +294,26 @@ TEST(Scalar, IO) {
     io << s;
 
     auto s2 = Scalar::parse(io);
-    cerr << s2;
+    // cerr << s2;
 
     EXPECT_EQ(s2.get_bool(), false);
+  }
+
+  // bad bool <=> string without quote starting with t or f
+  { // bool
+    stringstream io;
+    io << "foufou";
+    EXPECT_THROW(Scalar::parse(io), runtime_error);
+  }
+
+  // null
+  {
+    stringstream io;
+    Scalar s;
+    io << s;
+    EXPECT_EQ(io.str(), "");
+    auto s2 = Scalar::parse(io);
+    EXPECT_EQ(s2, s);
   }
 
 }
@@ -310,11 +335,22 @@ TEST(Scalar, IO_and_NA) {
     io << s;
     auto s2 = Scalar::parse(io);
     EXPECT_EQ(s2, s);
-  }
 
+    cerr  << s << endl;
+    cerr  << s2 << endl;
+  }
+// abort();
 }
 
 TEST(NamedList, IO) {
+  // empty stream
+  {
+    stringstream io;
+    auto l = NamedList::parse(io);
+    EXPECT_EQ(l, NamedList());
+  }
+
+
     // empty list
   {
     stringstream io;
@@ -384,7 +420,8 @@ TEST(NamedList, IO) {
 
 
 TEST(NamedList, parse) {
-  { // basic
+  { 
+    // basic
     string content = R"(
     {
       "Temperature": {
@@ -473,18 +510,27 @@ TEST(NamedList, parse_edge_cases) {
   }
 
   {
+    EXPECT_THROW(NamedList::parse("}"), runtime_error);
+  }
+
+  {
+    EXPECT_EQ(NamedList::parse("1"), NamedList());
+  }
+
+  {
     // logger().activate();
     vector<string> contents = {
-        R"({"name":"value"})",
-        R"({ "name":"value"})",
-        R"({"name":"value" })",
-        R"({ "name" : "value" })",
-        R"(     {"name":"value"}      )"
+        R"({"name":-29})",
+        R"({ "name":-29})",
+        R"({"name":-29 })",
+        R"({ "name" : -29 })",
+        R"(     {"name":-29}      )"
     };
     for (auto content : contents) {
       auto lst = NamedList::parse(content);
+      cerr << lst;
       NamedList ref;
-      ref.add("name", "value");
+      ref.add("name", -29);
       EXPECT_EQ(lst, ref);
     }
   }
@@ -506,6 +552,8 @@ TEST(NamedList, parse_edge_cases) {
       EXPECT_EQ(lst, ref);
     }
   }
+
+
 }
 
 

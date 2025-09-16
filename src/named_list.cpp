@@ -8,13 +8,13 @@
 using namespace fuzzy_coco;
 using namespace logging;
 
-const string NA_INT_STRING = "NA";
-const string NA_DOUBLE_STRING = "NA.";
+
 
 void Scalar::print(ostream& out) const {
-    if (is_null()) 
-      out << "-";
-    else if (is_int()) {
+    if (is_null()) {
+      // nothing
+      // out << "-";
+    } else if (is_int()) {
       if (is_na(get_int()))
         out << quoted(NA_INT_STRING);
       else
@@ -28,10 +28,8 @@ void Scalar::print(ostream& out) const {
       out << quoted(get_string());
     } else if (is_bool()) {
       out << boolalpha << get_bool();
-    } else if (is_null()) {
-      // nothing
     } else {
-      THROW_WITH_LOCATION("something is really wrong in Scalar::print()");
+      // MUST NOT HAPPEN
     }
 }
 
@@ -40,7 +38,10 @@ Scalar Scalar::parse(istream& in) {
   string item;
   in >> item;
 
-  logger() << "Scalar::parse(): item=" << item << '\n'; 
+  logger() << "Scalar::parse(): item='" << item << "'\n"; 
+
+  // null
+  if (item.empty()) return Scalar();
 
   if (item.back() == '}')
   in.unget();
@@ -103,15 +104,20 @@ NamedList NamedList::parse(istream &in)
   const char SPACE = ' ';
   const char COMMA = ',';
 
+
+
   auto peek_next_significant = [&](){ while(in && in.peek() <= SPACE) in.get(); return in.peek(); };
   auto skip_comma = [&](){ if (in.peek() == COMMA) in.get(); };
 
   char ch = peek_next_significant();
-  logger() << "NamedList::parse() ch=" << ch << "\n";
+
+  logger() << "NamedList::parse() ch='" << ch << "'\n";
+
+  if (in.eof()) return(NamedList());
+
   if (ch == '}')
   { // end of list
-    in.get(); // consume }
-    return NamedList();
+    THROW_WITH_LOCATION(string("parsing error, current character=") + ch);
   }
 
   if (ch == '{')
@@ -151,7 +157,7 @@ NamedList NamedList::parse(istream &in)
     return NamedList(elt_name, scalar);
   }
 
-  THROW_WITH_LOCATION(string("parsing error, current character=") + ch);
+  // THROW_WITH_LOCATION(string("parsing error, current character=") + ch);
 
   return NamedList();
 }

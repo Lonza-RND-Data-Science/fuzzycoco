@@ -89,23 +89,23 @@ void FuzzyCocoCodec::decode(const Genome& mfs_genome, Matrix<double>& pos_in, Ma
   getMFsCodec().decode(it, pos_in, pos_out);
 }
 
-void FuzzyCocoCodec::decode(const Genome& rules_genome, const FuzzyVariablesDB& db, vector<FuzzyRule>& rules, vector<FuzzyDefaultRule>& default_rules) 
-{
-  decode(rules_genome, _rules_in, _rules_out, _default_rules);
-  rules.clear();
-  const int nb = _rules_in.size();
-  rules.reserve(nb);
-  for (int i = 0; i < nb; i++) {
-     FuzzyRule rule(db, _rules_in[i], _rules_out[i], true);
-     rules.push_back(rule);
-  }
-  default_rules.clear();
-  default_rules.reserve(_default_rules.size());
-  for (size_t i = 0; i < _default_rules.size(); i++) {
-    FuzzyDefaultRule rule(db, i, _default_rules[i]);
-    default_rules.push_back(rule);
- }
-}
+// void FuzzyCocoCodec::decode(const Genome& rules_genome, const FuzzyVariablesDB& db, vector<FuzzyRule>& rules, vector<FuzzyDefaultRule>& default_rules) 
+// {
+//   decode(rules_genome, _rules_in, _rules_out, _default_rules);
+//   rules.clear();
+//   const int nb = _rules_in.size();
+//   rules.reserve(nb);
+//   for (int i = 0; i < nb; i++) {
+//      FuzzyRule rule(db, _rules_in[i], _rules_out[i], true);
+//      rules.push_back(rule);
+//   }
+//   default_rules.clear();
+//   default_rules.reserve(_default_rules.size());
+//   for (size_t i = 0; i < _default_rules.size(); i++) {
+//     FuzzyDefaultRule rule(db, i, _default_rules[i]);
+//     default_rules.push_back(rule);
+//  }
+// }
 
 void FuzzyCocoCodec::decode(
     const Genome& rules_genome, 

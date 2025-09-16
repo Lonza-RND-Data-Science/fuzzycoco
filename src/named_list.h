@@ -173,5 +173,8 @@ private:
     vector<NamedList> _children;
 };
 
+  const string NA_INT_STRING = "NA";
+  const string NA_DOUBLE_STRING = "NA.";
+
 }
 #endif // NAMED_LIST_H

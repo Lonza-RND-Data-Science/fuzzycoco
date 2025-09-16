@@ -6,18 +6,12 @@
 
 namespace fuzzy_coco {
 
-class CrossoverMethod {
-public:
-    CrossoverMethod() {}
-    virtual ~CrossoverMethod() {}
-    virtual void reproducePairOf(Genome& gen1, Genome& gen2) = 0;
-    virtual void reproduceAllPairsOf(vector<Genome>& genomes);
-};
 
-class OnePointCrossoverMethod : public CrossoverMethod {
+class OnePointCrossoverMethod  {
 public:
     OnePointCrossoverMethod(RandomGenerator& rng, double prob) : _rng(rng), _prob(prob) {}
-    virtual void reproducePairOf(Genome& gen1, Genome& gen2) override;
+    void reproduceAllPairsOf(vector<Genome>& genomes);
+    void reproducePairOf(Genome& gen1, Genome& gen2) ;
 private:
     RandomGenerator& _rng;
     double _prob;

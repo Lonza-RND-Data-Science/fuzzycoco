@@ -34,12 +34,12 @@ void DataFrame::assign(const vector<vector<string>>& rows, bool rownames) {
   // total number of columns
   int nbrows = rows.size();
   if (nbrows == 0) {
-    throw runtime_error("Error in DataFrame::assign(): no rows");
+    THROW_WITH_LOCATION("Error in DataFrame::assign(): no rows");
   }
 
   auto nbcols = rows[0].size();
   if (nbcols == 0) {
-    throw runtime_error("Error in DataFrame::assign(): no columns");
+    THROW_WITH_LOCATION("Error in DataFrame::assign(): no columns");
   }
   //
   reset(nbrows - 1, nbcols - first_col);
@@ -63,7 +63,7 @@ void DataFrame::assign(const vector<vector<string>>& rows, bool rownames) {
     col = j - first_col;
     for (int i = 1; i < nbrows; i++)  {
       if (rows[i].size() != nbcols) {
-          throw runtime_error(string("Error in DataFrame::assign(): bad number of columns:") + std::to_string(rows[i].size()) + " at row " + std::to_string(i) );
+          THROW_WITH_LOCATION(string("Error in DataFrame::assign(): bad number of columns:") + std::to_string(rows[i].size()) + " at row " + std::to_string(i) );
       }
       row = i - 1;
       try {
@@ -77,13 +77,13 @@ void DataFrame::assign(const vector<vector<string>>& rows, bool rownames) {
 
 void DataFrame::colnames(const vector<string>& names) {
   if (names.size() != (size_t)nbcols())
-      throw runtime_error("bad colnames size!");
+      THROW_WITH_LOCATION("bad colnames size!");
   _colnames = names; 
 }
 
 void DataFrame::rownames(const vector<string>& names) {
   if (names.size() != (size_t)nbrows() && names.size() != 0)
-      throw runtime_error("bad rownames size!");
+      THROW_WITH_LOCATION("bad rownames size!");
   _rownames = names; 
 }
 
@@ -131,7 +131,7 @@ DataFrame DataFrame::subsetColumns(const vector<int>& col_idx) const {
 
   for (int i = 0; i < df._nbcols; i++) {
     if (! (col_idx[i] >=0 && col_idx[i] < _nbcols))
-      throw runtime_error("bad column index " + std::to_string(col_idx[i]));
+      THROW_WITH_LOCATION("bad column index " + std::to_string(col_idx[i]));
     int col = col_idx[i];
     df._colnames[i] = _colnames[col];
     df._cols[i] = _cols[col];
@@ -145,7 +145,7 @@ DataFrame DataFrame::subsetColumns(const vector<string>& col_names)  const{
   colname_to_idx.reserve(_nbcols);
   for (int i = 0; i < _nbcols; i++) {
       if (_colnames[i].empty())
-          throw runtime_error("in subsetColumns(col_names), the data frame must have defined colnames");
+          THROW_WITH_LOCATION("in subsetColumns(col_names), the data frame must have defined colnames");
       colname_to_idx[_colnames[i]] = i;
   }
 
@@ -155,7 +155,7 @@ DataFrame DataFrame::subsetColumns(const vector<string>& col_names)  const{
 
     auto search = colname_to_idx.find(col_names[i]);
     if (search == colname_to_idx.end()) // not found
-      throw runtime_error("column name " + col_names[i] + " can not be found in the data frame");
+      THROW_WITH_LOCATION("column name " + col_names[i] + " can not be found in the data frame");
     col_idx[i] = search->second;
   }
 

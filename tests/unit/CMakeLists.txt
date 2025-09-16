@@ -10,7 +10,7 @@ if (MSVC)
   set(CMAKE_CXX_FLAGS "/Zi /W4")
 else()
   # GCC/Clang flags
-  set(CMAKE_CXX_FLAGS "-g -fprofile-arcs -ftest-coverage -Wall")
+  # set(CMAKE_CXX_FLAGS "-O2 -g -Wall")
 endif()
 
 include_directories(${PROJECT_SOURCE_DIR}/../../src)

@@ -34,7 +34,7 @@ struct Generation {
 
   void selectElite()
   {
-    assert((size_t)_elite_size < individuals.size());
+    assert((size_t)_elite_size <= individuals.size());
     elite.clear();
     elite.reserve(_elite_size);
     for (int i = 0; i < _elite_size; i++) elite.push_back(individuals[i]);

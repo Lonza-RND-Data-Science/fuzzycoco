@@ -118,13 +118,6 @@ NamedList FuzzyCoco::loadFuzzyFile(const string& fuzzy_file)
   return NamedList::parse(in);
 }
 
-FuzzySystem FuzzyCoco::loadFuzzySystem(const string& fuzzy_file)
-{
-  NamedList desc = loadFuzzyFile(fuzzy_file);
-  FuzzySystem fs = FuzzySystem::load(desc["fuzzy_system"]);
-  return fs;
-}
-
 DataFrame FuzzyCoco::loadAndPredict(const DataFrame& df, const NamedList& saved)
 {
   FuzzySystem fs = FuzzySystem::load(saved["fuzzy_system"]);

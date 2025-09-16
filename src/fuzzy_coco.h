@@ -47,7 +47,6 @@ public:
   static FuzzyCoco load(const NamedList desc);
 
   static NamedList loadFuzzyFile(const string& fuzzy_file);
-  static FuzzySystem loadFuzzySystem(const string& fuzzy_file);
 
   // set the shared Fuzzy System with the rules and MFs that achieve the best fitness computed so far
   void selectBestFuzzySystem() { getEngine().rebuildBestFuzzySystem(); }

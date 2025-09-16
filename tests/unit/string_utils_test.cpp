@@ -43,4 +43,7 @@ TEST(StringUtils, prettyDistinguishableDoubleToString) {
   EXPECT_EQ(prettyDistinguishableDoubleToString(1.0100), "1.01");
   EXPECT_EQ(prettyDistinguishableDoubleToString(10), "10.0");
   EXPECT_EQ(prettyDistinguishableDoubleToString(0), "0.0");
+
+  EXPECT_EQ(prettyDistinguishableDoubleToString(0.10000001), "0.1");
+
 }

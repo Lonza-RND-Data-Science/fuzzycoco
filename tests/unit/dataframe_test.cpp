@@ -228,6 +228,22 @@ TEST(df, colnames) {
   cerr << df;
 }
 
+TEST(df, rownames) {
+  DataFrame df(CSV1, true);
+
+  EXPECT_EQ(df.rownames(),  vector<string>({"subject2", "subject3", "subject4", "subject5"}));
+
+  // set rownames
+  df.rownames({});
+  EXPECT_EQ(df.rownames(),  vector<string>());
+
+  df.rownames(vector<string>({"1", "2", "3", "4"}));
+  EXPECT_EQ(df.rownames(),  vector<string>({"1", "2", "3", "4"}));
+
+  // bad rownames size
+  EXPECT_THROW(df.rownames({"only one"}), runtime_error);
+}
+
 TEST(df, output) {
   // output with rownames
   DataFrame df(CSV1, true);
@@ -244,4 +260,8 @@ TEST(df, output) {
   vector<vector<string>> rows = { {"header"}, { "1.0" } };
   DataFrame df2(rows, false);
   cerr << df2;
+}
+
+TEST(df, load) {
+
 }

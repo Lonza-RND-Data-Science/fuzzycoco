@@ -95,6 +95,8 @@ TEST_F(FuzzyCocoTest, custom_fitness) {
   auto [best_rule, best_mf] = cocoe.getBest();
   EXPECT_LT(gen.fitness, 1.1);
 
+  cerr << cocoe; // for coverage, to exercise <<
+
   auto gen2 = custom_cocoe.run();
   EXPECT_GT(gen2.fitness, 1000);
 }

@@ -20,6 +20,8 @@ ENV LANG=en_US.UTF-8
 
 RUN apt update && apt install -y gdb valgrind lcov jq
 
+COPY --from=kcov/kcov:latest /usr/local/bin/kcov* /usr/local/bin/
+
 ############# user stuff ###########
 RUN apt update && apt install -y bash-completion make
 

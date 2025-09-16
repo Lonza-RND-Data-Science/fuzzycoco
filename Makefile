@@ -30,10 +30,21 @@ COVERAGE_INFO=.coverage/coverage.info
 coverage/info:
 	mkdir -p .coverage
 	rm -f $(COVERAGE_INFO)
-	lcov --capture --base-directory .build/src --directory .build/src --filter brace --rc genhtml_exclude_lines="};" --output-file $(COVERAGE_INFO)
+# 	lcov --capture --base-directory .build/src --directory .build/src --filter brace --rc genhtml_exclude_lines="};" --output-file $(COVERAGE_INFO)
+# 	lcov --capture --base-directory .build/src --directory .build/src --filter brace  --output-file $(COVERAGE_INFO)
+	lcov --capture --base-directory .build/src --directory .build/src --output-file $(COVERAGE_INFO)
 	# Remove external/irrelevant directories
-	lcov --remove $(COVERAGE_INFO) '/usr/*' '\d*' '*/tests/*' 'tests/*' --ignore-errors unused --output-file $(COVERAGE_INFO)
+	lcov --remove $(COVERAGE_INFO) '/usr/*'  'tests/*' --ignore-errors unused --output-file $(COVERAGE_INFO)
 	lcov --list $(COVERAGE_INFO)
+
+kcov:
+	for test in .build/tests/unit/*_test; do \
+		kcov --include-pattern=fuzzycoco/src .kcov $$test; \
+	done
+
+FILE=
+kcov/file:
+	kcov --include-pattern=fuzzycoco/src .kcov $(FILE)
 
 coverage/html:
 	genhtml .coverage/coverage.info --output-directory .coverage
@@ -41,7 +52,7 @@ coverage/html:
 coverage: test coverage/info coverage/html
 
 coverage/clean:
-	rm -rf .coverage
+	rm -rf .coverage 
 
 install:
 	mkdir -p bin

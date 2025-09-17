@@ -2,9 +2,17 @@
 #include <sstream>
 #include <regex>
 #include "logging_logger.h"
+#include "file_utils.h"
 
 using namespace fuzzy_coco;
 using namespace logging;
+
+TEST(Null_Buff, basic) {
+  // for coverage
+  EXPECT_NO_THROW( Null_Buff buf);
+  
+}
+
 
 TEST(Console_Logger, basic) {
   ostringstream oss;
@@ -52,6 +60,17 @@ TEST(Logger, misc) {
   }
 
   EXPECT_FALSE(logger.open());
-
 }
 
+// TEST(File_Logger, misc) {
+//   string tmp = FileUtils::poor_man_tmpnam("File_Logger");
+
+//   File_Logger logger(tmp, L_flush);
+//   logger << L_tabs << "Start" << "File" << 1 << L_flush;
+
+//   // auto content = FileUtils::slurp(tmp);
+//   // cerr << content;
+
+
+//   remove(tmp);
+// }

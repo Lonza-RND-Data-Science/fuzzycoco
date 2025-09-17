@@ -194,7 +194,7 @@ TEST_F(FuzzyCocoTest, predict_save_load) {
   {
     auto fs = coco.getFuzzySystem();
 
-    path temp_fuzzy_system = poor_man_tmpnam("predict_save_load");
+    string temp_fuzzy_system = poor_man_tmpnam("predict_save_load");
 cerr << temp_fuzzy_system << endl;
     ofstream fs_out(temp_fuzzy_system);
     fs_out << coco.describe(-1);

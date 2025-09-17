@@ -290,6 +290,8 @@ TEST(FuzzyVariablesDB, subset) {
 TEST(FuzzyVariablesDB, setPositions) {
   FuzzyVariablesDB db({"Temperature", "SunShine"}, 3, {"Tourists", "out2"}, 2); 
 
+  EXPECT_THROW(db.setPositions(R"( { "Toto": { "Low": 0, "High": 100  }  }  )"), runtime_error);
+
   db.setPositions(R"(
     {
       "Tourists": {

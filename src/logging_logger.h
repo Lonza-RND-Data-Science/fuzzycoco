@@ -179,295 +179,295 @@ namespace logging {
 
 	Logger& logger(); // to be defined by the client
 
-	class FileNameGenerator {
-	public:
-		static constexpr int FILE_NAME_LENGTH {8};
+	// class FileNameGenerator {
+	// public:
+	// 	static constexpr int FILE_NAME_LENGTH {8};
 
-		FileNameGenerator(const std::filesystem::path& filePath);
-		std::string stem() const { return _fileNameStem; }
-		bool isNewDay(const Logger& logger) const { return _fileDayNo != logger.log_date.dayNo; }
-		int dayNo() const { return _fileDayNo; }
-		std::string operator()(const Logger& logger);
+	// 	FileNameGenerator(const std::filesystem::path& filePath);
+	// 	std::string stem() const { return _fileNameStem; }
+	// 	bool isNewDay(const Logger& logger) const { return _fileDayNo != logger.log_date.dayNo; }
+	// 	int dayNo() const { return _fileDayNo; }
+	// 	std::string operator()(const Logger& logger);
 
-	private:
-		std::string _fileNameStem;
-		std::filesystem::path _filePath;
-		unsigned char _fileDayNo {0};
-	};
+	// private:
+	// 	std::string _fileNameStem;
+	// 	std::filesystem::path _filePath;
+	// 	unsigned char _fileDayNo {0};
+	// };
 
-	/// <summary>: modified by Karl to remove the FileNameGenerator
-	/// Logs to file, and mirrors to the provided ostream - typcally clog
-	/// New Filenames are generated for each day
-	/// </summary>
-	template<typename MirrorBase = Console_Logger>
-	class SimpleFile_Logger : public MirrorBase {
-	public:
-		SimpleFile_Logger(const std::filesystem::path& filePath) : SimpleFile_Logger {filePath, L_null} {}
-		SimpleFile_Logger(const std::filesystem::path& filePath, Flags initFlags, Streamable& mirrorStream = std::clog);
-		SimpleFile_Logger(const std::filesystem::path& filePath, Flags initFlags, Logger& mirror_chain)
-		 : SimpleFile_Logger {filePath, initFlags} { _mirror = &mirror_chain; }
+	// /// <summary>: modified by Karl to remove the FileNameGenerator
+	// /// Logs to file, and mirrors to the provided ostream - typcally clog
+	// /// New Filenames are generated for each day
+	// /// </summary>
+	// template<typename MirrorBase = Console_Logger>
+	// class SimpleFile_Logger : public MirrorBase {
+	// public:
+	// 	SimpleFile_Logger(const std::filesystem::path& filePath) : SimpleFile_Logger {filePath, L_null} {}
+	// 	SimpleFile_Logger(const std::filesystem::path& filePath, Flags initFlags, Streamable& mirrorStream = std::clog);
+	// 	SimpleFile_Logger(const std::filesystem::path& filePath, Flags initFlags, Logger& mirror_chain)
+	// 	 : SimpleFile_Logger {filePath, initFlags} { _mirror = &mirror_chain; }
 
-		Streamable& stream() override;
-		void flush() override;
-		Logger* mirror_stream(Logger::ostreamPtr& mirrorStream) override;
-		bool open() override;
+	// 	Streamable& stream() override;
+	// 	void flush() override;
+	// 	Logger* mirror_stream(Logger::ostreamPtr& mirrorStream) override;
+	// 	bool open() override;
 
-	private:
-		Logger& logTime() override;
-		filesystem::path _file_path;
-		Logger* _mirror {this};
-		std::ofstream _dataFile;
-	};
+	// private:
+	// 	Logger& logTime() override;
+	// 	filesystem::path _file_path;
+	// 	Logger* _mirror {this};
+	// 	std::ofstream _dataFile;
+	// };
 
-	template<typename MirrorBase>
-	inline
-	SimpleFile_Logger<MirrorBase>::SimpleFile_Logger(const std::filesystem::path& filePath, Flags initFlags, Streamable& mirrorStream)
-		: MirrorBase {initFlags, mirrorStream}, _file_path {filePath} {
-		MirrorBase::stream() << "\nSimpleFile_Logger: " << _file_path << '\n';
-	}
+	// template<typename MirrorBase>
+	// inline
+	// SimpleFile_Logger<MirrorBase>::SimpleFile_Logger(const std::filesystem::path& filePath, Flags initFlags, Streamable& mirrorStream)
+	// 	: MirrorBase {initFlags, mirrorStream}, _file_path {filePath} {
+	// 	MirrorBase::stream() << "\nSimpleFile_Logger: " << _file_path << '\n';
+	// }
 
-	template<typename MirrorBase>
-	inline
-	Streamable& SimpleFile_Logger<MirrorBase>::stream() {
-		if (MirrorBase::is_cout() || !open()) {
-			Logger::ostreamPtr streamPtr {&_dataFile};
+	// template<typename MirrorBase>
+	// inline
+	// Streamable& SimpleFile_Logger<MirrorBase>::stream() {
+	// 	if (MirrorBase::is_cout() || !open()) {
+	// 		Logger::ostreamPtr streamPtr {&_dataFile};
 
-			mirror_stream(streamPtr);
-			return *streamPtr;
-		}
+	// 		mirror_stream(streamPtr);
+	// 		return *streamPtr;
+	// 	}
 
-		return _dataFile;
-	}
+	// 	return _dataFile;
+	// }
 
-	template<typename MirrorBase>
-	inline
-	bool SimpleFile_Logger<MirrorBase>::open() {
-		if (!_dataFile.is_open()) {
-			_dataFile.open(_file_path, std::ios::app);	// Append
-		}
+	// template<typename MirrorBase>
+	// inline
+	// bool SimpleFile_Logger<MirrorBase>::open() {
+	// 	if (!_dataFile.is_open()) {
+	// 		_dataFile.open(_file_path, std::ios::app);	// Append
+	// 	}
 
-		return _dataFile.good();
-	}
+	// 	return _dataFile.good();
+	// }
 
-	template<typename MirrorBase>
-	inline
-	Logger& SimpleFile_Logger<MirrorBase>::logTime() {
-		auto streamPtr {&stream()};
-		auto* logger {mirror_stream(streamPtr)};
+	// template<typename MirrorBase>
+	// inline
+	// Logger& SimpleFile_Logger<MirrorBase>::logTime() {
+	// 	auto streamPtr {&stream()};
+	// 	auto* logger {mirror_stream(streamPtr)};
 
-		while (streamPtr) {
-			*streamPtr << _file_path << " ";
-			logger = logger->mirror_stream(streamPtr);
-		}
+	// 	while (streamPtr) {
+	// 		*streamPtr << _file_path << " ";
+	// 		logger = logger->mirror_stream(streamPtr);
+	// 	}
 
-		MirrorBase::logTime();
-		return *this;
-	}
+	// 	MirrorBase::logTime();
+	// 	return *this;
+	// }
 
-	template<typename MirrorBase>
-	inline 
-	void SimpleFile_Logger<MirrorBase>::flush() {
-		auto streamPtr {&stream()};
-		auto* logger {mirror_stream(streamPtr)};
+	// template<typename MirrorBase>
+	// inline 
+	// void SimpleFile_Logger<MirrorBase>::flush() {
+	// 	auto streamPtr {&stream()};
+	// 	auto* logger {mirror_stream(streamPtr)};
 
-		while (streamPtr && logger != this) {
-			logger->flush();
-			logger = logger->mirror_stream(streamPtr);
-		}
+	// 	while (streamPtr && logger != this) {
+	// 		logger->flush();
+	// 		logger = logger->mirror_stream(streamPtr);
+	// 	}
 
-		MirrorBase::flush();
-		_dataFile.flush();
-	}
+	// 	MirrorBase::flush();
+	// 	_dataFile.flush();
+	// }
 
-	template<typename MirrorBase>
-	inline
-	Logger* SimpleFile_Logger<MirrorBase>::mirror_stream(Logger::ostreamPtr& mirrorStream) {
-		bool isChainedMirror {this != _mirror};
+	// template<typename MirrorBase>
+	// inline
+	// Logger* SimpleFile_Logger<MirrorBase>::mirror_stream(Logger::ostreamPtr& mirrorStream) {
+	// 	bool isChainedMirror {this != _mirror};
 
-		if (isChainedMirror) {
-			mirrorStream = &_mirror->stream();
-			return _mirror;
-		}
+	// 	if (isChainedMirror) {
+	// 		mirrorStream = &_mirror->stream();
+	// 		return _mirror;
+	// 	}
 
-		return MirrorBase::mirror_stream(mirrorStream);
-	}
+	// 	return MirrorBase::mirror_stream(mirrorStream);
+	// }
 
-	/// <summary>
-	/// Logs to file, and mirrors to the provided ostream - typcally clog
-	/// New Filenames are generated for each day
-	/// </summary>
-	template<typename MirrorBase = Console_Logger>
-	class File_Logger : public MirrorBase {
-	public:
-		File_Logger(const std::filesystem::path& filePath) : File_Logger {filePath, L_null} {}
-		File_Logger(const std::filesystem::path& filePath, Flags initFlags, Streamable& mirrorStream = std::clog);
-		File_Logger(const std::filesystem::path& filePath, Flags initFlags, Logger& mirror_chain) : File_Logger {filePath, initFlags} { _mirror = &mirror_chain; }
+	// /// <summary>
+	// /// Logs to file, and mirrors to the provided ostream - typcally clog
+	// /// New Filenames are generated for each day
+	// /// </summary>
+	// template<typename MirrorBase = Console_Logger>
+	// class File_Logger : public MirrorBase {
+	// public:
+	// 	File_Logger(const std::filesystem::path& filePath) : File_Logger {filePath, L_null} {}
+	// 	File_Logger(const std::filesystem::path& filePath, Flags initFlags, Streamable& mirrorStream = std::clog);
+	// 	File_Logger(const std::filesystem::path& filePath, Flags initFlags, Logger& mirror_chain) : File_Logger {filePath, initFlags} { _mirror = &mirror_chain; }
 
-		Streamable& stream() override;
-		void flush() override;
-		Logger* mirror_stream(Logger::ostreamPtr& mirrorStream) override;
-		bool open() override;
+	// 	Streamable& stream() override;
+	// 	void flush() override;
+	// 	Logger* mirror_stream(Logger::ostreamPtr& mirrorStream) override;
+	// 	bool open() override;
 
-	private:
-		Logger& logTime() override;
+	// private:
+	// 	Logger& logTime() override;
 
-		FileNameGenerator _fileNameGenerator;
-		Logger* _mirror {this};
-		std::ofstream _dataFile;
-	};
+	// 	FileNameGenerator _fileNameGenerator;
+	// 	Logger* _mirror {this};
+	// 	std::ofstream _dataFile;
+	// };
 
-	template<typename MirrorBase>
-	inline
-	File_Logger<MirrorBase>::File_Logger(const std::filesystem::path& filePath, Flags initFlags, Streamable& mirrorStream)
-		: MirrorBase {initFlags, mirrorStream}, _fileNameGenerator {filePath} {
-		MirrorBase::stream() << "\nFile_Logger: " << _fileNameGenerator.stem() << '\n';
-	}
+	// template<typename MirrorBase>
+	// inline
+	// File_Logger<MirrorBase>::File_Logger(const std::filesystem::path& filePath, Flags initFlags, Streamable& mirrorStream)
+	// 	: MirrorBase {initFlags, mirrorStream}, _fileNameGenerator {filePath} {
+	// 	MirrorBase::stream() << "\nFile_Logger: " << _fileNameGenerator.stem() << '\n';
+	// }
 
-	template<typename MirrorBase>
-	inline
-	Streamable& File_Logger<MirrorBase>::stream() {
-		if (MirrorBase::is_cout() || !open()) {
-			Logger::ostreamPtr streamPtr {&_dataFile};
+	// template<typename MirrorBase>
+	// inline
+	// Streamable& File_Logger<MirrorBase>::stream() {
+	// 	if (MirrorBase::is_cout() || !open()) {
+	// 		Logger::ostreamPtr streamPtr {&_dataFile};
 
-			mirror_stream(streamPtr);
-			return *streamPtr;
-		}
+	// 		mirror_stream(streamPtr);
+	// 		return *streamPtr;
+	// 	}
 
-		return _dataFile;
-	}
+	// 	return _dataFile;
+	// }
 
-	template<typename MirrorBase>
-	inline
-	bool File_Logger<MirrorBase>::open() {
-		if (_fileNameGenerator.isNewDay(*this))
-			_dataFile.close();
+	// template<typename MirrorBase>
+	// inline
+	// bool File_Logger<MirrorBase>::open() {
+	// 	if (_fileNameGenerator.isNewDay(*this))
+	// 		_dataFile.close();
 
-		if (!_dataFile.is_open()) {
-			_dataFile.open(_fileNameGenerator(*this), std::ios::app);	// Append
-		}
+	// 	if (!_dataFile.is_open()) {
+	// 		_dataFile.open(_fileNameGenerator(*this), std::ios::app);	// Append
+	// 	}
 
-		return _dataFile.good();
-	}
+	// 	return _dataFile.good();
+	// }
 
-	template<typename MirrorBase>
-	inline
-	Logger& File_Logger<MirrorBase>::logTime() {
-		auto streamPtr {&stream()};
-		auto* logger {mirror_stream(streamPtr)};
+	// template<typename MirrorBase>
+	// inline
+	// Logger& File_Logger<MirrorBase>::logTime() {
+	// 	auto streamPtr {&stream()};
+	// 	auto* logger {mirror_stream(streamPtr)};
 
-		while (streamPtr) {
-			*streamPtr << _fileNameGenerator.stem() << " ";
-			logger = logger->mirror_stream(streamPtr);
-		}
+	// 	while (streamPtr) {
+	// 		*streamPtr << _fileNameGenerator.stem() << " ";
+	// 		logger = logger->mirror_stream(streamPtr);
+	// 	}
 
-		MirrorBase::logTime();
-		return *this;
-	}
+	// 	MirrorBase::logTime();
+	// 	return *this;
+	// }
 
-	template<typename MirrorBase>
-	inline
-	void File_Logger<MirrorBase>::flush() {
-		auto streamPtr {&stream()};
-		auto* logger {mirror_stream(streamPtr)};
+	// template<typename MirrorBase>
+	// inline
+	// void File_Logger<MirrorBase>::flush() {
+	// 	auto streamPtr {&stream()};
+	// 	auto* logger {mirror_stream(streamPtr)};
 
-		while (streamPtr && logger != this) {
-			logger->flush();
-			logger = logger->mirror_stream(streamPtr);
-		}
+	// 	while (streamPtr && logger != this) {
+	// 		logger->flush();
+	// 		logger = logger->mirror_stream(streamPtr);
+	// 	}
 
-		MirrorBase::flush();
-		_dataFile.flush();
-	}
+	// 	MirrorBase::flush();
+	// 	_dataFile.flush();
+	// }
 
-	template<typename MirrorBase>
-	inline
-	Logger* File_Logger<MirrorBase>::mirror_stream(Logger::ostreamPtr& mirrorStream) {
-		bool isChainedMirror {this != _mirror};
+	// template<typename MirrorBase>
+	// inline
+	// Logger* File_Logger<MirrorBase>::mirror_stream(Logger::ostreamPtr& mirrorStream) {
+	// 	bool isChainedMirror {this != _mirror};
 
-		if (isChainedMirror) {
-			mirrorStream = &_mirror->stream();
-			return _mirror;
-		}
+	// 	if (isChainedMirror) {
+	// 		mirrorStream = &_mirror->stream();
+	// 		return _mirror;
+	// 	}
 
-		return MirrorBase::mirror_stream(mirrorStream);
-	}
+	// 	return MirrorBase::mirror_stream(mirrorStream);
+	// }
 
-	inline
-		FileNameGenerator::FileNameGenerator(const std::filesystem::path& filePath) : _filePath {filePath} {
+	// inline
+	// 	FileNameGenerator::FileNameGenerator(const std::filesystem::path& filePath) : _filePath {filePath} {
 		
-		_fileNameStem = _filePath.filename().string();
-		_fileNameStem.resize(FILE_NAME_LENGTH - 4);
+	// 	_fileNameStem = _filePath.filename().string();
+	// 	_fileNameStem.resize(FILE_NAME_LENGTH - 4);
 
-		cerr << "FileNameGenerator::FileNameGenerator(), filePath" << filePath << ", _fileNameStem=" <<  _fileNameStem << endl;
+	// 	cerr << "FileNameGenerator::FileNameGenerator(), filePath" << filePath << ", _fileNameStem=" <<  _fileNameStem << endl;
 
-		if (!_filePath.has_extension())
-			_filePath += ".txt";
-	}
+	// 	if (!_filePath.has_extension())
+	// 		_filePath += ".txt";
+	// }
 
-	inline
-		std::string FileNameGenerator::operator()(const Logger& logger) {
-		if (logger.log_date.dayNo == 0)
-			logger.getTime();
+	// inline
+	// 	std::string FileNameGenerator::operator()(const Logger& logger) {
+	// 	if (logger.log_date.dayNo == 0)
+	// 		logger.getTime();
 
-		_fileDayNo = logger.log_date.dayNo;
+	// 	_fileDayNo = logger.log_date.dayNo;
 
-		auto fileName {std::stringstream {}};
+	// 	auto fileName {std::stringstream {}};
 
-		fileName << _fileNameStem << std::setfill('0') << std::setw(2) << (int)logger.log_date.monthNo << std::setw(2) << (int)_fileDayNo;
-		_filePath.replace_filename(fileName.str()) += _filePath.extension();
-		return _filePath.string();
-	}
+	// 	fileName << _fileNameStem << std::setfill('0') << std::setw(2) << (int)logger.log_date.monthNo << std::setw(2) << (int)_fileDayNo;
+	// 	_filePath.replace_filename(fileName.str()) += _filePath.extension();
+	// 	return _filePath.string();
+	// }
 
-	class Ram_Buffer : public std::streambuf {	// derive because std::streambuf constructor is protected
-	public:
-		Ram_Buffer(char* start, size_t size, Logger& logger) : _logger {&logger} { setp(start, start + size); }
-		void empty_buffer() { setp(pbase(), epptr()); }
-		auto start() const { return pbase(); }
-		auto pos() const { return pptr(); }
+	// class Ram_Buffer : public std::streambuf {	// derive because std::streambuf constructor is protected
+	// public:
+	// 	Ram_Buffer(char* start, size_t size, Logger& logger) : _logger {&logger} { setp(start, start + size); }
+	// 	void empty_buffer() { setp(pbase(), epptr()); }
+	// 	auto start() const { return pbase(); }
+	// 	auto pos() const { return pptr(); }
 
-	private:
-		int_type overflow(int_type ch) override {
-			_logger->flush();
-			sputc(static_cast<char>(ch));
-			return std::char_traits<char>::not_eof(0);
-		}
+	// private:
+	// 	int_type overflow(int_type ch) override {
+	// 		_logger->flush();
+	// 		sputc(static_cast<char>(ch));
+	// 		return std::char_traits<char>::not_eof(0);
+	// 	}
 
-		Logger* _logger;
-	};
+	// 	Logger* _logger;
+	// };
 
-	/// <summary>
-	/// Logs to RAM and flushes to file when ram-buffer is full.
-	/// Mirrors to the provided ostream - typcally cout.
-	/// </summary>
-	template<typename MirrorBase = Logger>
-	class RAM_Logger : public File_Logger<MirrorBase> {
-	public:
-		RAM_Logger(uint16_t ramFile_size, const std::string& fileNameStem, Flags initFlags, std::ostream& ostream = std::clog);
-		std::ostream& stream() override { return _stream; }
-		void flush() override;
+	// /// <summary>
+	// /// Logs to RAM and flushes to file when ram-buffer is full.
+	// /// Mirrors to the provided ostream - typcally cout.
+	// /// </summary>
+	// template<typename MirrorBase = Logger>
+	// class RAM_Logger : public File_Logger<MirrorBase> {
+	// public:
+	// 	RAM_Logger(uint16_t ramFile_size, const std::string& fileNameStem, Flags initFlags, std::ostream& ostream = std::clog);
+	// 	std::ostream& stream() override { return _stream; }
+	// 	void flush() override;
 
-	private:
-		std::unique_ptr<char[]> _ramFile;
-		Ram_Buffer _ramBuffer;
-		std::ostream _stream;
-	};
+	// private:
+	// 	std::unique_ptr<char[]> _ramFile;
+	// 	Ram_Buffer _ramBuffer;
+	// 	std::ostream _stream;
+	// };
 
-	template<typename MirrorBase>
-		inline
-	RAM_Logger<MirrorBase>::RAM_Logger(uint16_t ramFile_size, const std::string& fileNameStem, Flags initFlags, std::ostream& ostream)
-		: File_Logger<MirrorBase> {fileNameStem, initFlags, ostream}
-		, _ramFile {std::make_unique<char[]>(ramFile_size)}
-		, _ramBuffer {_ramFile.get(), ramFile_size, *this}
-		, _stream {&_ramBuffer} {}
+	// template<typename MirrorBase>
+	// 	inline
+	// RAM_Logger<MirrorBase>::RAM_Logger(uint16_t ramFile_size, const std::string& fileNameStem, Flags initFlags, std::ostream& ostream)
+	// 	: File_Logger<MirrorBase> {fileNameStem, initFlags, ostream}
+	// 	, _ramFile {std::make_unique<char[]>(ramFile_size)}
+	// 	, _ramBuffer {_ramFile.get(), ramFile_size, *this}
+	// 	, _stream {&_ramBuffer} {}
 
-	template<typename MirrorBase>
-		inline
-	void RAM_Logger<MirrorBase>::flush() {
-		for (char* c = _ramBuffer.start(); c < _ramBuffer.pos(); ++c)
-			File_Logger<MirrorBase>::stream() << *c;
+	// template<typename MirrorBase>
+	// 	inline
+	// void RAM_Logger<MirrorBase>::flush() {
+	// 	for (char* c = _ramBuffer.start(); c < _ramBuffer.pos(); ++c)
+	// 		File_Logger<MirrorBase>::stream() << *c;
 
-		_ramBuffer.empty_buffer();
-	}
+	// 	_ramBuffer.empty_buffer();
+	// }
 
 	inline Logger& logger() {
 		static Console_Logger std_log {};

@@ -96,8 +96,6 @@ TEST(utils, poor_man_tmpnam) {
   create_directories(sandbox);
   EXPECT_TRUE(exists(sandbox));
 
-
-
   bool good = true;
   for (int i = 0; i < 1000; i++) {
     string path = poor_man_tmpnam("titi", sandbox);
@@ -110,5 +108,4 @@ TEST(utils, poor_man_tmpnam) {
 
   remove_all(sandbox);
   EXPECT_FALSE(exists(sandbox)); 
-
 }

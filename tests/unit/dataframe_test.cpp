@@ -160,6 +160,9 @@ TEST(df, subsetColumns_col_names) {
   // bad colnames
   EXPECT_THROW(df.subsetColumns({"toto"}), runtime_error);
 
+  // ============ no colnames in df ===========
+  DataFrame df0(1, 1);
+  EXPECT_THROW(df0.subsetColumns(col_names), runtime_error);
 }
 
 
@@ -267,4 +270,10 @@ TEST(df, load) {
   string tmp = poor_man_tmpnam("DF_load");
   ofstream out(tmp);
   out << CSV1;
+  out.close();
+
+  EXPECT_EQ(DataFrame::load(tmp, true), DataFrame(CSV1, true));
+  EXPECT_EQ(DataFrame::load(tmp, false), DataFrame(CSV1, false));
+
+  remove(tmp);
 }

@@ -30,6 +30,7 @@ jobs:
         compiler: ${{ matrix.compiler }}
         cmake: true
         make: true
+        kcov: true
 
 
     # Updated Windows setup step: try to fix mingw c++ build on windows to correctly execute executables
@@ -75,23 +76,30 @@ jobs:
         path: junit.xml
         reporter: java-junit
 
-    # install lcov for parsing the test coverage
-    - name: ⚙️ Install lcov
-      if: runner.os == 'Linux' && github.ref == 'refs/heads/main'
-      run: |
-        sudo apt-get update
-        sudo apt-get -y install lcov
+    # # install lcov for parsing the test coverage
+    # - name: ⚙️ Install lcov
+    #   if: runner.os == 'Linux' && github.ref == 'refs/heads/main'
+    #   run: |
+    #     sudo apt-get update
+    #     sudo apt-get -y install lcov
 
     # generate the test coverage info
-    - name: coverage.info
-      if: runner.os == 'Linux' && github.ref == 'refs/heads/main'
-      run: make coverage/info
+    - name: kcov
+      # if: runner.os == 'Linux' && github.ref == 'refs/heads/kcov'
+      if: runner.os == 'Linux'
+      run: make kcov
+
+    # # generate the test coverage info
+    # - name: coverage.info
+    #   if: runner.os == 'Linux' && github.ref == 'refs/heads/main'
+    #   run: make coverage/info
 
     - name: Upload coverage to Codecov
-      if: runner.os == 'Linux' && github.ref == 'refs/heads/main'
+      # if: runner.os == 'Linux' && github.ref == 'refs/heads/main'
+      if: runner.os == 'Linux'
       uses: codecov/codecov-action@v5
       with:
-        files: .coverage/coverage.info
+        files: .kcov/kcov-merged/codecov.json
         flags: unittests
         fail_ci_if_error: true
         token: ${{ secrets.CODECOV_TOKEN }}

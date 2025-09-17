@@ -15,7 +15,7 @@ FuzzyCocoEngine::FuzzyCocoEngine(const DataFrame& dfin, const DataFrame& dfout, 
   _mfs_engine(params.mfs_params, rng)
 {
   if (params.has_missing()) throw runtime_error("ERROR: some parameters in params are missing!");
-}
+}//KCOV IGNORE
 
 
 namespace fuzzy_coco {
@@ -74,7 +74,7 @@ Genomes FuzzyCocoEngine::buildRulesGenomes(int nb_pop_rules) {
     rules.push_back(rules_geno);
   }
   return rules;
-}
+}//KCOV IGNORE
 
 Genomes FuzzyCocoEngine::buildMFsGenomes(int nb_pop_mfs) {
   Genomes mfs;
@@ -86,7 +86,7 @@ Genomes FuzzyCocoEngine::buildMFsGenomes(int nb_pop_mfs) {
   }
 
   return mfs;
-}
+}//KCOV IGNORE
 
 CoevGeneration FuzzyCocoEngine::start(int nb_pop_rules, int nb_pop_mfs) {
   Genomes rules = buildRulesGenomes(nb_pop_rules);
@@ -100,7 +100,7 @@ CoevGeneration FuzzyCocoEngine::start(const Genomes& rules, const Genomes& mfs) 
     {mfs, getParams().mfs_params.elite_size});
   update(cogen);
   return cogen;
-}
+}//KCOV IGNORE
 
 void FuzzyCocoEngine::update(CoevGeneration& cogen) {
   getCoevolutionEngine().updateGeneration(cogen);

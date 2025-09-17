@@ -18,7 +18,7 @@ vector<string> FuzzyVariable::build_default_set_names(int nbsets, const string& 
   for (int i = 0; i < nbsets; i++)
     set_names.push_back(set_base_name + '.' + std::to_string(i + 1));
   return set_names;
-}
+}//KCOV IGNORE
 
 /**
   * Return the index of an attached set (for example : by default MF0 is 0, MF1 is 1, ...).
@@ -43,13 +43,13 @@ NamedList FuzzyVariable::describe() const {
     lst.add(getSet(i).getName(), getSet(i).describe());
 
   return lst;
-}
+}//KCOV IGNORE
 
 FuzzyVariable FuzzyVariable::load(const NamedList& desc) {
   FuzzyVariable var(desc.name(), desc.size());
   var.setSetsPositions(desc);
   return var;
-}
+}//KCOV IGNORE
 
 FuzzyVariable FuzzyVariable::load(const string& content) {
   return load(NamedList::parse(content));

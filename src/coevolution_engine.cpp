@@ -30,7 +30,7 @@ CoevGeneration CoevolutionEngine::start(const Genomes& left_genos, const Genomes
   updateGeneration(cogen);
 
   return cogen;
-}
+}//KCOV IGNORE
 
 
 pair<CoevGeneration, vector<double>> CoevolutionEngine::evolve(const Genomes& left_genos, const Genomes& right_genos, int nb_generations, double maxFit)

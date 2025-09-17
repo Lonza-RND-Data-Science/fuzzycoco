@@ -48,7 +48,7 @@ vector<FuzzyDefaultRule> FuzzySystem::fetchDefaultRules() const
     rules.emplace_back(getDB(), var_idx, set_idxs[var_idx]);
   }
   return rules;
-}
+}//KCOV IGNORE
 
 
 // N.B: if the set idx of a default rule is out of range --> set it to 0
@@ -305,7 +305,7 @@ vector<double> FuzzySystem::computeRulesFireLevels(const vector<double>& input_v
     fire_levels.push_back( getRule(rule_idx).evaluateFireLevel(input_values) );
   }
   return fire_levels;
-}
+}//KCOV IGNORE
 
 // the fire levels for each rule are applied and MAXed to the corresponding consequent output vars
 // N.B: those max fire levels are used for the default rules

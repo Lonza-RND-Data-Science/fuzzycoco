@@ -53,6 +53,8 @@ TEST(Logger, misc) {
     << L_location << L_null << L_startWithFlushing
     << L_tabs << L_time;
 
+    logger << endl;
+
   {
     ostringstream oss;
     Console_Logger logger(L_startWithFlushing, oss);
@@ -60,6 +62,11 @@ TEST(Logger, misc) {
   }
 
   EXPECT_FALSE(logger.open());
+
+  
+  auto streamPtr {&logger.stream()};
+  logger.mirror_stream(streamPtr);
+
 }
 
 // TEST(File_Logger, misc) {

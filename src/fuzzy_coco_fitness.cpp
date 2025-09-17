@@ -24,7 +24,7 @@ FuzzyCocoFitnessMethod::FuzzyCocoFitnessMethod(FuzzySystem& fs,FuzzySystemFitnes
       _thresholds(params.fitness_params.output_vars_defuzz_thresholds)
 {
   assert(_thresholds.size() == (size_t)dfout.nbcols());
-}
+}//KCOV IGNORE
 
 bool FuzzyCocoFitnessMethod::resetFuzzySystem(const Genome& rules_genome, const Genome& vars_genome)
 {

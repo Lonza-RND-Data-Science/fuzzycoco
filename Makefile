@@ -37,14 +37,15 @@ coverage/info:
 	lcov --remove $(COVERAGE_INFO) '/usr/*'  'tests/*' --ignore-errors unused --output-file $(COVERAGE_INFO)
 	lcov --list $(COVERAGE_INFO)
 
+KCOV_COMMAND=kcov --exclude-line='//KCOV IGNORE' --include-pattern=fuzzycoco/src .kcov
 kcov:
 	for test in .build/tests/unit/*_test; do \
-		kcov --include-pattern=fuzzycoco/src .kcov $$test; \
+		$(KCOV_COMMAND) $$test; \
 	done
 
 FILE=
 kcov/file:
-	kcov --include-pattern=fuzzycoco/src .kcov $(FILE)
+	$(KCOV_COMMAND) $(FILE)
 
 coverage/html:
 	genhtml .coverage/coverage.info --output-directory .coverage

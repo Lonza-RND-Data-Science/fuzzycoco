@@ -63,13 +63,21 @@ FuzzySystemMetrics FuzzySystemMetricsComputer::computeForOneVariable(const vecto
       metrics += m;
 
       const double dist = m.distanceThreshold;
-      if (dist >= 0) { //above
-        sumDistAbove += distanceMin(dist);
-        distMinAbove = min(distMinAbove, dist);
-      } else {
-        sumDistBelow += distanceMin(-dist);
-        distMinBelow = min(distMinBelow, -dist);
-      }
+
+      // N.B: can never be negative since only set when both predicted and actual have the same
+      // threshold-sign
+      assert(dist >= 0);
+
+      sumDistAbove += distanceMin(dist);
+      distMinAbove = min(distMinAbove, dist);
+
+      // if (dist >= 0) { //above
+      //   sumDistAbove += distanceMin(dist);
+      //   distMinAbove = min(distMinAbove, dist);
+      // } else {
+      //   sumDistBelow += distanceMin(-dist);
+      //   distMinBelow = min(distMinBelow, -dist);
+      // }
   }
   if (actual_nb == 0) return metrics;
 

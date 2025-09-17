@@ -52,6 +52,13 @@ TEST(FuzzySystemMetricsComputer, computeForOneValue) {
   EXPECT_EQ(metrics.false_positives, 1);
   EXPECT_DOUBLE_EQ(metrics.distanceThreshold, 0.0);
   EXPECT_DOUBLE_EQ(metrics.mse, 70.0*70);
+
+  // NA
+  {
+    auto m1 = cp.computeForOneValue(0, MISSING_DATA_DOUBLE, 0);
+    EXPECT_EQ(m1, FuzzySystemMetrics());
+  }
+
 }
 
 TEST(FuzzySystemMetricsComputer, computeForOneVariable) {

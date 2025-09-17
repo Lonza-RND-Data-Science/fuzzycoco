@@ -96,7 +96,7 @@ NumColumn DataFrame::fetchRow(int row) const {
     values[col] = _cols[col][row];
   }
   return values;
-}
+}//KCOV IGNORE
 
 void DataFrame::fillRow(int row, const vector<double>& values) {
   assert(row >= 0 && row < _nbrows);
@@ -138,7 +138,7 @@ DataFrame DataFrame::subsetColumns(const vector<int>& col_idx) const {
   }
 
   return df;
-}
+}//KCOV IGNORE
 
 DataFrame DataFrame::subsetColumns(const vector<string>& col_names)  const{
   unordered_map<string, int> colname_to_idx;

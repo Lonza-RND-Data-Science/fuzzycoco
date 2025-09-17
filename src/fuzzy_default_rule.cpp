@@ -29,7 +29,7 @@ NamedList FuzzyDefaultRule::describeDefaultRules(const vector<FuzzyDefaultRule>&
     desc.add(rule_desc.name(), rule_desc);
   }
   return desc;
-}
+}//KCOV IGNORE
 
 vector<FuzzyDefaultRule> FuzzyDefaultRule::loadDefaultRules(const NamedList& desc, const FuzzyVariablesDB& db)
 {
@@ -38,7 +38,7 @@ vector<FuzzyDefaultRule> FuzzyDefaultRule::loadDefaultRules(const NamedList& des
   for (size_t i = 0; i < desc.size(); i++) 
     default_rules.emplace_back(FuzzyDefaultRule::load(desc[i], db));
   return default_rules;
-}
+}//KCOV IGNORE
 
 void FuzzyDefaultRule::printDescription(ostream& out, const NamedList& desc)
 {

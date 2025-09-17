@@ -243,7 +243,7 @@ vector<string> NamedList::names() const {
   for (const auto& child : _children)
       res.push_back(child._name);
   return res;
-}
+}//KCOV IGNORE
 
 void NamedList::print(ostream& out, int indent, bool toplevel) const {
   char SPACE = ' ';

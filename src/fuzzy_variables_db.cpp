@@ -126,7 +126,7 @@ FuzzyVariablesDB FuzzyVariablesDB::load(const NamedList& desc) {
   db.setPositions(output);
 
   return db;
-}
+}//KCOV IGNORE
 
 FuzzyVariablesDB FuzzyVariablesDB::subset(const vector<int>& input_var_idx, const vector<int>& output_var_idx) const {
   FuzzyVariablesDB db2;
@@ -144,7 +144,7 @@ FuzzyVariablesDB FuzzyVariablesDB::subset(const vector<int>& input_var_idx, cons
   }
 
   return db2;
-}
+} //KCOV IGNORE
 
 vector<string> FuzzyVariablesDB::build_default_var_names(int nbvars, const string& base_name)
 {
@@ -153,7 +153,7 @@ vector<string> FuzzyVariablesDB::build_default_var_names(int nbvars, const strin
   for (int i = 0; i < nbvars; i++)
     names.push_back(base_name + '_' + std::to_string(i + 1));
   return names;
-}
+}//KCOV IGNORE
 
 map<string, int> FuzzyVariablesDB::build_var_names_to_index_mapper(const vector<FuzzyVariable>& vars)
 {
@@ -162,7 +162,7 @@ map<string, int> FuzzyVariablesDB::build_var_names_to_index_mapper(const vector<
   for (int i = 0; i < nb; i++)
     var_to_idx[vars[i].getName()] = i;
   return var_to_idx;
-}
+}//KCOV IGNORE
 
 map<string, int> FuzzyVariablesDB::build_set_names_to_index_mapper(const FuzzyVariable& var)
 {
@@ -170,7 +170,7 @@ map<string, int> FuzzyVariablesDB::build_set_names_to_index_mapper(const FuzzyVa
   for (int j = 0; j < var.getSetsCount(); j++)
     set_to_idx[var.getSet(j).getName()] = j;
   return set_to_idx;
-}
+}//KCOV IGNORE
 
 vector< map<string, int> > FuzzyVariablesDB::build_vars_set_names_to_index_mapper(const vector<FuzzyVariable>& vars)
 {
@@ -180,7 +180,7 @@ vector< map<string, int> > FuzzyVariablesDB::build_vars_set_names_to_index_mappe
     set_names_to_idx[i] = build_set_names_to_index_mapper(vars[i]);
   
   return set_names_to_idx;
-}
+}//KCOV IGNORE
 
 namespace fuzzy_coco {
   ostream& operator<<(ostream& out, const FuzzyVariablesDB& db) 

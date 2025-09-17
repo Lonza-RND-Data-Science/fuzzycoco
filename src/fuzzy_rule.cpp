@@ -147,7 +147,7 @@ NamedList FuzzyRule::describeRules(const vector <FuzzyRule>& rules, bool set_pos
     desc.add("rule" + std::to_string(i + 1), rules[i].describe(set_pos));
   }
   return desc;
-}
+}//KCOV IGNORE
 
 vector<FuzzyRule> FuzzyRule::loadRules(const NamedList& desc, const FuzzyVariablesDB& db)
 {
@@ -157,7 +157,7 @@ vector<FuzzyRule> FuzzyRule::loadRules(const NamedList& desc, const FuzzyVariabl
   for (int i = 0; i < nb_rules; i++) 
     rules.emplace_back(FuzzyRule::load(desc[i], db));
   return rules;
-}
+}//KCOV IGNORE
 
 void FuzzyRule::printDescription(ostream& out, const NamedList& desc)
 {

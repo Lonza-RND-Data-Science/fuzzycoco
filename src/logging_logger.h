@@ -86,10 +86,11 @@ namespace logging {
 		virtual Streamable& stream();
 
 		using ostreamPtr = Streamable*;
-		virtual Logger* mirror_stream(ostreamPtr& mirrorStream) {
-			mirrorStream = nullptr;
-			return this;
-		}
+    virtual Logger* mirror_stream(ostreamPtr& mirrorStream)  = 0;
+		// virtual Logger* mirror_stream(ostreamPtr& mirrorStream) {
+		// 	mirrorStream = nullptr;
+		// 	return this;
+		// }
 
 	protected:
 		Logger(Flags initFlag = L_null) : _flags {initFlag} {}

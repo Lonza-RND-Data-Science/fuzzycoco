@@ -582,6 +582,20 @@ TEST(NamedList, as_numeric_vector) {
   lst3.add("Temperature", 0.5);
   auto v2 = lst3.get_list("Temperature").as_numeric_vector();
   EXPECT_EQ(v2, vector<double>({0.5}));
+
+
+  // =============== edge cases ===============
+  { // empty
+    NamedList lst;
+    EXPECT_TRUE(lst.as_numeric_vector().empty());
+  }
+
+  { // not numeric
+    NamedList lst;
+    lst.add("key", "value");
+    EXPECT_THROW(lst.as_numeric_vector(), runtime_error);
+  }
+
 }
 
 
@@ -659,6 +673,18 @@ TEST(NamedList, add_map__as_string_numeric_map) {
   auto hash2 = lst["hash"].as_string_numeric_map();
   EXPECT_EQ(hash2, hash);
   // cerr << hash2;
+
+  { // empty
+    NamedList lst;
+    EXPECT_TRUE(lst.as_string_numeric_map().empty());
+  }
+
+  { // not numeric
+    NamedList lst;
+    lst.add("key", "value");
+    EXPECT_THROW(lst.as_string_numeric_map(), runtime_error);
+  }
+
 
 }
 

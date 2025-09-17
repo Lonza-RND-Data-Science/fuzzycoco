@@ -81,7 +81,7 @@ Genome FuzzyCocoCodec::encode(const Matrix<double>& pos_in, const Matrix<double>
   Genome geno(getMFsCodec().size());
   getMFsCodec().encode(pos_in, pos_out, geno);
   return geno;
-}
+}//KCOV IGNORE
 
 void FuzzyCocoCodec::decode(const Genome& mfs_genome, Matrix<double>& pos_in, Matrix<double>& pos_out)
 {
@@ -146,7 +146,7 @@ vector<Discretizer> FuzzyCocoCodec::createDiscretizersForData(const DataFrame& d
   }
 
   return res;
-}
+}//KCOV IGNORE
 
 void FuzzyCocoCodec::modifyRuleAntecedent(Genome& rules_genome, int rule_idx, int ant_idx, int var_idx)
 {

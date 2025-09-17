@@ -37,4 +37,4 @@ namespace fuzzy_coco {
       out << noboolalpha << bit;
     return out;
   }
-}
+}//KCOV IGNORE

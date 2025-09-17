@@ -129,4 +129,5 @@ namespace fuzzy_coco {
 
     return out;
   }
-}
+}//KCOV IGNORE
+

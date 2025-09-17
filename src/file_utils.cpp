@@ -56,14 +56,6 @@ void print_na(ostream& out, double v) {
   }
 }
 
-void print_na(ostream& out, int i) {
-  if (is_na(i)) {
-      out << "NA";
-  } else {
-      out << i;
-  }
-}
-
 void FileUtils::writeCSV(ostream& out, const DataFrame& df, char delim) {
   const auto& colnames = df.colnames();
   const int nbcols = df.nbcols();
@@ -97,4 +89,14 @@ string FileUtils::slurp(const path& filename)
     res += line + "\n";
 
   return res;
+}
+
+string FileUtils::poor_man_tmpnam(string prefix, string dir) {
+  static int counter = 0;
+  ++counter;
+
+  // Use time + counter to reduce collisions
+  auto now = time(nullptr);
+
+  return dir + "/" + prefix +  "_" + std::to_string(now) + "_" + std::to_string(counter);
 }

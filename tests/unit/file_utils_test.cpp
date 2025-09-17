@@ -35,7 +35,7 @@ TEST(utils, parseCSV_file) {
   // no file --> exception
   EXPECT_THROW(parseCSV(path("file_that_does_not.exist"), tokens), filesystem_error);
 
-  path temp_filename = tmpnam(nullptr);
+  path temp_filename = poor_man_tmpnam("parseCSV_file");
   {
     ofstream out(temp_filename);
     out << CSV1 << endl;
@@ -74,13 +74,41 @@ TEST(utils, mkdir_if_needed) {
 }
 
 TEST(utils, writeCSV) {
-  DataFrame df(CSV1, true);
+  DataFrame df(CSV1, false);
+
+  df.set(0, 5, MISSING_DATA_DOUBLE);
+
   ostringstream out;
   writeCSV(out, df);
 
   string csv = out.str();
 
-  DataFrame df2(csv, true);
+  DataFrame df2(csv, false);
   cerr << df << df2;
+  EXPECT_EQ(df2, df);
+}
+
+
+TEST(utils, poor_man_tmpnam) {
+  string sandbox = poor_man_tmpnam("toto");
+  EXPECT_FALSE(exists(sandbox));
+
+  create_directories(sandbox);
+  EXPECT_TRUE(exists(sandbox));
+
+
+
+  bool good = true;
+  for (int i = 0; i < 1000; i++) {
+    string path = poor_man_tmpnam("titi", sandbox);
+
+    if (exists(path)) good = false;
+    ofstream ofs(path);
+    if (!exists(path)) good = false;
+  }
+  EXPECT_TRUE(good);
+
+  remove_all(sandbox);
+  EXPECT_FALSE(exists(sandbox)); 
 
 }

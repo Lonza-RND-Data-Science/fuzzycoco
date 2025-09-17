@@ -1,13 +1,6 @@
-/**
-  * @file   file_utils.h
-  * @author Karl Forner <karl.forner@gmail.com>
-  * @date   09.2024
-  * @brief misc utilities
-  */
 
-
-#ifndef FUZZY_COCO_UTILS_H
-#define FUZZY_COCO_UTILS_H
+#ifndef FILE_UTILS_H
+#define FILE_UTILS_H
 
 #include <string>
 #include <vector>
@@ -27,12 +20,16 @@ namespace FileUtils
   void parseCSV(istream& in, vector<vector<string>>& tokens, char delim = ';');
   void parseCSV(const path& filename, vector<vector<string>>& tokens, char delim = ';');
 
+  // N.B: do not write the rownames
   void writeCSV(ostream& out, const DataFrame& df, char delim = ';');
 
   string slurp(const path& filename);
+
+  // a poor man's version of tmpnam (forbidden by some compilers, not secure but only used in tests
+  string poor_man_tmpnam(string prefix, string dir = temp_directory_path());
 
 };
 
 
 }
-#endif // FUZZY_COCO_UTILS_H
+#endif // FILE_UTILS_H

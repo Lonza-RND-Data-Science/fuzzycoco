@@ -1,5 +1,6 @@
 #include "tests.h"
 #include <cstdio>
+#include <fstream>
 #include "file_utils.h"
 #include "dataframe.h"
 
@@ -263,5 +264,7 @@ TEST(df, output) {
 }
 
 TEST(df, load) {
-
+  string tmp = poor_man_tmpnam("DF_load");
+  ofstream out(tmp);
+  out << CSV1;
 }

@@ -26,7 +26,7 @@ namespace FileUtils
   string slurp(const path& filename);
 
   // a poor man's version of tmpnam (forbidden by some compilers, not secure but only used in tests
-  string poor_man_tmpnam(string prefix, string dir = temp_directory_path());
+  string poor_man_tmpnam(string prefix, string dir = temp_directory_path().string());
 
 };
 

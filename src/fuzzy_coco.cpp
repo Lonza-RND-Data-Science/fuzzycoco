@@ -2,6 +2,7 @@
 
 #include "fuzzy_coco.h"
 #include "file_utils.h"
+#include "fuzzy_rule.h"
 #include "logging_logger.h"
 
 using namespace fuzzy_coco;
@@ -22,6 +23,48 @@ FuzzyCoco::FuzzyCoco(const DataFrame& dfin, const DataFrame& dfout, const FuzzyC
     _fitter_ptr(selectFitnessMethods(dfin, dfout, params, _fuzzy_system, *_fuzzy_system_fitter_ptr)),
     _engine(dfin, dfout, *_fitter_ptr, params, rng)
 {}
+
+void FuzzyCoco::resetTrainingState() {
+  _has_active_generation = false;
+  _current_fitness = 0.0;
+}
+
+void FuzzyCoco::init(RandomGenerator& rng, bool influence, double evolving_ratio) {
+  resetTrainingState();
+  _active_generation = start(rng, influence, evolving_ratio);
+  _active_generation.generation_number = 0;
+  _current_fitness = 0.0;
+  _has_active_generation = true;
+
+  getEngine().rebuildBestFuzzySystem();
+  logger() << "initial rules: " << FuzzyRule::describeRules(getFuzzySystem().getRules());
+}
+
+void FuzzyCoco::init(bool influence, double evolving_ratio) {
+  init(getEngine().getRng(), influence, evolving_ratio);
+}
+
+double FuzzyCoco::step() {
+  if (!_has_active_generation) {
+    throw runtime_error("FuzzyCoco::step() called before init()");
+  }
+
+  auto next_gen = getEngine().next(_active_generation);
+  _active_generation = next_gen;
+  _current_fitness = _active_generation.fitness;
+
+  logger() << L_time << "generation " << _active_generation.generation_number
+           << ": fitness=" << _current_fitness << endl;
+  return _current_fitness;
+}
+
+int FuzzyCoco::currentGenerationNumber() const {
+  return _has_active_generation ? _active_generation.generation_number : 0;
+}
+
+double FuzzyCoco::currentFitness() const {
+  return _current_fitness;
+}
 
 unique_ptr<FuzzySystemFitness> 
 FuzzyCoco::selectFuzzySystemFitness(const FuzzyCocoParams& params)
@@ -77,12 +120,38 @@ CoevGeneration FuzzyCoco::run(int nb, double max_fit, bool influence, double evo
 }
 
 CoevGeneration FuzzyCoco::run(int nb, double max_fit, RandomGenerator& rng, bool influence, double evolving_ratio) {
-  auto gen = start(rng, influence, evolving_ratio);
-  return getEngine().run(gen, nb, max_fit);
+  init(rng, influence, evolving_ratio);
+
+  logger() << L_time << "FuzzyCocoEngine::run() " << nb << " generations"
+           << ", max_fit=" << max_fit << endl;
+  for (int i = 0; i < nb; i++) {
+    double fitness = step();
+    if (fitness >= max_fit) break;
+  }
+  logger() << endl;
+
+  return _active_generation;
 }
 
 CoevGeneration FuzzyCoco::run(int nb, double max_fit, CoevGeneration& from_gen) {
-  return getEngine().run(from_gen, nb, max_fit);
+  resetTrainingState();
+  _active_generation = from_gen;
+  _has_active_generation = true;
+  _current_fitness = _active_generation.fitness;
+
+  getEngine().rebuildBestFuzzySystem();
+  logger() << "initial rules: " << FuzzyRule::describeRules(getFuzzySystem().getRules());
+
+  logger() << L_time << "FuzzyCocoEngine::run() " << nb << " generations"
+           << ", max_fit=" << max_fit << endl;
+  for (int i = 0; i < nb; i++) {
+    double fitness = step();
+    if (fitness >= max_fit) break;
+  }
+  logger() << endl;
+
+  from_gen = _active_generation;
+  return from_gen;
 }
 
 NamedList FuzzyCoco::searchBestFuzzySystem(const DataFrame& df, int nb_out_vars, const FuzzyCocoParams& params, int seed)
@@ -226,4 +295,3 @@ void FuzzyCoco::influence_rules_genomes(
     }
   }
 }
-

@@ -1,4 +1,5 @@
 #include <fstream>
+#include <stdexcept>
 #include <sstream>
 #include "tests.h"
 #include "fuzzy_coco.h"
@@ -120,6 +121,51 @@ TEST_F(FuzzyCocoTest, run) {
   EXPECT_DOUBLE_EQ(fit, desc.get_double("fitness"));
 }
 
+TEST_F(FuzzyCocoTest, stepwiseMatchesRun) {
+  FuzzyCocoParams params = GET_SAMPLE_PARAMS(DFIN.nbcols());
+  const int nb_generations = 12;
+  const double max_fit = 0.9;
+  params.global_params.max_generations = nb_generations;
+  params.global_params.max_fitness = max_fit;
+
+  RandomGenerator rng_run(12345);
+  FuzzyCoco coco_run(DFIN, DFOUT, params, rng_run);
+  auto gen_run = coco_run.run(nb_generations, max_fit);
+  coco_run.selectBestFuzzySystem();
+  double best_fit_run = coco_run.getFitnessMethod().getBestFitness();
+  auto desc_run = coco_run.getEngine().describeBestFuzzySystem();
+
+  RandomGenerator rng_step(12345);
+  FuzzyCoco coco_step(DFIN, DFOUT, params, rng_step);
+  EXPECT_FALSE(coco_step.hasActiveGeneration());
+  EXPECT_THROW(coco_step.step(), std::runtime_error);
+
+  coco_step.init();
+  EXPECT_TRUE(coco_step.hasActiveGeneration());
+  EXPECT_EQ(coco_step.currentGenerationNumber(), 0);
+  EXPECT_DOUBLE_EQ(coco_step.currentFitness(), 0.0);
+
+  double last_fit = 0.0;
+  int generations_done = 0;
+  for (int i = 0; i < nb_generations; ++i) {
+    last_fit = coco_step.step();
+    ++generations_done;
+    EXPECT_EQ(coco_step.currentGenerationNumber(), generations_done);
+    if (last_fit >= max_fit) break;
+  }
+
+  EXPECT_TRUE(coco_step.hasActiveGeneration());
+  EXPECT_DOUBLE_EQ(coco_step.currentFitness(), last_fit);
+  EXPECT_EQ(coco_step.currentGenerationNumber(), gen_run.generation_number);
+
+  coco_step.selectBestFuzzySystem();
+  double best_fit_step = coco_step.getFitnessMethod().getBestFitness();
+  auto desc_step = coco_step.getEngine().describeBestFuzzySystem();
+
+  EXPECT_DOUBLE_EQ(best_fit_step, best_fit_run);
+  EXPECT_DOUBLE_EQ(desc_step.get_double("fitness"), desc_run.get_double("fitness"));
+}
+
 
 TEST_F(FuzzyCocoTest, searchBestFuzzySystem) {
   FuzzyCocoParams params = GET_SAMPLE_PARAMS(DFIN.nbcols());
@@ -222,5 +268,4 @@ cerr << temp_fuzzy_system << endl;
     remove(temp_fuzzy_system);
   }
 }
-
 

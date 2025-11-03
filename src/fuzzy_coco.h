@@ -38,6 +38,11 @@ public:
     return run(p.max_generations, p.max_fitness, p.influence_rules_initial_population, p.influence_evolving_ratio); 
   }
   CoevGeneration run(int nb, double max_fit, CoevGeneration& from_gen);
+  void init(bool influence = false, double evolving_ratio = 0.8);
+  double step();
+  bool hasActiveGeneration() const { return _has_active_generation; }
+  int currentGenerationNumber() const;
+  double currentFitness() const;
 
   NamedList describeBestFuzzySystem() { return getEngine().describeBestFuzzySystem(); }
 
@@ -87,6 +92,12 @@ private:
 
   unique_ptr<FuzzyCocoFitnessMethod> _fitter_ptr;
   FuzzyCocoEngine _engine;
+  CoevGeneration _active_generation;
+  bool _has_active_generation = false;
+  double _current_fitness = 0.0;
+
+  void init(RandomGenerator& rng, bool influence, double evolving_ratio);
+  void resetTrainingState();
 };
 
 }
